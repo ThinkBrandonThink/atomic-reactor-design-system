@@ -1,0 +1,10 @@
+/* Storybook-only overrides — not part of the shipped design system.
+   On the Docs page, each story renders inside a preview block whose background
+   is painted by Storybook's (light) docs theme, not by our tokens. The theme
+   toggle only adds `.dark` to the preview <html>, so the component goes dark
+   but its surrounding block stays white. Point the block background at
+   `--background` so it follows the toggle (white in light, dark in dark). */
+.sb-previewBlock,
+.docs-story {
+  background: var(--background) !important;
+}

@@ -315,14 +315,14 @@ export function App() {
 
           {/* ── Combobox ── */}
           <Section title="Combobox">
-            <Combobox value={comboValue} onValueChange={setComboValue}>
+            <Combobox items={fruits} value={comboValue} onValueChange={setComboValue}>
               <ComboboxInput placeholder="Search fruit..." className="w-48" />
               <ComboboxContent>
+                <ComboboxEmpty>No fruit found.</ComboboxEmpty>
                 <ComboboxList>
-                  <ComboboxEmpty>No fruit found.</ComboboxEmpty>
-                  {fruits.map((f) => (
-                    <ComboboxItem key={f} value={f.toLowerCase()}>{f}</ComboboxItem>
-                  ))}
+                  {(f: string) => (
+                    <ComboboxItem key={f} value={f}>{f}</ComboboxItem>
+                  )}
                 </ComboboxList>
               </ComboboxContent>
             </Combobox>

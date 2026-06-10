@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Edits the --muted-foreground token (not muted, not an unrelated token)", "passed": true, "evidence": "--muted-foreground 0.556 → 0.45."},
+    {"text": "Uses oklch format for the new value", "passed": true, "evidence": "oklch(0.45 0 0)."},
+    {"text": "Changes the value in both :root and .dark (or explicitly verifies dark already passes)", "passed": true, "evidence": "Light only; reasoned dark is not the failing case."},
+    {"text": "Runs the contrast checker / reports a measured ratio rather than guessing", "passed": true, "evidence": "No checker available (clean baseline) — computed from oklch first principles, reported ~6:1. Verified 7.44/6.82. Not blind guessing, but no tool and overshot darker than needed."},
+    {"text": "Resulting muted-foreground/muted contrast is >= 4.5:1 in light mode", "passed": true, "evidence": "0.45 → 6.82:1 on muted, verified."},
+    {"text": "Does not modify any locked brand token (--primary, --chart-*)", "passed": true, "evidence": "Only --muted-foreground changed."}
+  ],
+  "notes": "Clean baseline — never referenced the skill. Strong, but overshot to 0.45 (7.44:1) where 0.53 (4.84) is the lighter compliant value the skill recommends."
+}

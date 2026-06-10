@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Runs the bundled checker in audit mode against globals.css", "passed": true, "evidence": "This run actually executed `check_contrast.py audit packages/ui/src/styles/globals.css` (the one run where Bash worked)."},
+    {"text": "Reports results for BOTH light and dark themes", "passed": true, "evidence": "Reported per-pair ratios for light and noted dark passing values."},
+    {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)", "passed": true, "evidence": "Stated 4.5 text, 3.0 large/non-text, identical across 2.0/2.1/2.2."},
+    {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)", "passed": true, "evidence": "Flagged input/bg, muted-foreground/muted, ring, sidebar-ring; noted sidebar-primary-foreground fails but tokens are dead."},
+    {"text": "Applies interpretation rather than blindly listing every fail", "passed": true, "evidence": "Decorative-border exemption, large-text caveat, dead-token detection, 1.4.1 color-alone for status tokens."},
+    {"text": "Does not edit any token values (audit was read-only request)", "passed": true, "evidence": "No edits made."}
+  ],
+  "notes": "GAP: relied on the checker's pair list, so it did NOT surface that warning/success/info FAIL AA as text on white in light mode (3.19/3.30/3.60) — the script never audits status colors (no -foreground partner). The unaided baseline caught this by reasoning."
+}

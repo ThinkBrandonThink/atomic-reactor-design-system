@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Runs the bundled checker in audit mode against globals.css", "passed": true, "evidence": "Ran check_contrast.py audit (Bash permitted)."},
+    {"text": "Reports results for BOTH light and dark themes", "passed": true, "evidence": "Light failures + dark passing noted per token."},
+    {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)", "passed": true, "evidence": "Correct thresholds stated."},
+    {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)", "passed": true, "evidence": "muted-foreground, sidebar-primary-foreground, input, rings — AND now info/success/warning status colors (the iteration-1 gap, fixed)."},
+    {"text": "Applies interpretation rather than blindly listing every fail", "passed": true, "evidence": "Decorative-border exemption, large-text caveat, 1.4.1, and cross-referenced real component usage (text-success on bg-success/10)."},
+    {"text": "Does not edit any token values (audit was read-only request)", "passed": true, "evidence": "No edits."}
+  ],
+  "notes": "FIX VALIDATED: status colors now surface (info 3.60 / success 3.30 / warning 3.19), which the iteration-1 with-skill run missed."
+}

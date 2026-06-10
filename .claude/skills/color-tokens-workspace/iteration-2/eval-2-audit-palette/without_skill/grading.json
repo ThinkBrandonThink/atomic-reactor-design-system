@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Runs the bundled checker in audit mode against globals.css", "passed": false, "evidence": "Clean baseline had no checker; wrote its own /tmp/contrast_check.mjs instead."},
+    {"text": "Reports results for BOTH light and dark themes", "passed": true, "evidence": "Detailed light vs dark, including theme-inverted failures."},
+    {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)", "passed": true, "evidence": "Correct."},
+    {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)", "passed": true, "evidence": "Found these AND went broader (charts, white-on-fill, amber-as-text)."},
+    {"text": "Applies interpretation rather than blindly listing every fail", "passed": true, "evidence": "Decorative borders, large-text, intended pairings, brand-lock decision."},
+    {"text": "Does not edit any token values (audit was read-only request)", "passed": true, "evidence": "No edits (though it read a file the concurrent baselines had mutated)."}
+  ],
+  "notes": "Clean baseline, no skill. BROADER than the skill's audit (charts, white-on-fill). Read the shared /tmp/ar-baseline after concurrent baselines mutated it — correctly flagged that. Insight: extend the skill's audit to charts + white-on-status-fill."
+}

@@ -1,0 +1,10 @@
+{
+  "expectations": [
+    {"text": "Edits the --muted-foreground token (not muted, not an unrelated token)", "passed": true, "evidence": "Changed --muted-foreground oklch(0.556 0 0) → oklch(0.5 0 0)."},
+    {"text": "Uses oklch format for the new value", "passed": true, "evidence": "oklch(0.5 0 0)."},
+    {"text": "Changes the value in both :root and .dark (or explicitly verifies dark already passes)", "passed": true, "evidence": "Changed light only; explicitly reasoned dark already passes (6.91/5.83) and darkening it would hurt readability."},
+    {"text": "Runs the contrast checker / reports a measured ratio rather than guessing", "passed": true, "evidence": "Bash was DENIED so the script could not run, but it reproduced the script's exact algorithm (neutral gray luminance = L^3) and reported ratios; main session verified 5.50:1. Did not guess — but the bundled checker itself never executed."},
+    {"text": "Resulting muted-foreground/muted contrast is >= 4.5:1 in light mode", "passed": true, "evidence": "Main-session verified oklch(0.5 0 0) on muted = 5.50:1 PASS."},
+    {"text": "Does not modify any locked brand token (--primary, --chart-*)", "passed": true, "evidence": "Only --muted-foreground changed."}
+  ]
+}

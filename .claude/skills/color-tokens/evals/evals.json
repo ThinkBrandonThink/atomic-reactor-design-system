@@ -1,0 +1,49 @@
+{
+  "skill_name": "color-tokens",
+  "evals": [
+    {
+      "id": 0,
+      "name": "darken-muted-text",
+      "prompt": "The muted text on our cards feels a little too light — can you darken it a bit so it's easier to read?",
+      "expected_output": "Identifies muted-foreground as the token, measures contrast against muted with the checker, darkens it to clear 4.5:1 in BOTH :root and .dark, leaves locked brand tokens untouched, re-verifies.",
+      "files": [],
+      "assertions": [
+        {"text": "Edits the --muted-foreground token (not muted, not an unrelated token)"},
+        {"text": "Uses oklch format for the new value"},
+        {"text": "Changes the value in both :root and .dark (or explicitly verifies dark already passes)"},
+        {"text": "Runs the contrast checker / reports a measured ratio rather than guessing"},
+        {"text": "Resulting muted-foreground/muted contrast is >= 4.5:1 in light mode"},
+        {"text": "Does not modify any locked brand token (--primary, --chart-*)"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "add-brand-blue-token",
+      "prompt": "We got a new brand accent color, #1d9bf0. Add it as a token called brand-blue and wire it up so I can use bg-brand-blue in components.",
+      "expected_output": "Converts #1d9bf0 to oklch, adds --brand-blue to both :root and .dark, adds --color-brand-blue: var(--brand-blue) to the @theme inline block so Tailwind generates the utility, and checks contrast for likely usage.",
+      "files": [],
+      "assertions": [
+        {"text": "Adds --brand-blue defined in oklch (not hex)"},
+        {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block"},
+        {"text": "Defines the token in both :root and .dark"},
+        {"text": "Runs a contrast check for the new color against a plausible text/background pairing"},
+        {"text": "Does not alter the locked brand tokens or other unrelated tokens"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "audit-palette-accessibility",
+      "prompt": "Is our color palette accessible enough for the schools we sell to? They require WCAG AA.",
+      "expected_output": "Runs the audit across light and dark, reports measured ratios per pair, correctly flags real text/non-text failures while applying interpretation (decorative borders exempt, large-text caveat, color-alone for status colors). Does not change any tokens unprompted.",
+      "files": [],
+      "assertions": [
+        {"text": "Runs the bundled checker in audit mode against globals.css"},
+        {"text": "Reports results for BOTH light and dark themes"},
+        {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)"},
+        {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)"},
+        {"text": "Applies interpretation rather than blindly listing every fail (notes decorative border exemption or large-text/color-alone nuance)"},
+        {"text": "Does not edit any token values (audit was read-only request)"}
+      ]
+    }
+  ]
+}

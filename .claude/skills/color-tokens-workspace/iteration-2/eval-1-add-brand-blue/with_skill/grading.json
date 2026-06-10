@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "Adds --brand-blue defined in oklch (not hex)", "passed": true, "evidence": "oklch(0.667 0.161 245.540) via checker to-oklch."},
+    {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block", "passed": true, "evidence": "Added."},
+    {"text": "Defines the token in both :root and .dark", "passed": true, "evidence": "Both blocks."},
+    {"text": "Runs a contrast check for the new color against a plausible text/background pairing", "passed": true, "evidence": "Ran checker; found white-on-blue 3.00 FAIL, black 6.60 PASS; flagged dark-foreground requirement."},
+    {"text": "Does not alter the locked brand tokens or other unrelated tokens", "passed": true, "evidence": "Only added the new token."}
+  ]
+}

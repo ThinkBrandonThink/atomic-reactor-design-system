@@ -6,7 +6,9 @@
   "scripts": {
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -33,6 +35,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^10",
+    "@storybook/addon-docs": "^10.4.3",
+    "@storybook/addon-themes": "^10.4.3",
+    "@storybook/react-vite": "^10.4.3",
     "@tailwindcss/vite": "^4",
     "@turbo/gen": "^2.9.15",
     "@types/node": "^24",
@@ -42,9 +47,11 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17",
+    "storybook": "^10.4.3",
     "tailwindcss": "^4",
     "typescript": "~6",
-    "typescript-eslint": "^8"
+    "typescript-eslint": "^8",
+    "vite": "^8.0.16"
   },
   "exports": {
     "./globals.css": "./src/styles/globals.css",

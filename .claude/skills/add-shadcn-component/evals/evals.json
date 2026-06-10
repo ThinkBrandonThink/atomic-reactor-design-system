@@ -1,0 +1,26 @@
+{
+  "skill_name": "add-shadcn-component",
+  "evals": [
+    {
+      "id": 0,
+      "name": "meter-simple-single-part",
+      "prompt": "We need a Meter component in our design system (@workspace/ui) — like a progress bar but for a static measured value (battery level, disk usage, score out of 100). Add it.",
+      "expected_output": "packages/ui/src/components/meter.tsx wrapping @base-ui/react/meter, mirroring progress.tsx, with data-slot on each part, radius/color via tokens, no Radix imports, typechecks.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "number-field-compound-input",
+      "prompt": "Add a number field component to packages/ui — a numeric input with increment and decrement stepper buttons. We'll use it for quantity pickers.",
+      "expected_output": "packages/ui/src/components/number-field.tsx wrapping @base-ui/react/number-field with Group/Input/Increment/Decrement parts, each with data-slot, reusing the input + button focus/border/press conventions, no Radix imports, typechecks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "toolbar-compound",
+      "prompt": "Can you add a Toolbar component to the design system? Something to group buttons, toggles, and separators into a horizontal bar.",
+      "expected_output": "packages/ui/src/components/toolbar.tsx wrapping @base-ui/react/toolbar with Root/Button/Separator/Group parts, each with data-slot, button focus/invalid/press + icon conventions, radius/color via tokens, no Radix imports, typechecks.",
+      "files": []
+    }
+  ]
+}

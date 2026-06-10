@@ -1,0 +1,10 @@
+{
+  "expectations": [
+    {"text": "Adds --brand-blue defined in oklch (not hex)", "passed": true, "evidence": "oklch(0.667 0.161 245.540) — exact, matches with-skill."},
+    {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block", "passed": true, "evidence": "Added correctly (CLAUDE.md documents this requirement)."},
+    {"text": "Defines the token in both :root and .dark", "passed": true, "evidence": "Both blocks."},
+    {"text": "Runs a contrast check for the new color against a plausible text/background pairing", "passed": true, "evidence": "Computed by hand: white 3.00 (fails normal), black 7.00 PASS; recommended dark foreground. This clean baseline DID check and caught the issue."},
+    {"text": "Does not alter the locked brand tokens or other unrelated tokens", "passed": true, "evidence": "Only added the new token."}
+  ],
+  "notes": "Clean baseline matched the with-skill run on all 5 assertions — including the white-on-blue catch — computed by hand without the checker. Shows a strong model needs the skill less for a well-scoped task; the skill's value is reliability when the model doesn't reason it out."
+}

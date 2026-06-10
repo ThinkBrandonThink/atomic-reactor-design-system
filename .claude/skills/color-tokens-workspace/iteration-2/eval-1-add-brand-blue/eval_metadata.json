@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "add-brand-blue-token",
+  "prompt": "We got a new brand accent color, #1d9bf0. Add it as a token called brand-blue and wire it up so I can use bg-brand-blue in components.",
+  "assertions": [
+    {"text": "Adds --brand-blue defined in oklch (not hex)"},
+    {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block"},
+    {"text": "Defines the token in both :root and .dark"},
+    {"text": "Runs a contrast check for the new color against a plausible text/background pairing"},
+    {"text": "Does not alter the locked brand tokens or other unrelated tokens"}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "Adds --brand-blue defined in oklch (not hex)", "passed": true, "evidence": "--brand-blue: oklch(0.685 0.156 248.6) — oklch, though a looser conversion than the exact 0.667 0.161 245.540."},
+    {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block", "passed": true, "evidence": "Correctly added the @theme inline mapping — the easy-to-miss step. Baseline got this right (CLAUDE.md documents the @theme inline requirement)."},
+    {"text": "Defines the token in both :root and .dark", "passed": true, "evidence": "Added to both blocks."},
+    {"text": "Runs a contrast check for the new color against a plausible text/background pairing", "passed": false, "evidence": "Did NOT check contrast. Suggested 'bg-brand-blue text-white' usage, which is ~3.00:1 and FAILS AA body text — an accessibility bug shipped unflagged."},
+    {"text": "Does not alter the locked brand tokens or other unrelated tokens", "passed": true, "evidence": "Only added the new token."}
+  ]
+}

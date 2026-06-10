@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "Adds --brand-blue defined in oklch (not hex)", "passed": true, "evidence": "--brand-blue: oklch(0.667 0.161 245.539); main session confirms this is the correct conversion of #1d9bf0."},
+    {"text": "Adds --color-brand-blue: var(--brand-blue) inside the @theme inline block", "passed": true, "evidence": "Added the @theme inline mapping so bg-brand-blue is generated."},
+    {"text": "Defines the token in both :root and .dark", "passed": true, "evidence": "Same value added after --warning in both blocks."},
+    {"text": "Runs a contrast check for the new color against a plausible text/background pairing", "passed": true, "evidence": "Checked multiple pairings (fill vs bg, white text on blue, dark text on blue). Caught that white-on-brand-blue is ~2.87:1 FAIL and recommended a dark foreground. Bash was blocked so done by hand, but main session verified 2.87/3.00 FAIL — accurate."},
+    {"text": "Does not alter the locked brand tokens or other unrelated tokens", "passed": true, "evidence": "Only added the new token; nothing else changed."}
+  ]
+}

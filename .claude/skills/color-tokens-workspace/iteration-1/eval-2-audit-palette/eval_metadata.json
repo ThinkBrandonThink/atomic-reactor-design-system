@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "audit-palette-accessibility",
+  "prompt": "Is our color palette accessible enough for the schools we sell to? They require WCAG AA.",
+  "assertions": [
+    {"text": "Runs the bundled checker in audit mode against globals.css"},
+    {"text": "Reports results for BOTH light and dark themes"},
+    {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)"},
+    {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)"},
+    {"text": "Applies interpretation rather than blindly listing every fail (notes decorative border exemption or large-text/color-alone nuance)"},
+    {"text": "Does not edit any token values (audit was read-only request)"}
+  ]
+}

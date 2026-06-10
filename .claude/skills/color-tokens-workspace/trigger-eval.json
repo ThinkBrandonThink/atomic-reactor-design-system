@@ -1,0 +1,22 @@
+[
+  {"query": "the muted text on our card descriptions is way too faint in light mode, can you bump it up", "should_trigger": true},
+  {"query": "new school district client's brand accent is #2b6cb0 — add it to our tokens so I can use it on buttons", "should_trigger": true},
+  {"query": "is our palette actually AA compliant? the district's procurement team is going to run an audit", "should_trigger": true},
+  {"query": "convert this figma color rgb(29, 155, 240) into our oklch system and add it as --link", "should_trigger": true},
+  {"query": "the destructive red and the warning amber look almost the same, can you check the colors", "should_trigger": true},
+  {"query": "make the primary button text more readable, it's hard to see right now", "should_trigger": true},
+  {"query": "add a couple new chart colors for a 6- and 7-series chart, match the teal ramp", "should_trigger": true},
+  {"query": "what token should I use for this new info banner's background so it passes contrast", "should_trigger": true},
+  {"query": "our focus rings are barely visible in light mode, fix the ring color", "should_trigger": true},
+  {"query": "darken the secondary foreground a little, and make sure it still works in dark mode", "should_trigger": true},
+  {"query": "add a new xl size variant to the button component", "should_trigger": false},
+  {"query": "the spacing between cards is too tight, bump the gap", "should_trigger": false},
+  {"query": "change the dashboard story from a bar chart to a line chart", "should_trigger": false},
+  {"query": "set up the dark-mode toggle keyboard shortcut", "should_trigger": false},
+  {"query": "the Inter font isn't loading, fix the font import in globals.css", "should_trigger": false},
+  {"query": "add a tooltip component to the design system", "should_trigger": false},
+  {"query": "update the radius scale so everything's a bit more rounded", "should_trigger": false},
+  {"query": "recommend a better VS Code syntax-highlighting theme", "should_trigger": false},
+  {"query": "compress these PNG logos and fix their transparent backgrounds", "should_trigger": false},
+  {"query": "the Storybook backgrounds addon shows the wrong default, configure it", "should_trigger": false}
+]

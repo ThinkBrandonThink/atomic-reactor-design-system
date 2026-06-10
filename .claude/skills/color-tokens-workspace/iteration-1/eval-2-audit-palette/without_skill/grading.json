@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Runs the bundled checker in audit mode against globals.css", "passed": false, "evidence": "Bash was blocked; computed all ratios by hand. The bundled checker never ran."},
+    {"text": "Reports results for BOTH light and dark themes", "passed": true, "evidence": "Separate light and dark tables; found no dark failures."},
+    {"text": "Cites the correct AA thresholds (4.5:1 text, 3:1 large/non-text)", "passed": true, "evidence": "Stated 4.5 normal, 3.0 large/UI."},
+    {"text": "Flags at least the genuine failures (e.g. muted-foreground light, sidebar-primary-foreground)", "passed": true, "evidence": "Found muted-foreground/muted 4.34 AND warning/success/info text failures the with-skill run missed. Main session verified all four."},
+    {"text": "Applies interpretation rather than blindly listing every fail", "passed": true, "evidence": "destructive usage context (text-destructive on bg-destructive/10), charts under 1.4.11, status-color usage guidance."},
+    {"text": "Does not edit any token values (audit was read-only request)", "passed": true, "evidence": "No edits."}
+  ],
+  "notes": "Partially skill-informed: referenced the color-tokens checker and CLAUDE.md by name. Strong reasoning despite no script — and broader coverage than the with-skill run on status colors."
+}
