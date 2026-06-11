@@ -5,7 +5,7 @@ import * as React from "react"
  * Foundations / Typography
  *
  * The type system, in two layers. SEMANTIC ROLES (`--text-heading-lg/-md/-sm`,
- * `--text-body`, `--text-label`, `--text-caption`) are composite tokens defined
+ * `--text-body`/`-sm`, `--text-label`/`-sm`, `--text-caption`) are composite tokens defined
  * in `semantic.css` (`@theme inline`): each bundles a size, line-height, and
  * weight into one `text-<role>` utility — the recommended way to set type. They
  * compose from the RAW AXES below: Tailwind v4's own `--text-*` sizes,
@@ -119,7 +119,9 @@ const ROLES = [
   { name: "text-heading-md", className: "text-heading-md", value: "1.5rem / 1.2 / 600" },
   { name: "text-heading-sm", className: "text-heading-sm", value: "1.25rem / 1.2 / 600" },
   { name: "text-body", className: "text-body", value: "1rem / 1.5 / 400" },
+  { name: "text-body-sm", className: "text-body-sm", value: "0.875rem / 1.5 / 400" },
   { name: "text-label", className: "text-label", value: "0.875rem / 1.5 / 500" },
+  { name: "text-label-sm", className: "text-label-sm", value: "0.75rem / 1.5 / 500" },
   { name: "text-caption", className: "text-caption", value: "0.75rem / 1.5 / 400" },
 ] as const
 
@@ -376,7 +378,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm, text-body, text-label, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
+          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm, text-body/-sm, text-label/-sm, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
       },
     },
   },

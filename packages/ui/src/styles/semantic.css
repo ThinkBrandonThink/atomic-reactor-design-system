@@ -42,12 +42,18 @@
   --text-body: var(--type-size-base);
   --text-body--line-height: var(--type-leading-normal);
   --text-body--font-weight: var(--type-weight-regular);
+  --text-body-sm: var(--type-size-sm);
+  --text-body-sm--line-height: var(--type-leading-normal);
+  --text-body-sm--font-weight: var(--type-weight-regular);
   --text-caption: var(--type-size-xs);
   --text-caption--line-height: var(--type-leading-normal);
   --text-caption--font-weight: var(--type-weight-regular);
   --text-label: var(--type-size-sm);
   --text-label--line-height: var(--type-leading-normal);
   --text-label--font-weight: var(--type-weight-medium);
+  --text-label-sm: var(--type-size-xs);
+  --text-label-sm--line-height: var(--type-leading-normal);
+  --text-label-sm--font-weight: var(--type-weight-medium);
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
