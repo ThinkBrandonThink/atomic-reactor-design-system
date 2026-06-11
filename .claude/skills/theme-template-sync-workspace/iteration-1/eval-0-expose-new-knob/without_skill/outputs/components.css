@@ -10,9 +10,12 @@
  * add freely, rename/remove only on a major version.
  *
  * Scope note (why this list is short):
- *   - Card bg/fg and input border are ALREADY independently themeable via the
- *     component-scoped semantic tokens --card / --card-foreground / --input.
- *     Only their radius was missing, so only radius is added here.
+ *   - Card fg and input border are ALREADY independently themeable via the
+ *     component-scoped semantic tokens --card-foreground / --input. Card now
+ *     also exposes a dedicated --card-bg knob (defaulting to the --card surface)
+ *     so consumers can recolor card backgrounds in their theme file.
+ *   - Input border still themes via the --input semantic token; only radius
+ *     was missing there, so only radius is added.
  *   - Button and badge both defaulted to --primary, so they could not diverge;
  *     dedicated bg/fg/hover tokens are what make them independently themeable.
  *   - Field is a layout component with no themeable surface — intentionally omitted.
@@ -24,60 +27,31 @@
 
 :root {
   /* Button — default (primary) variant */
-  /* @theme-template
-     group: fine-tuning
-     block: buttons
-     label: button color
-     example: #2563eb */
+
   --button-bg: var(--primary);
-  /* @theme-template
-     group: fine-tuning
-     block: buttons
-     label: button text color
-     example: #ffffff */
+
   --button-fg: var(--primary-foreground);
   --button-bg-hover: color-mix(in oklab, var(--button-bg) 80%, transparent);
-  /* @theme-template
-     group: fine-tuning
-     block: buttons
-     label: 9999px = fully rounded "pill" buttons
-     example: 9999px */
+
   --button-radius: var(--radius-lg);
 
   /* Badge — default variant */
-  /* @theme-template
-     group: fine-tuning
-     block: badges
-     label: badge color
-     example: #2563eb */
+
   --badge-bg: var(--primary);
-  /* @theme-template
-     group: fine-tuning
-     block: badges
-     label: badge text color
-     example: #ffffff */
+
   --badge-fg: var(--primary-foreground);
   --badge-bg-hover: color-mix(in oklab, var(--badge-bg) 80%, transparent);
-  /* @theme-template
-     group: fine-tuning
-     block: badges
-     label: 0 = square corners
-     example: 0.375rem */
+
   --badge-radius: var(--radius-4xl);
 
   /* Input */
-  /* @theme-template
-     group: fine-tuning
-     block: inputs
-     label: 0 = square corners
-     example: 0.625rem */
+
   --input-radius: var(--radius-lg);
 
   /* Card */
-  /* @theme-template
-     group: fine-tuning
-     block: cards
-     example: 1rem */
+
+  --card-bg: var(--card);
+
   --card-radius: var(--radius-xl);
 }
 
@@ -89,4 +63,6 @@
   --color-badge: var(--badge-bg);
   --color-badge-fg: var(--badge-fg);
   --color-badge-hover: var(--badge-bg-hover);
+
+  --color-card-bg: var(--card-bg);
 }

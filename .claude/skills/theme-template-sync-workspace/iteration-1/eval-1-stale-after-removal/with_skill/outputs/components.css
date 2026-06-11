@@ -58,12 +58,6 @@
      example: #ffffff */
   --badge-fg: var(--primary-foreground);
   --badge-bg-hover: color-mix(in oklab, var(--badge-bg) 80%, transparent);
-  /* @theme-template
-     group: fine-tuning
-     block: badges
-     label: 0 = square corners
-     example: 0.375rem */
-  --badge-radius: var(--radius-4xl);
 
   /* Input */
   /* @theme-template

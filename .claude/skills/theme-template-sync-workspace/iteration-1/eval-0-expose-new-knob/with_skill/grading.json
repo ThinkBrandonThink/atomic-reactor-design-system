@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  },
+  "expectations": [
+    {
+      "text": "Template exposes --card-bg under the Cards section",
+      "passed": true,
+      "evidence": "Cards block lists `/* --card-bg: #ffffff;   card background color */`."
+    },
+    {
+      "text": "components.css defines --card-bg defaulting to var(--card), not a raw primitive",
+      "passed": true,
+      "evidence": "`--card-bg: var(--card);` in :root Card section; also wired --color-card-bg in @theme inline."
+    },
+    {
+      "text": "Template --card-bg example is a consumer hex, not oklch/var",
+      "passed": true,
+      "evidence": "example: #ffffff."
+    },
+    {
+      "text": "Pre-existing template tokens preserved (button-bg, badge-bg, radius, card-radius)",
+      "passed": true,
+      "evidence": "all four still present."
+    },
+    {
+      "text": "A @theme-template marker for --card-bg exists in components.css",
+      "passed": true,
+      "evidence": "marker block (group:fine-tuning, block:cards) sits directly above the --card-bg declaration; generator regenerated template."
+    }
+  ]
+}

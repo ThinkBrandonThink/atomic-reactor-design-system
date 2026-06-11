@@ -10,9 +10,10 @@
  * add freely, rename/remove only on a major version.
  *
  * Scope note (why this list is short):
- *   - Card bg/fg and input border are ALREADY independently themeable via the
- *     component-scoped semantic tokens --card / --card-foreground / --input.
- *     Only their radius was missing, so only radius is added here.
+ *   - Card fg and input border are independently themeable via the
+ *     component-scoped semantic tokens --card-foreground / --input. Card bg has
+ *     a dedicated --card-bg knob (defaulting to --card) so a theme can recolor
+ *     the card surface without repointing the --card role system-wide.
  *   - Button and badge both defaulted to --primary, so they could not diverge;
  *     dedicated bg/fg/hover tokens are what make them independently themeable.
  *   - Field is a layout component with no themeable surface — intentionally omitted.
@@ -77,6 +78,12 @@
   /* @theme-template
      group: fine-tuning
      block: cards
+     label: card background color
+     example: #ffffff */
+  --card-bg: var(--card);
+  /* @theme-template
+     group: fine-tuning
+     block: cards
      example: 1rem */
   --card-radius: var(--radius-xl);
 }
@@ -89,4 +96,6 @@
   --color-badge: var(--badge-bg);
   --color-badge-fg: var(--badge-fg);
   --color-badge-hover: var(--badge-bg-hover);
+
+  --color-card-bg: var(--card-bg);
 }

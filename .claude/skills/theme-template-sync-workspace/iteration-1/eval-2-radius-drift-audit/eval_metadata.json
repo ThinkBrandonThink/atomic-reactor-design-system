@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "radius-drift-audit",
+  "prompt": "I'm bumping the global corner radius default from 0.625rem down to 0.5rem. After that, double-check the consumer theme template is still accurate.",
+  "assertions": [
+    "semantic.css --radius default is now 0.5rem",
+    "The template's --radius example value reads 0.5rem (matches the new default)",
+    "The audit correctly identified that the template's --radius example was stale/drifted before fixing it",
+    "No unrelated template tokens were changed"
+  ]
+}

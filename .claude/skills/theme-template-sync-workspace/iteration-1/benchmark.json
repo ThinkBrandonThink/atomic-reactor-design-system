@@ -1,0 +1,303 @@
+{
+  "metadata": {
+    "skill_name": "theme-template-sync",
+    "skill_path": ".claude/skills/theme-template-sync",
+    "executor_model": "claude-opus-4-8",
+    "analyzer_model": "claude-opus-4-8",
+    "timestamp": "2026-06-11T00:00:00Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 149.9,
+        "tokens": 52526,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Template exposes --card-bg under the Cards section",
+          "passed": true,
+          "evidence": "Cards block lists `/* --card-bg: #ffffff;   card background color */`."
+        },
+        {
+          "text": "components.css defines --card-bg defaulting to var(--card), not a raw primitive",
+          "passed": true,
+          "evidence": "`--card-bg: var(--card);` in :root Card section; also wired --color-card-bg in @theme inline."
+        },
+        {
+          "text": "Template --card-bg example is a consumer hex, not oklch/var",
+          "passed": true,
+          "evidence": "example: #ffffff."
+        },
+        {
+          "text": "Pre-existing template tokens preserved (button-bg, badge-bg, radius, card-radius)",
+          "passed": true,
+          "evidence": "all four still present."
+        },
+        {
+          "text": "A @theme-template marker for --card-bg exists in components.css",
+          "passed": true,
+          "evidence": "marker block (group:fine-tuning, block:cards) sits directly above the --card-bg declaration; generator regenerated template."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 91.3,
+        "tokens": 40573,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Template no longer lists --badge-radius",
+          "passed": true,
+          "evidence": "badge-radius absent; Tags/badges block lists only --badge-bg/-fg."
+        },
+        {
+          "text": "--badge-radius knob removed from components.css",
+          "passed": true,
+          "evidence": "declaration + its marker deleted."
+        },
+        {
+          "text": "Other badge controls (--badge-bg, --badge-fg) still in template",
+          "passed": true,
+          "evidence": "both present."
+        },
+        {
+          "text": "Response surfaces that removal breaks client themes overriding --badge-radius",
+          "passed": true,
+          "evidence": "Report: existing `.theme-*` overriding --badge-radius will 'silently no-op'; flags tier-3 removal as a major-version contract break."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 106.3,
+        "tokens": 41219,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "semantic.css --radius default is now 0.5rem",
+          "passed": true,
+          "evidence": "`--radius: 0.5rem;`."
+        },
+        {
+          "text": "Template --radius example reads 0.5rem (matches new default)",
+          "passed": true,
+          "evidence": "template example: 0.5rem."
+        },
+        {
+          "text": "Audit correctly identified the template --radius example was stale before fixing",
+          "passed": true,
+          "evidence": "Generator reported 'Example values to UPDATE: --radius 0.625rem -> 0.5rem'; updated marker example + regenerated; re-ran to confirm in sync."
+        },
+        {
+          "text": "No unrelated template tokens changed (primary, button-bg, card-radius intact)",
+          "passed": true,
+          "evidence": "primary #2563eb, button-bg #2563eb, card-radius 1rem; --input-radius example correctly left at 0.625rem (its own token)."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 130.4,
+        "tokens": 46529,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Template exposes --card-bg under the Cards section",
+          "passed": true,
+          "evidence": "hand-added `/* --card-bg: #ffffff;   card background color */` under Cards."
+        },
+        {
+          "text": "components.css defines --card-bg defaulting to var(--card), not a raw primitive",
+          "passed": true,
+          "evidence": "`--card-bg: var(--card);` + --color-card-bg mapping."
+        },
+        {
+          "text": "Template --card-bg example is a consumer hex, not oklch/var",
+          "passed": true,
+          "evidence": "example: #ffffff."
+        },
+        {
+          "text": "Pre-existing template tokens preserved (button-bg, badge-bg, radius, card-radius)",
+          "passed": true,
+          "evidence": "all four still present."
+        },
+        {
+          "text": "A @theme-template marker for --card-bg exists in components.css",
+          "passed": false,
+          "evidence": "Pre-marker world: no marker system, so the template was hand-edited; future token changes won't auto-surface."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 119.8,
+        "tokens": 41984,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Template no longer lists --badge-radius",
+          "passed": true,
+          "evidence": "advertised line removed from Tags/badges section."
+        },
+        {
+          "text": "--badge-radius knob removed from components.css",
+          "passed": true,
+          "evidence": "declaration removed from :root."
+        },
+        {
+          "text": "Other badge controls (--badge-bg, --badge-fg) still in template",
+          "passed": true,
+          "evidence": "both present."
+        },
+        {
+          "text": "Response surfaces that removal breaks client themes overriding --badge-radius",
+          "passed": true,
+          "evidence": "Report: override 'becomes a dead no-op'; classic removed-token-no-ops; major-version change."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 99.5,
+        "tokens": 40960,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "semantic.css --radius default is now 0.5rem",
+          "passed": true,
+          "evidence": "`--radius: 0.5rem;`."
+        },
+        {
+          "text": "Template --radius example reads 0.5rem (matches new default)",
+          "passed": true,
+          "evidence": "template example: 0.5rem."
+        },
+        {
+          "text": "Audit correctly identified the template --radius example was stale before fixing",
+          "passed": true,
+          "evidence": "Audit flagged the --radius line as DRIFT (claimed 0.625rem, now 0.5rem); fixed."
+        },
+        {
+          "text": "No unrelated template tokens changed (primary, button-bg, card-radius intact)",
+          "passed": true,
+          "evidence": "primary/button-bg/card-radius intact; HOWEVER also changed --input-radius example 0.625->0.5rem (debatable: that's a separate token, not derived from --radius)."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 115.8333,
+        "stddev": 24.855,
+        "min": 91.3,
+        "max": 149.9
+      },
+      "tokens": {
+        "mean": 44772.6667,
+        "stddev": 5488.7741,
+        "min": 40573,
+        "max": 52526
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.9333,
+        "stddev": 0.0943,
+        "min": 0.8,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 116.5667,
+        "stddev": 12.8204,
+        "min": 99.5,
+        "max": 130.4
+      },
+      "tokens": {
+        "mean": 43157.6667,
+        "stddev": 2420.27,
+        "min": 40960,
+        "max": 46529
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.07",
+      "time_seconds": "-0.7",
+      "tokens": "+1615"
+    }
+  },
+  "notes": []
+}

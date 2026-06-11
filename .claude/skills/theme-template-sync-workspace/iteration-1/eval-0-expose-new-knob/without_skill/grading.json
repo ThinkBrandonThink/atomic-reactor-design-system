@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "pass_rate": 0.8,
+    "passed": 4,
+    "failed": 1,
+    "total": 5
+  },
+  "expectations": [
+    {
+      "text": "Template exposes --card-bg under the Cards section",
+      "passed": true,
+      "evidence": "hand-added `/* --card-bg: #ffffff;   card background color */` under Cards."
+    },
+    {
+      "text": "components.css defines --card-bg defaulting to var(--card), not a raw primitive",
+      "passed": true,
+      "evidence": "`--card-bg: var(--card);` + --color-card-bg mapping."
+    },
+    {
+      "text": "Template --card-bg example is a consumer hex, not oklch/var",
+      "passed": true,
+      "evidence": "example: #ffffff."
+    },
+    {
+      "text": "Pre-existing template tokens preserved (button-bg, badge-bg, radius, card-radius)",
+      "passed": true,
+      "evidence": "all four still present."
+    },
+    {
+      "text": "A @theme-template marker for --card-bg exists in components.css",
+      "passed": false,
+      "evidence": "Pre-marker world: no marker system, so the template was hand-edited; future token changes won't auto-surface."
+    }
+  ]
+}

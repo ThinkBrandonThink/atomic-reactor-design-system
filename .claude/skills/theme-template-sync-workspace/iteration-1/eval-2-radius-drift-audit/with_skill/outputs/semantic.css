@@ -181,8 +181,8 @@
      group: brand
      order: 6
      label: How rounded everything is, overall. Bigger = softer corners. Try 0 for sharp corners, or 1rem for very round.
-     example: 0.625rem */
-  --radius: 0.625rem;
+     example: 0.5rem */
+  --radius: 0.5rem;
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);
   --sidebar-primary: var(--gold-300);

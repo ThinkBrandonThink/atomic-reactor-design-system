@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Template no longer lists --badge-radius",
+      "passed": true,
+      "evidence": "advertised line removed from Tags/badges section."
+    },
+    {
+      "text": "--badge-radius knob removed from components.css",
+      "passed": true,
+      "evidence": "declaration removed from :root."
+    },
+    {
+      "text": "Other badge controls (--badge-bg, --badge-fg) still in template",
+      "passed": true,
+      "evidence": "both present."
+    },
+    {
+      "text": "Response surfaces that removal breaks client themes overriding --badge-radius",
+      "passed": true,
+      "evidence": "Report: override 'becomes a dead no-op'; classic removed-token-no-ops; major-version change."
+    }
+  ]
+}

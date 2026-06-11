@@ -49,7 +49,7 @@
 
   /* How rounded everything is, overall. Bigger = softer corners. Try 0 for
      sharp corners, or 1rem for very round. */
-  /* --radius: 0.625rem; */
+  /* --radius: 0.5rem; */
 
   /* ---- TEXT & FONTS -------------------------------------------------------
    * Change the typeface and how big the text is.

@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "semantic.css --radius default is now 0.5rem",
+      "passed": true,
+      "evidence": "`--radius: 0.5rem;`."
+    },
+    {
+      "text": "Template --radius example reads 0.5rem (matches new default)",
+      "passed": true,
+      "evidence": "template example: 0.5rem."
+    },
+    {
+      "text": "Audit correctly identified the template --radius example was stale before fixing",
+      "passed": true,
+      "evidence": "Generator reported 'Example values to UPDATE: --radius 0.625rem -> 0.5rem'; updated marker example + regenerated; re-ran to confirm in sync."
+    },
+    {
+      "text": "No unrelated template tokens changed (primary, button-bg, card-radius intact)",
+      "passed": true,
+      "evidence": "primary #2563eb, button-bg #2563eb, card-radius 1rem; --input-radius example correctly left at 0.625rem (its own token)."
+    }
+  ]
+}

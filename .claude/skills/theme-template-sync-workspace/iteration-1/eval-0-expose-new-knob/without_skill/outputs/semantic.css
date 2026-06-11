@@ -17,11 +17,7 @@
  * ========================================================================== */
 
 @theme inline {
-  /* @theme-template
-     group: text
-     order: 2
-     label: Want a DIFFERENT font for just headings? Set this one too. Leave it off and headings use the same font as everything else.
-     example: "Poppins", sans-serif */
+
   --font-heading: var(--font-sans);
 
   /* Semantic typography — composite text roles. Each --text-<role> (plus its
@@ -104,54 +100,22 @@
  * line-heights come from Tailwind's own --text-* /--font-weight-* /--leading-*
  * tokens, which are already overridable the same way. */
 @theme {
-  /* @theme-template
-     group: text
-     order: 1
-     label: The font used everywhere (body text AND headings)
-     example: "Poppins", sans-serif */
+
   --font-sans: "Inter Variable", sans-serif;
 }
 
-/* Consumer-overridable text sizes. These ride Tailwind's built-in --text-*
- * theme keys (they have no declaration of their own here), so they're surfaced
- * to the theme template via standalone @theme-template markers that name
- * themselves explicitly. */
-/* @theme-template name: --text-xs   group: text  block: text-sizes  example: 0.75rem   label: tiny labels */
-/* @theme-template name: --text-sm   group: text  block: text-sizes  example: 0.875rem  label: small text, most buttons and inputs */
-/* @theme-template name: --text-base group: text  block: text-sizes  example: 1rem      label: normal body text */
-/* @theme-template name: --text-lg   group: text  block: text-sizes  example: 1.125rem  label: slightly large */
-/* @theme-template name: --text-2xl  group: text  block: text-sizes  example: 1.5rem    label: section headings */
-/* @theme-template name: --text-3xl  group: text  block: text-sizes  example: 1.875rem  label: big headings */
-/* @theme-template name: --text-4xl  group: text  block: text-sizes  example: 2.25rem   label: largest headings */
-
 :root {
-  /* @theme-template
-     group: brand
-     order: 3
-     label: Page background color
-     example: #ffffff */
+
   --background: var(--neutral-0);
-  /* @theme-template
-     group: brand
-     order: 4
-     label: Default text color
-     example: #1a1a1a */
+
   --foreground: var(--neutral-900);
   --card: var(--neutral-0);
   --card-foreground: var(--neutral-900);
   --popover: var(--neutral-0);
   --popover-foreground: var(--neutral-900);
-  /* @theme-template
-     group: brand
-     order: 1
-     label: Your main brand color (buttons, links, highlights)
-     example: #2563eb */
+
   --primary: var(--gold-300);
-  /* @theme-template
-     group: brand
-     order: 2
-     label: Text/icon color that sits ON TOP of your brand color — pick something readable against it (e.g. white on a dark brand color)
-     example: #ffffff */
+
   --primary-foreground: var(--gold-800);
   --primary-link: var(--gold-600);
   --secondary: var(--neutral-cool-100);
@@ -160,11 +124,7 @@
   --muted-foreground: var(--neutral-600);
   --accent: var(--neutral-100);
   --accent-foreground: var(--neutral-850);
-  /* @theme-template
-     group: brand
-     order: 5
-     label: The color used for errors and delete/destructive actions
-     example: #dc2626 */
+
   --destructive: var(--red-500);
   --success: var(--green-600);
   --info: var(--cyan-600);
@@ -177,11 +137,7 @@
   --chart-3: oklch(0.51 0.126 221.723);
   --chart-4: oklch(0.455 0.105 223.128);
   --chart-5: oklch(0.4 0.085 224.283);
-  /* @theme-template
-     group: brand
-     order: 6
-     label: How rounded everything is, overall. Bigger = softer corners. Try 0 for sharp corners, or 1rem for very round.
-     example: 0.625rem */
+
   --radius: 0.625rem;
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);

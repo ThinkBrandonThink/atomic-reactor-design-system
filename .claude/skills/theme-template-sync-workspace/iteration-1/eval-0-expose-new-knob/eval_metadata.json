@@ -1,0 +1,12 @@
+{
+  "eval_id": 0,
+  "eval_name": "expose-new-knob",
+  "prompt": "We want cards to have a themeable background color, not just a themeable radius. Add a --card-bg knob that defaults to the card surface, and make sure our clients can set it in their uploaded theme file.",
+  "assertions": [
+    "themes/_template.css exposes --card-bg as a commented-out override under the Cards section",
+    "components.css defines a --card-bg knob defaulting to a semantic role (var(--card)), not a raw primitive",
+    "The --card-bg example value in the template is a consumer-friendly hex, not an oklch value or a var() reference",
+    "All pre-existing template tokens (--button-bg, --badge-bg, --radius, --card-radius) are still present (nothing was dropped)",
+    "A @theme-template marker for --card-bg exists in components.css (with_skill should establish this)"
+  ]
+}

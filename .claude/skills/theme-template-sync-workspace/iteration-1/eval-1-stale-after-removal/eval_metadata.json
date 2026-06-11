@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "stale-after-removal",
+  "prompt": "We're dropping the per-badge radius override — badges should just inherit the global radius again. Remove the --badge-radius knob and make sure the theme template doesn't still advertise it to clients.",
+  "assertions": [
+    "themes/_template.css no longer lists --badge-radius",
+    "The --badge-radius knob is removed from components.css",
+    "Other badge controls (--badge-bg, --badge-fg) are still present in the template",
+    "The response surfaces that removing --badge-radius breaks any client theme currently overriding it (a behavior/communication check)"
+  ]
+}

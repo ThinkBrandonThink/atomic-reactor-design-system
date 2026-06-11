@@ -93,5 +93,6 @@
   /* --input-radius: 0.625rem;   0 = square corners */
 
   /* Cards (boxed sections of content) */
+  /* --card-bg: #ffffff;   card background color */
   /* --card-radius: 1rem; */
 }
