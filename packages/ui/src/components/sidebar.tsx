@@ -522,6 +522,7 @@ function SidebarMenuButton({
     state: {
       slot: "sidebar-menu-button",
       sidebar: "menu-button",
+      variant,
       size,
       active: isActive,
     },

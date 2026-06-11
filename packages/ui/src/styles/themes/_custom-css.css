@@ -1,0 +1,164 @@
+/* ============================================================================
+ * CUSTOM CSS — ADVANCED THEMING (for developers)
+ * ----------------------------------------------------------------------------
+ * This file is for technical users who need MORE control than the standard
+ * theme settings give you.
+ *
+ *   - The standard theme file (_template.css) lets you change colors, corners,
+ *     and fonts by filling in values. That covers most needs and requires no
+ *     CSS knowledge.
+ *   - THIS file is different: it's real CSS. It lets you change ANY property of
+ *     a specific component variant — for example, the border of *secondary*
+ *     buttons only — which the standard settings deliberately don't expose.
+ *
+ * How to use it:
+ *   1. Write normal CSS rules below, using the component "hooks" listed in the
+ *      reference table.
+ *   2. Upload this file in your admin settings under "Custom CSS".
+ *   3. It loads after the design system, so your rules win.
+ *
+ * IMPORTANT: this file is HAND-WRITTEN. Unlike _template.css, it is NOT
+ * generated from the token files — there's no generator to re-run. Edit it
+ * directly. Full reference: packages/ui/docs/theming.md
+ *   → "Per-variant styling hooks (data-* attributes)"
+ * ========================================================================== */
+
+
+/* ----------------------------------------------------------------------------
+ * HOW THE HOOKS WORK
+ * ----------------------------------------------------------------------------
+ * Components carry stable attributes you can target:
+ *
+ *   data-slot      which component it is        e.g. data-slot="button"
+ *   data-variant   which visual variant         e.g. data-variant="secondary"
+ *   data-size      which size                   e.g. data-size="lg"
+ *
+ * EVERY component has a data-slot — usually several, one per part (e.g. a card
+ * exposes data-slot="card", "card-header", "card-footer"). So ANY component, or
+ * any part of one, is targetable, even those with no variants. data-variant and
+ * data-size appear only on components that actually offer those options.
+ *
+ * Combine the slot with the variant/size so your rule can't accidentally hit a
+ * different component that happens to share a variant name:
+ *
+ *   [data-slot="button"][data-variant="secondary"] { ... }
+ *
+ * TO DISCOVER A COMPONENT'S HOOKS: open your browser's dev tools, inspect the
+ * element, and target whatever data-* attributes you see on it. The table below
+ * lists the most common ones, but it is NOT exhaustive — the element itself is
+ * the source of truth.
+ *
+ * These names are stable across releases — see "A note on stability" at the
+ * bottom before you rely on them.
+ * -------------------------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------------
+ * COMMON TARGETS — a starting point, NOT the full list
+ * ----------------------------------------------------------------------------
+ * These are the components most people want to restyle per-variant. Many more
+ * are targetable: every component has a data-slot (often several sub-parts), and
+ * others expose data-size (avatar, card, select, switch, …) or data-variant
+ * (the dropdown/context/menubar menu items, empty, toggle-group, …). When in
+ * doubt, inspect the element in dev tools — see "How the hooks work" above.
+ *
+ * Component            data-slot              data-variant                                              data-size
+ * -------------------  ---------------------  --------------------------------------------------------  --------------------------------------
+ * Button               button                 default secondary outline ghost destructive link          default xs sm lg icon icon-xs icon-sm icon-lg
+ * Badge                badge                  default secondary destructive warning success info        (none)
+ *                                             outline ghost link
+ * Alert                alert                  default destructive                                       (none)
+ * Toggle               toggle                 default outline                                           default sm lg
+ * Item                 item                   default outline muted                                     default sm xs
+ * Sidebar menu button  sidebar-menu-button    default outline                                           default sm lg
+ * Tabs list            tabs-list              default line                                              (none)
+ *
+ * The "default" variant/size is always present, so a rule targeting
+ * [data-variant="default"] is reliable.
+ * -------------------------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------------
+ * EXAMPLES — uncomment and edit, or write your own
+ * ----------------------------------------------------------------------------
+ * Each example is commented out (wrapped so the app ignores it). Remove the
+ * surrounding markers to turn one on.                                          */
+
+/* Give SECONDARY buttons a 2px brand-colored border (the standard settings
+   only expose the primary button's look). */
+/*
+[data-slot="button"][data-variant="secondary"] {
+  border-width: 2px;
+  border-color: #3b82f6;
+}
+*/
+
+/* Make only LARGE buttons slightly wider-spaced. */
+/*
+[data-slot="button"][data-size="lg"] {
+  letter-spacing: 0.02em;
+}
+*/
+
+/* Uppercase the text on WARNING badges. */
+/*
+[data-slot="badge"][data-variant="warning"] {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+*/
+
+/* Add a left accent bar to DESTRUCTIVE alerts. */
+/*
+[data-slot="alert"][data-variant="destructive"] {
+  border-inline-start-width: 3px;
+}
+*/
+
+
+/* ----------------------------------------------------------------------------
+ * GOTCHA: changing something that ALSO changes on hover/press
+ * ----------------------------------------------------------------------------
+ * A plain [data-slot][data-variant] rule wins for static properties (border,
+ * spacing, a one-off background). But components restyle themselves on hover,
+ * press, focus, and error — and those rules can override yours for the SAME
+ * property. To change a hovered/pressed/etc. state, target it explicitly:       */
+
+/* Override the secondary button's HOVER background, not just its resting one. */
+/*
+[data-slot="button"][data-variant="secondary"]:hover {
+  background-color: #1e40af;
+}
+*/
+
+/*
+ * State hooks you can add to a selector:
+ *   :hover                       pointer hover (all components)
+ *   [data-disabled]              disabled buttons / toggles
+ *   [data-pressed]               a toggle that is "on"
+ *   [data-active]                the active sidebar menu button
+ *   [aria-invalid="true"]        a field/control in an error state
+ */
+
+
+/* ----------------------------------------------------------------------------
+ * OPTIONAL: limit your rules to one theme
+ * ----------------------------------------------------------------------------
+ * By default the rules above apply everywhere. To make them apply only when a
+ * specific brand theme is active, nest them inside that theme's class:          */
+/*
+.theme-yourbrand [data-slot="button"][data-variant="secondary"] {
+  border-width: 2px;
+}
+*/
+
+
+/* ----------------------------------------------------------------------------
+ * A NOTE ON STABILITY
+ * ----------------------------------------------------------------------------
+ * The data-slot names and the variant/size names in the reference table are a
+ * supported, stable contract — they won't change except in a major version of
+ * the design system. The class names you see in the browser's dev tools
+ * (utility classes like "bg-secondary") are NOT stable — don't target those.
+ * Stick to the data-* hooks above and your custom CSS will keep working.
+ * -------------------------------------------------------------------------- */

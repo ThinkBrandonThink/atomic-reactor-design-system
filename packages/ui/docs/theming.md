@@ -15,6 +15,15 @@ design system at three levels of breadth, **without forking or rebuilding
 2. **Per-component theming** — restyle buttons _without_ affecting inputs.
 3. **Per-instance overrides** — via `className` + `cn()`.
 
+Levels 1–2 are the **curated token API** (a fixed, hex-friendly knob list — safe
+for non-technical themers). For technical consumers who need to change a property
+the token list doesn't expose — e.g. the border of _secondary_ buttons
+specifically — there is a fourth, open-ended level:
+
+4. **Per-variant custom CSS** — target a component's stable `data-slot` /
+   `data-variant` / `data-size` attributes from your own stylesheet and set _any_
+   CSS property. See [Per-variant styling hooks](#per-variant-styling-hooks-data--attributes).
+
 ## The three token tiers
 
 ```
@@ -211,17 +220,119 @@ Because these are CSS variables resolved in the _consumer's_ DOM, themes
 **compose** with `.dark` (`<html class="dark theme-district-42">`), **nest**, and
 need **no rebuild** of `@workspace/ui`.
 
-For changes beyond tokens (layout, one-off shadows, fonts on just buttons),
-consumers use `className` per-instance or target `[data-slot="button"]` in their
-own CSS — that surface is intentionally not tokenized.
+For changes beyond tokens (layout, one-off shadows, a property on just one
+variant), consumers use `className` per-instance or write custom CSS against the
+[per-variant styling hooks](#per-variant-styling-hooks-data--attributes) below —
+that surface is intentionally not tokenized.
+
+## Per-variant styling hooks (`data-*` attributes)
+
+The token tiers above are a _curated_ surface: a consumer can only change what a
+knob exposes, and knobs describe the **default appearance only** (see
+[How variants relate](#how-variants-relate)). To restyle one _variant_ or _size_
+of a component — or to set a property no knob covers — components emit stable
+`data-*` attributes you can target from custom CSS.
+
+This is the surface behind the host app's **"upload custom CSS"** admin option:
+the friendly token form (`_template.css`) covers levels 1–2; this covers the
+power-user case. A commented starter with the full hook reference and worked
+examples ships at `themes/_custom-css.css` — the developer-facing counterpart to
+`_template.css`.
+
+### What's targetable
+
+There are two layers:
+
+- **Universal — `data-slot`.** Almost every component (and most of its
+  sub-parts) emits `data-slot` — a card exposes `card`, `card-header`,
+  `card-footer`; a dialog exposes `dialog-content`, `dialog-title`, etc. So
+  _any_ component, or any part of one, is targetable, even those with no
+  variants. (The only components without one are non-visual helpers —
+  `direction`, `sonner`, `spinner`.)
+- **Variant/size — `data-variant` / `data-size`.** Components that offer those
+  options also reflect them. The set is broader than the table below: beyond the
+  common targets, `data-variant` is also emitted by `empty`, `field`,
+  `toggle-group`, and the menu items (`dropdown-menu`, `context-menu`,
+  `menubar`, as `default`/`destructive`); `data-size` by `avatar`,
+  `alert-dialog`, `card`, `input-group`, `native-select`, `select`, `switch`,
+  `toggle-group`. Others expose state/config hooks too (`data-orientation`,
+  `data-side`, `data-state`, `data-active`, …).
+
+**To find any component's hooks, inspect the element in dev tools** and target
+the `data-*` attributes you see — the rendered element is the source of truth.
+
+### Common targets
+
+The components most often restyled per-variant (not an exhaustive list — see
+above). Values are the component's `cva` variant keys:
+
+| Component | `data-slot` | `data-variant` values | `data-size` values |
+| --- | --- | --- | --- |
+| Button | `button` | `default` `secondary` `outline` `ghost` `destructive` `link` | `default` `xs` `sm` `lg` `icon` `icon-xs` `icon-sm` `icon-lg` |
+| Badge | `badge` | `default` `secondary` `destructive` `warning` `success` `info` `outline` `ghost` `link` | — |
+| Alert | `alert` | `default` `destructive` | — |
+| Toggle | `toggle` | `default` `outline` | `default` `sm` `lg` |
+| Item | `item` | `default` `outline` `muted` | `default` `sm` `xs` |
+| Sidebar menu button | `sidebar-menu-button` | `default` `outline` | `default` `sm` `lg` |
+| Tabs list | `tabs-list` | `default` `line` | — |
+
+Default values are always present (a plain `<Button>` emits `data-variant="default"`),
+so a `default`-targeted rule is reliable.
+
+### Usage
+
+Target the slot **and** the variant so the rule can't leak onto another
+component that happens to share a variant name:
+
+```css
+/* secondary buttons: add a 2px brand border — the original example */
+[data-slot="button"][data-variant="secondary"] {
+  border-width: 2px;
+  border-color: #3b82f6;
+}
+
+/* only large buttons */
+[data-slot="button"][data-size="lg"] {
+  letter-spacing: 0.02em;
+}
+
+/* warning badges */
+[data-slot="badge"][data-variant="warning"] {
+  text-transform: uppercase;
+}
+```
+
+### Two things to know
+
+1. **Specificity / interactive states.** A `[data-slot][data-variant]` selector is
+   specificity (0,2,0) — it beats a single Tailwind utility class (0,1,0), so
+   _static_ overrides (border, letter-spacing, a one-off background) win with no
+   `!important`. But the components' own **state** styling (`hover:`, `active:`,
+   `aria-invalid:`, `focus-visible:`) compiles to selectors of comparable
+   specificity that resolve by source order. To override a property the variant
+   also changes on hover/active, qualify your rule with the same state — e.g.
+   `[data-slot="button"][data-variant="secondary"]:hover { … }`. The relevant
+   interactive-state hooks per component: buttons/toggles use the Base UI
+   `data-disabled` / `data-pressed` attributes and `aria-invalid`; the sidebar menu
+   button additionally emits `data-active`.
+
+2. **This is a stability contract.** The moment a consumer's CSS targets
+   `[data-variant="secondary"]`, the `data-slot` name and that variant key are
+   public API — see [Stability contract](#stability-contract).
 
 ## Stability contract
 
-Every component token is a **public API**. Once a consumer depends on
-`--button-bg`, renaming or removing it is a breaking change. Therefore:
+Every component token **and every styling hook** is a **public API**. Once a
+consumer depends on `--button-bg`, or writes CSS against
+`[data-slot="button"][data-variant="secondary"]`, renaming or removing that
+name is a breaking change. Therefore:
 
 - Treat the knob list as versioned API; add freely, remove only on major bumps.
-- Keep names derived mechanically from `data-slot` + the knob vocabulary.
+- Keep token names derived mechanically from `data-slot` + the knob vocabulary.
+- `data-slot` values and `cva` variant/size **keys** are part of the contract:
+  renaming a variant (e.g. `secondary` → `subtle`) breaks consumer CSS, so treat
+  it as a major-version change. (Restyling _what a variant looks like_ is fine —
+  only the key is contractual.)
 
 ## Extending: making another component themeable
 
@@ -234,3 +345,20 @@ Every component token is a **public API**. Once a consumer depends on
 4. Swap the component's hardcoded utility for the token utility
    (`bg-primary` → `bg-{slot}`, `rounded-xl` → `rounded-(--{slot}-radius)`).
 5. Document the new knobs in the table above and the template file.
+
+### Exposing the per-variant styling hooks
+
+A new variant-driven component must also emit `data-variant` / `data-size` (the
+[hooks above](#per-variant-styling-hooks-data--attributes)). How depends on how
+it renders:
+
+- **Base UI `useRender` components** (e.g. `badge`, `item`, `sidebar-menu-button`):
+  include `variant` / `size` in the `state` object. Base UI auto-serializes every
+  truthy `state` key to a `data-*` attribute, so `state: { slot, variant, size }`
+  emits all three for free — no literal attributes needed.
+- **Plain-element / Base UI-primitive components** (e.g. `button`, `toggle`,
+  `alert`): there is no `state` object, so add literal `data-variant={variant}` /
+  `data-size={size}` attributes next to `data-slot` (the `tabs.tsx` pattern). Give
+  the prop a `= "default"` fallback so the default case still emits the hook.
+
+Then add the component's row to the hooks table above.
