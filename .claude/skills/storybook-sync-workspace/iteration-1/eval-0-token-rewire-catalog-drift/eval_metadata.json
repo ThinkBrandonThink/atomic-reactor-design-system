@@ -1,0 +1,14 @@
+{
+  "eval_id": 0,
+  "eval_name": "token-rewire-catalog-drift",
+  "prompt": "I just moved Button and Badge onto their own component-level color tokens — --button-bg/-fg/-hover and --badge-bg/-fg/-hover in components.css. Can you make sure Storybook still reflects the code? Report what's drifted first, then go ahead and apply the fixes.",
+  "assertions": [
+    {"text": "Identifies that the Colors catalog story (colors.stories.tsx) is missing the new tier-3 component tokens (--button-bg/-fg/-hover and --badge-bg/-fg/-hover)"},
+    {"text": "Identifies that button.stories.tsx's CSS-variables reference table is stale — it lists --primary/--primary-foreground as the default variant's bg/text, but the component now uses --button-bg/--button-fg/--button-bg-hover"},
+    {"text": "After fixing, colors.stories.tsx contains a distinct group for the tier-3 component tokens (not mixed into the semantic-role groups), listing the new --button-*/--badge-* tokens"},
+    {"text": "After fixing, button.stories.tsx no longer claims --primary is the direct default-variant background; it references --button-bg/--button-fg (and ideally --button-radius)"},
+    {"text": "Does NOT add internal tier-1 primitives (from primitives.css) to the public Colors catalog"},
+    {"text": "Presents findings as a report before applying edits, rather than silently editing"},
+    {"text": "Fixes the stale docblock prose in colors.stories.tsx that wrongly attributed the tokens to globals.css, updating it to reference semantic.css + components.css (docblock-accuracy check)"}
+  ]
+}

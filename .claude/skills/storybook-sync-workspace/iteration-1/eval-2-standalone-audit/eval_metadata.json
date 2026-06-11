@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "standalone-audit",
+  "prompt": "Can you audit our Storybook and tell me if any stories have drifted from the code? We reorganized the token files into three tiers a while back and I'm not sure everything got updated. Give me a report of anything stale, then fix what you find.",
+  "assertions": [
+    {"text": "Detects the button.stories.tsx CSS-variables drift: it lists --primary as the default variant's background/text, but button.tsx now uses bg-button (--button-bg) / text-button-fg / bg-button-hover and rounded-(--button-radius)"},
+    {"text": "Treats the request as a repo-wide audit — checks multiple stories and/or scans for components missing stories, not just one file"},
+    {"text": "Produces a structured report grouped by story file, with specific token/variant names and file references"},
+    {"text": "Does not fabricate drift for stories that are actually in sync (e.g. does not claim the Badge or Colors story is broken when it matches the code)"},
+    {"text": "If it edits button.stories.tsx, the corrected token rows accurately reflect the component's current classes"},
+    {"text": "Catches that button.stories.tsx argTypes.size.options omits the `icon-xs` size that exists in the component's cva (thoroughness on variant coverage, not just tokens)"}
+  ]
+}

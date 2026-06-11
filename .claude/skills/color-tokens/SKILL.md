@@ -28,9 +28,10 @@ Two things make color work here non-trivial, and they're why this skill exists:
 1. **Schools require WCAG 2.x AA.** A color change isn't done until its contrast
    is verified, in *both* themes. oklch lightness is not a contrast ratio —
    you cannot eyeball it. Use the bundled checker.
-2. **The brand palette is LOCKED.** The amber/gold primary and teal/cyan chart
-   ramp are the Atomic Reactor identity (see CLAUDE.md). Never "fix" a contrast
-   problem by quietly changing a locked token.
+2. **The brand palette carries the identity.** The amber/gold primary and
+   teal/cyan chart ramp are the Atomic Reactor brand (see CLAUDE.md). Don't *quietly*
+   change one to "fix" a contrast problem — prefer adjusting the other side of the
+   pair; if a brand token itself should change, confirm it's intended first.
 
 ## The checker (use it for every color decision)
 
@@ -91,16 +92,16 @@ The audit flags every pair mechanically; apply judgment to what it reports:
   In this system the status colors are typically used as `text-{status}` on a
   faint `bg-{status}/10` tint, so the "as text" row is usually the governing
   one. Several fail in light mode as text and most fail as white-on-fill in both
-  themes — fix by darkening the token (they're not locked) or pairing fills with
+  themes — fix by darkening the token (they're not brand tokens) or pairing fills with
   a dark foreground; reserve the light values for large text only.
 - **Chart colors are audited against the background** (1.4.11, 3:1) because a
-  series has to be distinguishable from the canvas. The ramp is identical in
-  both themes, so the light end (`chart-1`, `chart-2`) disappears on white and
-  the dark end (`chart-5`) disappears on the dark canvas — there's no single
-  theme where all five clear 3:1. But the **teal chart ramp is LOCKED brand**,
-  so don't silently re-tune it: flag the gap and let the user decide (e.g.
-  theme-specific chart values, or pattern/label encoding rather than color
-  alone). Note the audit checks series-vs-background, not series-vs-series
+  series has to be distinguishable from the canvas. The ramp is **tuned per
+  theme** so each series stays visible on its background (light uses the darker
+  teals, dark uses the lighter ones) — that visibility is the constraint to
+  preserve. If a series still falls below 3:1 against its background, the **teal
+  chart ramp is a brand default**, so don't silently re-tune it: flag the gap and
+  confirm the fix (adjust that theme's value, or use pattern/label encoding
+  rather than color alone). Note the audit checks series-vs-background, not series-vs-series
   adjacency — neighbouring slices/lines also need to differ, which is a design
   check, not a token ratio.
 - **1.4.1 (color alone)** can't be measured by ratio. When tokens encode state —
@@ -130,19 +131,20 @@ with `pair` first. Status colors (`destructive`/`success`/`warning`/`info`) have
 no `-foreground` partner; when used as solid fills they're typically paired with
 a near-white text — verify that specific combination.
 
-## Failure protocol — block, report, suggest (never silently edit a locked token)
+## Failure protocol — report and confirm (don't silently edit a brand token)
 
 When a pair fails, stop and report: the pair, the **measured ratio**, the
-**target**, and a concrete fix. Then let the user choose. Do not auto-apply, and
-**never resolve a failure by altering a locked brand token** (amber primary,
-teal charts) — adjust the *other* side of the pair instead.
+**target**, and a concrete fix. Then let the user choose. Don't auto-apply.
+**Prefer resolving a failure by adjusting the *other* side of the pair** rather
+than the brand token (amber primary, teal charts); if the brand token itself is
+the right thing to change, confirm that's intended before doing it.
 
 How to propose a fix in oklch: contrast is driven almost entirely by **L**
-(lightness); chroma and hue barely move it. So nudge L on the non-locked color
+(lightness); chroma and hue barely move it. So nudge L on the non-brand color
 and re-check with `pair` until it clears, keeping C and H so the hue stays on-brand.
 
 > **`muted-foreground / muted` is 4.34:1 in light mode — fails AA for body text
-> (needs 4.5:1).** `muted` is a locked-ish neutral surface, so darken the text:
+> (needs 4.5:1).** `muted` is a brand-default neutral surface, so darken the text:
 > try `--muted-foreground: oklch(0.53 0 0)` → re-run `pair` → 4.84:1, PASS. If
 > `muted-foreground` is only ever used on large/bold text, it already clears the
 > 3:1 large-text bar and no change is needed — confirm usage first.

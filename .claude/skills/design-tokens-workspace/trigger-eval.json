@@ -1,0 +1,82 @@
+[
+  {
+    "query": "we're onboarding a new client, Brightwave Academy, and they want their own look — a deep purple brand colour and more rounded corners everywhere. how do i set that up without forking the whole codebase?",
+    "should_trigger": true
+  },
+  {
+    "query": "i need to add a drop-shadow scale to the design system (like an sm/md/lg elevation), on-brand. where do these tokens go and how do i make them actually show up as tailwind classes?",
+    "should_trigger": true
+  },
+  {
+    "query": "badges and buttons both pull from the primary colour so i can't make the badge corners square without changing the buttons too. can you make them independently themeable?",
+    "should_trigger": true
+  },
+  {
+    "query": "i added --surface-raised to the css but bg-surface-raised does nothing in my component, the class just isn't generated. what did i miss?",
+    "should_trigger": true
+  },
+  {
+    "query": "quick one — when i add a spacing value that two or three components will share, does it belong in primitives.css, semantic.css, or the component file? want it in the right tier",
+    "should_trigger": true
+  },
+  {
+    "query": "a client emailed us their theme override file (theme-northwind.css). can you check it's valid and not reaching into anything internal before we let them upload it?",
+    "should_trigger": true
+  },
+  {
+    "query": "our card's inner padding is hardcoded inline right now. marketing wants to tighten it per-brand — make it configurable through the theme layer",
+    "should_trigger": true
+  },
+  {
+    "query": "can you sweep packages/ui/src/styles and confirm the token tiers are still consistent? i've been hacking and i think i pointed a component token straight at a raw palette colour somewhere",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to rename --btn-bg to match our naming convention and move its light/dark split into the right layer — right now it's all jammed into one block",
+    "should_trigger": true
+  },
+  {
+    "query": "set up a z-index scale so the modal, dropdown and toast stop fighting each other over stacking order",
+    "should_trigger": true
+  },
+  {
+    "query": "the muted helper text under our form fields is too light to read — bump it darker. these are school users so it has to clear AA",
+    "should_trigger": false
+  },
+  {
+    "query": "turn #1d9bf0 (that twitter blue) into one of our oklch colours",
+    "should_trigger": false
+  },
+  {
+    "query": "add a tooltip component to the design system, we don't have one yet",
+    "should_trigger": false
+  },
+  {
+    "query": "i found a nice Radix-based combobox online, convert it to our Base UI setup and drop it in packages/ui",
+    "should_trigger": false
+  },
+  {
+    "query": "is our current palette actually accessible? audit the contrast ratios across light and dark and tell me what fails",
+    "should_trigger": false
+  },
+  {
+    "query": "the destructive red is hard to read sitting on the toast background — what value should i switch it to?",
+    "should_trigger": false
+  },
+  {
+    "query": "there's a flexbox bug in the card footer, the action button overflows its container on mobile widths",
+    "should_trigger": false
+  },
+  {
+    "query": "bump tailwind from 4.0 to the latest 4.x patch and make sure the build still works",
+    "should_trigger": false
+  },
+  {
+    "query": "add a little light/dark toggle button to the navbar so users can flip the theme themselves",
+    "should_trigger": false
+  },
+  {
+    "query": "what colour should the new 'pending' status badge be? something that reads as in-progress but isn't our warning amber",
+    "should_trigger": false
+  }
+]

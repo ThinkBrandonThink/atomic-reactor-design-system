@@ -7,7 +7,7 @@ description: >-
   design system", "pull in the shadcn switch", "create a Combobox component", or
   "convert this Radix component to Base UI". The key thing this skill exists for:
   `shadcn add` emits a Radix-based, default-styled file, but this repo runs on
-  Base UI (@base-ui/react) with its own locked brand tokens and conventions, so
+  Base UI (@base-ui/react) with its own brand tokens and conventions, so
   the generated file is only a reference — it must be fully rewritten before the
   work is done. Trigger this even when the user just names a component to add and
   doesn't mention shadcn, Radix, or Base UI.
@@ -116,21 +116,22 @@ Replicate these exactly as the existing components do — do not omit or substit
   component and the `…Variants` object. `cn()` is imported from
   `@workspace/ui/lib/utils`.
 
-## Brand tokens are LOCKED — never let `shadcn add` touch them
+## Brand tokens — don't let `shadcn add` silently replace them
 
 `shadcn add` may try to rewrite `packages/ui/src/styles/globals.css` or propose a
-neutral palette. **Discard those changes.** This repo's brand is intentional:
+neutral palette. **Discard those automated changes** — the brand is intentional:
 
-- **Primary = amber/gold**, not neutral (`--primary: oklch(0.852 0.199 91.936)`
-  light / `oklch(0.795 0.184 86.047)` dark).
+- **Primary = amber/gold** (`--primary`/`--primary-foreground`), not a neutral.
 - **Charts = teal/cyan ramp** (`--chart-1`…`--chart-5`).
-- **Font = Inter Variable**; **radius scale** is a multiplicative scale off
-  `--radius: 0.625rem`.
+- **Font = Inter Variable**; **radius** is one base `--radius` with a
+  multiplicative scale. (Exact values live in `semantic.css` — see CLAUDE.md.)
 
 If the only change a component needs is a token that genuinely doesn't exist yet,
-add it to `:root`/`.dark` **and** wire it into the `@theme inline` block in
-`globals.css` — don't inline a literal color. Flag any token change to the user
-before making it. See CLAUDE.md for the full locked-token list.
+add it in the right tier file (`semantic.css` for a role, `components.css` for a
+component knob) **and** wire it into `@theme inline` — don't inline a literal
+color (the `design-tokens` skill covers where it goes). If a component genuinely
+needs a *brand* token changed, that's allowed — just confirm it's intended first.
+See CLAUDE.md for the brand-token list.
 
 ## What "done" looks like
 
@@ -139,3 +140,7 @@ before making it. See CLAUDE.md for the full locked-token list.
 - No hardcoded radii, no literal state colors, no stock-neutral classes.
 - `npm run typecheck -w @workspace/ui` passes.
 - Side-by-side with its closest neighbor, it reads like the same author wrote it.
+
+Once the component is done, hand off to the **`storybook-sync` skill** to give it a
+story (or update an existing one) — a new component with no `*.stories.tsx`, or new
+variants the story doesn't show, is exactly the drift that skill exists to catch.

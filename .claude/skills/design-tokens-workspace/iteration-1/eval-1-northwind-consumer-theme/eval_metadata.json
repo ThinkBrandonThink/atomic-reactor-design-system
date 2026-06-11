@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "northwind-consumer-theme",
+  "prompt": "Set up a theme for our client Northwind — their brand is a deep blue (#1e40af), they want fully-rounded pill buttons but square-cornered cards.",
+  "assertions": []
+}

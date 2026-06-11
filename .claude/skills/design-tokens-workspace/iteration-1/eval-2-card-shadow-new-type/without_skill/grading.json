@@ -1,0 +1,36 @@
+{
+  "run_id": "eval-2-card-shadow-new-type-without_skill",
+  "expectations": [
+    {
+      "text": "Shadow is a token consumed via shadow-(--token), not hardcoded shadow-* utilities or a literal",
+      "passed": true,
+      "evidence": "card.tsx uses shadow-(--card-shadow)"
+    },
+    {
+      "text": "Light/dark divergence defined at the semantic tier (token set in both :root and .dark)",
+      "passed": true,
+      "evidence": "shadow role defined in both :root and .dark in semantic.css"
+    },
+    {
+      "text": "A component knob (--card-shadow) defaults to the semantic elevation role",
+      "passed": true,
+      "evidence": "--card-shadow: var(--shadow-...) in components.css"
+    },
+    {
+      "text": "Shadow token not mapped to --color-* (correct for a non-color)",
+      "passed": true,
+      "evidence": "no --color-* mapping; consumed via arbitrary syntax"
+    },
+    {
+      "text": "check_tokens.py reports 0 errors",
+      "passed": true,
+      "evidence": "0 errors (2 warnings are FALSE POSITIVES: is_color heuristic matched oklch inside the box-shadow value)"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  }
+}

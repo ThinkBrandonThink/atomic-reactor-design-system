@@ -1,0 +1,55 @@
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { Callout } from "@workspace/ui/components/callout"
+import { AlertTriangleIcon, InfoIcon, XCircleIcon } from "lucide-react"
+
+const meta = {
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Displays a short, inline callout to draw attention to supporting information.",
+      },
+    },
+  },
+  title: "Components/Callout",
+  component: Callout,
+  tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["info", "warning", "destructive"],
+    },
+  },
+  args: { variant: "info" },
+} satisfies Meta<typeof Callout>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  render: (args) => (
+    <Callout {...args} className="max-w-md">
+      <InfoIcon />
+      <span>The reactor will enter scheduled maintenance at 02:00 UTC.</span>
+    </Callout>
+  ),
+}
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex max-w-md flex-col gap-4">
+      <Callout variant="info">
+        <InfoIcon />
+        <span>The new control parameters are now live across all cores.</span>
+      </Callout>
+      <Callout variant="warning">
+        <AlertTriangleIcon />
+        <span>Coolant pressure is approaching the safe threshold.</span>
+      </Callout>
+      <Callout variant="destructive">
+        <XCircleIcon />
+        <span>Core temperature exceeded limits. Investigate immediately.</span>
+      </Callout>
+    </div>
+  ),
+}

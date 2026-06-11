@@ -1,0 +1,46 @@
+{
+  "run_id": "eval-1-northwind-consumer-theme-without_skill",
+  "expectations": [
+    {
+      "text": "Created a themes/ file with a .theme-northwind selector",
+      "passed": true,
+      "evidence": "themes/northwind.css with .theme-northwind"
+    },
+    {
+      "text": "Overrides only public tokens \u2014 no primitive overridden",
+      "passed": true,
+      "evidence": "--theme checker: 0 errors; only --primary/-foreground/--button-radius/--card-radius set"
+    },
+    {
+      "text": "Sets deep-blue brand (--primary:#1e40af) + readable --primary-foreground",
+      "passed": true,
+      "evidence": "--primary:#1e40af; --primary-foreground:#ffffff"
+    },
+    {
+      "text": "Pill buttons (--button-radius:9999px) AND square cards (--card-radius:0)",
+      "passed": true,
+      "evidence": "both knobs set; independent tier-3 tokens"
+    },
+    {
+      "text": "Ran a WCAG contrast check on the brand color",
+      "passed": true,
+      "evidence": "ran color-tokens contrast checker"
+    },
+    {
+      "text": "Caught the dark-mode contrast failure of #1e40af (~2.27:1) instead of declaring an all-clear",
+      "passed": false,
+      "evidence": "only checked white-on-blue (8.72:1) and declared AA/AAA pass; never evaluated the brand against the dark-mode background"
+    },
+    {
+      "text": "Theme validates clean via check_tokens.py --theme",
+      "passed": true,
+      "evidence": "OK \u2014 0 errors, 0 warnings"
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8571,
+    "passed": 6,
+    "failed": 1,
+    "total": 7
+  }
+}

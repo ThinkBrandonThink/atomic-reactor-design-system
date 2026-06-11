@@ -18,6 +18,7 @@ import {
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
 import {
+  AtomIcon,
   CalendarIcon,
   HomeIcon,
   InboxIcon,
@@ -71,9 +72,19 @@ export const Default: Story = {
       <SidebarProvider>
         <Sidebar {...args}>
           <SidebarHeader>
-            <div className="px-2 py-1 text-sm font-semibold">
-              Atomic Reactor
-            </div>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton size="lg">
+                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                    <AtomIcon className="size-5" />
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-semibold">Atomic Reactor</span>
+                    <span className="text-muted-foreground text-xs">Design System</span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
           </SidebarHeader>
           <SidebarSeparator />
           <SidebarContent>

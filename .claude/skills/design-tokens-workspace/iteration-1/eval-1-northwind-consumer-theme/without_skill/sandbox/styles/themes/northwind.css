@@ -1,0 +1,31 @@
+/* ============================================================================
+ * NORTHWIND — consumer theme
+ * ----------------------------------------------------------------------------
+ * Overrides only the public theming tokens. Everything not listed here keeps
+ * the standard Atomic Reactor look. Apply by adding `theme-northwind` to a
+ * wrapping element (e.g. <html class="theme-northwind">).
+ *
+ * Brand brief:
+ *   - Deep blue brand color (#1e40af)
+ *   - Fully-rounded "pill" buttons
+ *   - Square-cornered cards
+ * ========================================================================== */
+
+.theme-northwind {
+  /* ---- BRAND --------------------------------------------------------------
+   * Deep blue brand color. Flows into buttons, links, and highlights via the
+   * semantic --primary token. White foreground sits on top of it
+   * (contrast 8.72:1 — passes WCAG 2.x AA and AAA for normal text). */
+  --primary: #1e40af;
+  --primary-foreground: #ffffff;
+
+  /* ---- FINE-TUNING --------------------------------------------------------
+   * Per-component radius knobs (tier 3). These diverge intentionally so the
+   * two shapes can differ without touching the rest of the system. */
+
+  /* Fully-rounded pill buttons */
+  --button-radius: 9999px;
+
+  /* Square-cornered cards */
+  --card-radius: 0;
+}

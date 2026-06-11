@@ -10,6 +10,7 @@ import {
 } from "@workspace/ui/components/card"
 import { Button } from "@workspace/ui/components/button"
 import { EllipsisIcon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -90,4 +91,65 @@ export const Sizes: Story = {
       </Card>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface",
+    description: "The card surface and its text.",
+    tokens: [
+      {
+        cssVar: "--card",
+        utility: "bg-card",
+        affects: "Card background",
+        foreground: {
+          cssVar: "--card-foreground",
+          utility: "text-card-foreground",
+          affects: "Card text",
+        },
+      },
+    ],
+  },
+  {
+    title: "Detail colors",
+    description: "Secondary surfaces and borders within the card.",
+    tokens: [
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Description text" },
+      { cssVar: "--muted", utility: "bg-muted/50", affects: "Footer background tint" },
+      { cssVar: "--border", utility: "border-t", affects: "Footer top border" },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Card outline ring (10% tint)" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--card-radius",
+        utility: "rounded-(--card-radius)",
+        affects:
+          "Outer corners, header/footer & first/last image (defaults to --radius-xl)",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Card's appearance. Swatches and values update live with the active theme.
+ *
+ * Note: `--card-spacing` (the padding/gap knob) is set on the card element
+ * itself and switched by the `size` prop, so it isn't listed here — see the
+ * Sizes story for that.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Card. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

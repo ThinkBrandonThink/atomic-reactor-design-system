@@ -1,0 +1,46 @@
+{
+  "run_id": "eval-0-card-padding-themeable-with_skill",
+  "expectations": [
+    {
+      "text": "Card padding exposed as a tier-3 knob in components.css :root",
+      "passed": true,
+      "evidence": "--card-spacing: --spacing(4); added to the :root Card block in components.css"
+    },
+    {
+      "text": "card.tsx no longer hard-pins the padding default, so a theme can override it",
+      "passed": true,
+      "evidence": "inline [--card-spacing:--spacing(4)] removed from the card root; token now resolves to the :root tier-3 default"
+    },
+    {
+      "text": "Change is card-scoped \u2014 button/badge/input tokens untouched",
+      "passed": true,
+      "evidence": "only card tokens changed"
+    },
+    {
+      "text": "No --color-* mapping added (spacing is not a color)",
+      "passed": true,
+      "evidence": "41 --color-* mappings unchanged; checker clean"
+    },
+    {
+      "text": "check_tokens.py passes with 0 errors and 0 warnings",
+      "passed": true,
+      "evidence": "OK \u2014 0 errors, 0 warnings"
+    },
+    {
+      "text": "Default padding value preserved (unthemed cards unchanged)",
+      "passed": true,
+      "evidence": "--spacing(4) = 1rem, identical to prior default"
+    },
+    {
+      "text": "Uses a single, consistently-named knob (no redundant alias)",
+      "passed": true,
+      "evidence": "reuses the existing --card-spacing name; no second token introduced"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 7,
+    "failed": 0,
+    "total": 7
+  }
+}

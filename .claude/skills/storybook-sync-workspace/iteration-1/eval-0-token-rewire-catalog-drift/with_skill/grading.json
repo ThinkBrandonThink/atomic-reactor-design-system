@@ -1,0 +1,12 @@
+{
+  "summary": { "pass_rate": 1.0, "passed": 7, "failed": 0, "total": 7 },
+  "expectations": [
+ {"text":"Identifies colors catalog missing new tier-3 component tokens","passed":true,"evidence":"Report lists all 6 --button-*/--badge-* tokens as MISSING from GROUPS; added 'Component tokens' group (colors.stories.tsx:103-110)."},
+ {"text":"Identifies button CssVariables table stale (--primary vs --button-bg)","passed":true,"evidence":"Report: rows listed --primary/--primary-foreground but button.tsx:11 uses bg-button/text-button-fg/hover:bg-button-hover."},
+ {"text":"Colors story gets a distinct tier-3 group","passed":true,"evidence":"colors.stories.tsx:103 'Component tokens' group separate from semantic roles, with 4 token entries."},
+ {"text":"button.stories no longer claims --primary direct default bg; uses --button-bg/-fg (+ --button-radius)","passed":true,"evidence":"button.stories.tsx:183-185 --button-bg/-fg/-bg-hover; :210 --button-radius replaced --radius-lg."},
+ {"text":"Does NOT add tier-1 primitives to catalog","passed":true,"evidence":"No --neutral-/--gold-/--red- entries present in colors.stories.tsx output."},
+ {"text":"Reports before editing","passed":true,"evidence":"Final message leads with a grouped drift report, then a files-edited list."},
+ {"text":"Fixes stale docblock attributing tokens to globals.css","passed":true,"evidence":"Report STALE(docblock): updated top JSDoc + docs.description to semantic.css + components.css."}
+]
+}

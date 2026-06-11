@@ -1,0 +1,46 @@
+{
+  "run_id": "eval-0-card-padding-themeable-without_skill",
+  "expectations": [
+    {
+      "text": "Card padding exposed as a tier-3 knob in components.css :root",
+      "passed": true,
+      "evidence": "--card-padding: calc(var(--spacing)*4); added to :root in components.css"
+    },
+    {
+      "text": "card.tsx no longer hard-pins the padding default, so a theme can override it",
+      "passed": true,
+      "evidence": "inline default replaced with [--card-spacing:var(--card-padding)] which reads the themeable :root knob"
+    },
+    {
+      "text": "Change is card-scoped \u2014 button/badge/input tokens untouched",
+      "passed": true,
+      "evidence": "only card tokens changed"
+    },
+    {
+      "text": "No --color-* mapping added (spacing is not a color)",
+      "passed": true,
+      "evidence": "checker clean, no color mapping"
+    },
+    {
+      "text": "check_tokens.py passes with 0 errors and 0 warnings",
+      "passed": true,
+      "evidence": "OK \u2014 0 errors, 0 warnings"
+    },
+    {
+      "text": "Default padding value preserved (unthemed cards unchanged)",
+      "passed": true,
+      "evidence": "calc(var(--spacing)*4) = 1rem, identical"
+    },
+    {
+      "text": "Uses a single, consistently-named knob (no redundant alias)",
+      "passed": false,
+      "evidence": "introduced a 2nd name --card-padding AND kept --card-spacing as an inline alias \u2014 extra indirection in a stability-contract layer"
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8571,
+    "passed": 6,
+    "failed": 1,
+    "total": 7
+  }
+}

@@ -1,0 +1,55 @@
+/* ============================================================================
+ * COMPONENT TOKENS — per-component knobs (tier 3) — PUBLIC THEMING API
+ * ----------------------------------------------------------------------------
+ * Each token defaults to a semantic token, so behaviour is identical until
+ * overridden. A consumer theme (a `.theme-*` class) can override one of these
+ * to restyle a single component WITHOUT touching the rest of the system —
+ * e.g. square buttons while inputs stay rounded.
+ *
+ * Naming: --{component}-{knob}[-{state}]. These names are a stability contract;
+ * add freely, rename/remove only on a major version.
+ *
+ * Scope note (why this list is short):
+ *   - Card bg/fg and input border are ALREADY independently themeable via the
+ *     component-scoped semantic tokens --card / --card-foreground / --input.
+ *     Card radius and inner padding (--card-spacing) are exposed here so a theme
+ *     can adjust them without affecting buttons or anything else.
+ *   - Button and badge both defaulted to --primary, so they could not diverge;
+ *     dedicated bg/fg/hover tokens are what make them independently themeable.
+ *   - Field is a layout component with no themeable surface — intentionally omitted.
+ *
+ * Color tokens are mapped into Tailwind's --color-* namespace below so that
+ * `bg-` / `text-` utilities exist for them. Radius tokens need no mapping — they
+ * are consumed via the rounded-(--token) arbitrary-property syntax.
+ * ========================================================================== */
+
+:root {
+  /* Button — default (primary) variant */
+  --button-bg: var(--primary);
+  --button-fg: var(--primary-foreground);
+  --button-bg-hover: color-mix(in oklab, var(--button-bg) 80%, transparent);
+  --button-radius: var(--radius-lg);
+
+  /* Badge — default variant */
+  --badge-bg: var(--primary);
+  --badge-fg: var(--primary-foreground);
+  --badge-bg-hover: color-mix(in oklab, var(--badge-bg) 80%, transparent);
+  --badge-radius: var(--radius-4xl);
+
+  /* Input */
+  --input-radius: var(--radius-lg);
+
+  /* Card */
+  --card-radius: var(--radius-xl);
+  --card-spacing: --spacing(4);
+}
+
+@theme inline {
+  --color-button: var(--button-bg);
+  --color-button-fg: var(--button-fg);
+  --color-button-hover: var(--button-bg-hover);
+
+  --color-badge: var(--badge-bg);
+  --color-badge-fg: var(--badge-fg);
+  --color-badge-hover: var(--badge-bg-hover);
+}

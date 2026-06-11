@@ -1,0 +1,363 @@
+{
+  "metadata": {
+    "skill_name": "storybook-sync",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-06-11T18:11:27Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 119.4,
+        "tokens": 49673,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Identifies colors catalog missing new tier-3 component tokens",
+          "passed": true,
+          "evidence": "Report lists all 6 --button-*/--badge-* tokens as MISSING from GROUPS; added 'Component tokens' group (colors.stories.tsx:103-110)."
+        },
+        {
+          "text": "Identifies button CssVariables table stale (--primary vs --button-bg)",
+          "passed": true,
+          "evidence": "Report: rows listed --primary/--primary-foreground but button.tsx:11 uses bg-button/text-button-fg/hover:bg-button-hover."
+        },
+        {
+          "text": "Colors story gets a distinct tier-3 group",
+          "passed": true,
+          "evidence": "colors.stories.tsx:103 'Component tokens' group separate from semantic roles, with 4 token entries."
+        },
+        {
+          "text": "button.stories no longer claims --primary direct default bg; uses --button-bg/-fg (+ --button-radius)",
+          "passed": true,
+          "evidence": "button.stories.tsx:183-185 --button-bg/-fg/-bg-hover; :210 --button-radius replaced --radius-lg."
+        },
+        {
+          "text": "Does NOT add tier-1 primitives to catalog",
+          "passed": true,
+          "evidence": "No --neutral-/--gold-/--red- entries present in colors.stories.tsx output."
+        },
+        {
+          "text": "Reports before editing",
+          "passed": true,
+          "evidence": "Final message leads with a grouped drift report, then a files-edited list."
+        },
+        {
+          "text": "Fixes stale docblock attributing tokens to globals.css",
+          "passed": true,
+          "evidence": "Report STALE(docblock): updated top JSDoc + docs.description to semantic.css + components.css."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 59.8,
+        "tokens": 35602,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Flags callout.tsx has no story",
+          "passed": true,
+          "evidence": "Report MISSING STORY: callout.tsx had no *.stories.tsx sibling."
+        },
+        {
+          "text": "Flags badge.stories missing the premium variant",
+          "passed": true,
+          "evidence": "Report MISSING in argTypes.options and Variants render."
+        },
+        {
+          "text": "Fix adds premium to badge argTypes + Variants render",
+          "passed": true,
+          "evidence": "badge.stories.tsx:28 \"premium\" option; :68 <Badge variant=\"premium\">."
+        },
+        {
+          "text": "Produces a conventional Callout story (info/warning/destructive)",
+          "passed": true,
+          "evidence": "callout.stories.tsx:13 title Components/Callout; :19 options info/warning/destructive; :22 default info; Variants renders all three."
+        },
+        {
+          "text": "Does not invent drift for the already-correct 9 variants",
+          "passed": true,
+          "evidence": "Report notes the other variants were in sync; only premium added."
+        },
+        {
+          "text": "Reports before editing",
+          "passed": true,
+          "evidence": "Report precedes files-edited/created list."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 136.2,
+        "tokens": 48044,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Detects button CssVariables drift (--primary vs --button-bg/-fg/-hover, --button-radius)",
+          "passed": true,
+          "evidence": "Report STALE colorTokens + radiusTokens; fixed to --button-bg/-fg/-bg-hover + --button-radius (button.stories.tsx:186-215)."
+        },
+        {
+          "text": "Treats as repo-wide audit (multiple stories + missing-story scan)",
+          "passed": true,
+          "evidence": "Report: 'Missing-story check: none (every *.tsx has a sibling)'; checked colors/badge/icons/card/input."
+        },
+        {
+          "text": "Structured report grouped by file with specific refs",
+          "passed": true,
+          "evidence": "Per-file sections with file:line and token names."
+        },
+        {
+          "text": "Does not fabricate drift for in-sync stories",
+          "passed": true,
+          "evidence": "Correctly marks colors/badge/icons in sync; findings were all real."
+        },
+        {
+          "text": "Edits to button.stories accurately reflect current classes",
+          "passed": true,
+          "evidence": "--button-bg/-fg/-bg-hover + --primary-link + --button-radius all match button.tsx."
+        },
+        {
+          "text": "Catches icon-xs missing from argTypes.size.options",
+          "passed": true,
+          "evidence": "button.stories.tsx:32 now includes icon-xs; :139 IconOnly renders it. Real cva variant (button.tsx:29)."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8571,
+        "passed": 6,
+        "failed": 1,
+        "total": 7,
+        "time_seconds": 84.9,
+        "tokens": 38885,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Identifies colors catalog missing new tier-3 component tokens",
+          "passed": true,
+          "evidence": "Report flags components.css @theme inline exposes 6 keys with no group; added 'Component' group (colors.stories.tsx:83-90)."
+        },
+        {
+          "text": "Identifies button CssVariables table stale (--primary vs --button-bg)",
+          "passed": true,
+          "evidence": "Report: --primary listed as Default variant background; replaced with --button-bg/-fg/-bg-hover (button.stories.tsx:183-185)."
+        },
+        {
+          "text": "Colors story gets a distinct tier-3 group",
+          "passed": true,
+          "evidence": "colors.stories.tsx:83 'Component' group with 4 token entries, separate from semantic groups."
+        },
+        {
+          "text": "button.stories no longer claims --primary direct default bg; uses --button-bg/-fg (+ --button-radius)",
+          "passed": true,
+          "evidence": "Core met: --button-bg/-fg/-bg-hover added. NOTE: left --radius-lg row (radius is 'ideally', flagged as pre-existing)."
+        },
+        {
+          "text": "Does NOT add tier-1 primitives to catalog",
+          "passed": true,
+          "evidence": "No primitive entries added."
+        },
+        {
+          "text": "Reports before editing",
+          "passed": true,
+          "evidence": "Structured report with a 'Pre-existing gaps (left untouched)' section before files-edited."
+        },
+        {
+          "text": "Fixes stale docblock attributing tokens to globals.css",
+          "passed": false,
+          "evidence": "Did not touch the colors docblock prose; only updated GROUPS data. Docblock still wrong."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 67.6,
+        "tokens": 32925,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Flags callout.tsx has no story",
+          "passed": true,
+          "evidence": "Report: new Callout shipped with no story file."
+        },
+        {
+          "text": "Flags badge.stories missing the premium variant",
+          "passed": true,
+          "evidence": "Report: argTypes.options + Variants render missing premium."
+        },
+        {
+          "text": "Fix adds premium to badge argTypes + Variants render",
+          "passed": true,
+          "evidence": "badge.stories.tsx:28 \"premium\"; :68 <Badge variant=\"premium\">."
+        },
+        {
+          "text": "Produces a conventional Callout story (info/warning/destructive)",
+          "passed": true,
+          "evidence": "callout.stories.tsx:14 title Components/Callout; :20 options; :23 default info; Variants all three."
+        },
+        {
+          "text": "Does not invent drift for the already-correct 9 variants",
+          "passed": true,
+          "evidence": "Only premium added; link noted already covered."
+        },
+        {
+          "text": "Reports before editing",
+          "passed": true,
+          "evidence": "Report precedes files list."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8333,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 95.6,
+        "tokens": 50182,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Detects button CssVariables drift (--primary vs --button-bg/-fg/-hover, --button-radius)",
+          "passed": true,
+          "evidence": "Report STALE; replaced --primary/-foreground with --button-bg/-fg/-bg-hover, --radius-lg->--button-radius, added --primary-link."
+        },
+        {
+          "text": "Treats as repo-wide audit (multiple stories + missing-story scan)",
+          "passed": true,
+          "evidence": "Grepped all 58 story files; checked colors/icons/card/input/badge."
+        },
+        {
+          "text": "Structured report grouped by file with specific refs",
+          "passed": true,
+          "evidence": "Per-file sections with file:line."
+        },
+        {
+          "text": "Does not fabricate drift for in-sync stories",
+          "passed": true,
+          "evidence": "colors/others correctly marked current."
+        },
+        {
+          "text": "Edits to button.stories accurately reflect current classes",
+          "passed": true,
+          "evidence": "--button-bg/-fg/-bg-hover/--button-radius/--primary-link all correct."
+        },
+        {
+          "text": "Catches icon-xs missing from argTypes.size.options",
+          "passed": false,
+          "evidence": "icon-xs NOT added to size options; baseline never inspected the size cva for coverage drift."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 105.1333,
+        "stddev": 40.1484,
+        "min": 59.8,
+        "max": 136.2
+      },
+      "tokens": {
+        "mean": 44439.6667,
+        "stddev": 7696.8613,
+        "min": 35602,
+        "max": 49673
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.8968,
+        "stddev": 0.0902,
+        "min": 0.8333,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 82.7,
+        "stddev": 14.129,
+        "min": 67.6,
+        "max": 95.6
+      },
+      "tokens": {
+        "mean": 40664.0,
+        "stddev": 8764.9668,
+        "min": 32925,
+        "max": 50182
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.10",
+      "time_seconds": "+22.4",
+      "tokens": "+3776"
+    }
+  },
+  "notes": []
+}

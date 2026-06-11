@@ -1,0 +1,11 @@
+{
+  "summary": { "pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6 },
+  "expectations": [
+ {"text":"Detects button CssVariables drift (--primary vs --button-bg/-fg/-hover, --button-radius)","passed":true,"evidence":"Report STALE colorTokens + radiusTokens; fixed to --button-bg/-fg/-bg-hover + --button-radius (button.stories.tsx:186-215)."},
+ {"text":"Treats as repo-wide audit (multiple stories + missing-story scan)","passed":true,"evidence":"Report: 'Missing-story check: none (every *.tsx has a sibling)'; checked colors/badge/icons/card/input."},
+ {"text":"Structured report grouped by file with specific refs","passed":true,"evidence":"Per-file sections with file:line and token names."},
+ {"text":"Does not fabricate drift for in-sync stories","passed":true,"evidence":"Correctly marks colors/badge/icons in sync; findings were all real."},
+ {"text":"Edits to button.stories accurately reflect current classes","passed":true,"evidence":"--button-bg/-fg/-bg-hover + --primary-link + --button-radius all match button.tsx."},
+ {"text":"Catches icon-xs missing from argTypes.size.options","passed":true,"evidence":"button.stories.tsx:32 now includes icon-xs; :139 IconOnly renders it. Real cva variant (button.tsx:29)."}
+]
+}

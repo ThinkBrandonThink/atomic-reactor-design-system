@@ -1,0 +1,12 @@
+{
+  "summary": { "pass_rate": 0.8571, "passed": 6, "failed": 1, "total": 7 },
+  "expectations": [
+ {"text":"Identifies colors catalog missing new tier-3 component tokens","passed":true,"evidence":"Report flags components.css @theme inline exposes 6 keys with no group; added 'Component' group (colors.stories.tsx:83-90)."},
+ {"text":"Identifies button CssVariables table stale (--primary vs --button-bg)","passed":true,"evidence":"Report: --primary listed as Default variant background; replaced with --button-bg/-fg/-bg-hover (button.stories.tsx:183-185)."},
+ {"text":"Colors story gets a distinct tier-3 group","passed":true,"evidence":"colors.stories.tsx:83 'Component' group with 4 token entries, separate from semantic groups."},
+ {"text":"button.stories no longer claims --primary direct default bg; uses --button-bg/-fg (+ --button-radius)","passed":true,"evidence":"Core met: --button-bg/-fg/-bg-hover added. NOTE: left --radius-lg row (radius is 'ideally', flagged as pre-existing)."},
+ {"text":"Does NOT add tier-1 primitives to catalog","passed":true,"evidence":"No primitive entries added."},
+ {"text":"Reports before editing","passed":true,"evidence":"Structured report with a 'Pre-existing gaps (left untouched)' section before files-edited."},
+ {"text":"Fixes stale docblock attributing tokens to globals.css","passed":false,"evidence":"Did not touch the colors docblock prose; only updated GROUPS data. Docblock still wrong."}
+]
+}

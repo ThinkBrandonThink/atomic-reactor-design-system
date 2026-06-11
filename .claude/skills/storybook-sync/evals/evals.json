@@ -1,0 +1,23 @@
+{
+  "skill_name": "storybook-sync",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I just moved Button and Badge onto their own component-level color tokens — --button-bg/-fg/-hover and --badge-bg/-fg/-hover in components.css. Can you make sure Storybook still reflects the code? Report what's drifted first, then go ahead and apply the fixes.",
+      "expected_output": "Detects that the Colors catalog story is missing the new component tokens and that button.stories.tsx's CSS-variables table is stale (lists --primary instead of --button-bg); reports, then fixes both correctly.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "I added a `premium` variant to the Badge and created a new `Callout` component. Make sure the Storybook stories cover them. Report what's missing first, then apply the fixes.",
+      "expected_output": "Flags callout.tsx has no story and badge.stories.tsx is missing the premium variant; adds premium to the badge story and produces a conventional Callout story.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you audit our Storybook and tell me if any stories have drifted from the code? We reorganized the token files into three tiers a while back and I'm not sure everything got updated. Give me a report of anything stale, then fix what you find.",
+      "expected_output": "Repo-wide audit that finds the button.stories CSS-variables drift, reports grouped by file, and avoids false positives on in-sync stories.",
+      "files": []
+    }
+  ]
+}

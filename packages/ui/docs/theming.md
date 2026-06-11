@@ -1,7 +1,8 @@
-# Theming Architecture (Design Doc)
+# Theming Architecture
 
-> Status: **proposal** — no code changed yet. This documents the token contract,
-> file layout, and consumer workflow for a deep, per-component theming system.
+> Status: **implemented**. The three-tier token system below is live in
+> `packages/ui/src/styles/`. This documents the token contract, file layout, and
+> consumer workflow for deep, per-component theming.
 
 ## Goal
 
@@ -10,91 +11,38 @@ design system at three levels of breadth, **without forking or rebuilding
 `@workspace/ui`**:
 
 1. **Whole-system rebrand** — change the brand and everything follows
-   (this already works today via `.dark`; a `.theme-acme` class is identical).
-2. **Per-component theming** — restyle buttons _without_ affecting inputs, etc.
-   (this is the new capability).
-3. **Per-instance overrides** — already supported via `className` + `cn()`.
+   (works via `.dark` today; a `.theme-acme` class is identical).
+2. **Per-component theming** — restyle buttons _without_ affecting inputs.
+3. **Per-instance overrides** — via `className` + `cn()`.
 
 ## The three token tiers
 
 ```
-Primitives        --color-amber-500, --spacing        raw scales, static
+Primitives        --gold-300, --neutral-900           raw palette, static     → primitives.css
       ↓ referenced by
-Semantic / global --primary, --background, --border    brand intent
+Semantic / global --primary, --background, --border    brand intent            → semantic.css
       ↓ referenced by
-Component tokens  --button-bg, --input-border          per-component knobs  ← NEW
+Component tokens  --button-bg, --button-radius         per-component knobs      → components.css
       ↓ consumed by
-Components         bg-button, border-input-border       cva class strings
+Components         bg-button, rounded-(--button-radius) cva class strings
 ```
 
-Today components skip the bottom tier and read semantic tokens directly
-(`button.tsx` uses `bg-primary`; `input.tsx` uses `border-input`). That is why a
-button can't currently be themed independently of an input. The component-token
-tier adds one level of indirection that defaults to the semantic tier but can be
-overridden in isolation.
-
-## Decisions locked for this design
-
-| Decision    | Choice                        | Rationale                                                               |
-| ----------- | ----------------------------- | ----------------------------------------------------------------------- |
-| Granularity | **Common knobs only**         | Small, stable public API; long-tail handled by `className`.             |
-| Scoping     | **Class-based, like `.dark`** | Reuses the existing `@custom-variant dark` mechanism; composes & nests. |
-| Rollout     | **Design doc first**          | Lock the contract before touching components.                           |
-
-## The "common knobs" set
-
-Each themeable component exposes a fixed, predictable set of tokens. Not every
-component uses every knob — only define the ones the component actually renders.
-
-| Knob                   | Token suffix | Example             |
-| ---------------------- | ------------ | ------------------- |
-| Background             | `-bg`        | `--button-bg`       |
-| Foreground (text/icon) | `-fg`        | `--button-fg`       |
-| Border                 | `-border`    | `--input-border`    |
-| Radius                 | `-radius`    | `--button-radius`   |
-| Focus ring             | `-ring`      | `--input-ring`      |
-| Hover background       | `-bg-hover`  | `--button-bg-hover` |
-
-**Naming convention (the public contract):**
-
-```
---{component}-{knob}[-{state}]
-```
-
-- `{component}` is the `data-slot` name (`button`, `input`, `card`, …).
-- States are suffixes: `-hover`, `-active`, `-disabled`.
-- Keep it flat. No per-variant tokens (see below).
-
-## How variants relate to component tokens
-
-Components like `Button` have variants (`default`, `outline`, `secondary`,
-`ghost`, `destructive`, `link`). To keep the surface small, component tokens
-describe the **primary/default appearance only**:
-
-- `--button-bg` / `--button-fg` / `--button-bg-hover` theme the **default**
-  (primary) button.
-- `secondary`, `outline`, `ghost` keep referencing their **semantic** tokens
-  (`--secondary`, `--muted`, …), which are already themeable at the global tier.
-- `destructive` keeps referencing `--destructive` (themeable globally).
-
-**Consequence (document this for consumers):** to restyle the primary button,
-override `--button-*`. To restyle _secondary_ buttons, override the global
-`--secondary` — which also affects other secondary surfaces. Variant-level
-isolation (`--button-secondary-bg`) is intentionally **out of scope** for the
-common-knobs API; it's the "exhaustive" path we deliberately did not take.
+Each tier defaults to the one above it, so behaviour is identical until a token
+is overridden — and an override at any tier is scoped to exactly that breadth.
 
 ## File layout
 
 ```
 packages/ui/src/styles/
   globals.css            orchestrator: @imports, @custom-variant, @source, @layer base
-  primitives.css         @theme  — brand raw scales (optional first step)
-  semantic.css           :root/.dark tokens + @theme inline mapping (the LOCKED brand tokens)
-  components.css         component-token defaults + @theme inline mapping  ← NEW
+  primitives.css         raw palette — plain :root custom properties
+  semantic.css           :root/.dark semantic tokens + the @theme inline mapping (LOCKED brand tokens)
+  components.css         component-token defaults + @theme inline color mapping
+  themes/_template.css   copy-paste starting point for a consumer theme
 ```
 
-`globals.css` imports them in order (CSS requires all `@import`s first, before
-`@custom-variant`/`@source`/`@layer`):
+`globals.css` imports the tiers in order (CSS requires all `@import`s before any
+other rule):
 
 ```css
 @import "tailwindcss";
@@ -102,6 +50,7 @@ packages/ui/src/styles/
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
+@import "./primitives.css";
 @import "./semantic.css";
 @import "./components.css";
 
@@ -112,86 +61,130 @@ packages/ui/src/styles/
 }
 ```
 
-> Splitting files also _protects the locked brand tokens_: a tool that
-> regenerates `globals.css` (e.g. `shadcn add`) won't touch `semantic.css`.
+> Splitting files also _shields the locked brand tokens_: a tool that
+> regenerates `globals.css` (e.g. `shadcn add`) can't reach `semantic.css`.
+
+## Tier 1 — primitives (`primitives.css`)
+
+Named, deduplicated raw values: `--neutral-*`, `--neutral-cool-*`, `--gold-*`,
+and status hues (`--red-*`, `--green-*`, `--orange-*`, `--cyan-*`). Shade numbers
+approximate lightness, Tailwind-style.
+
+**Deliberately plain `:root` custom properties — NOT a Tailwind `@theme` block.**
+Two reasons:
+
+1. **No namespace collision.** Tailwind ships its own `--color-teal-*`,
+   `--color-neutral-*`, etc. Defining ours under `@theme` as `--color-*` would
+   silently override Tailwind's scales. Plain names (`--gold-300`) can't collide.
+2. **Primitives stay internal.** Plain custom properties generate no
+   `bg-gold-300` utilities, so nothing tempts a component or consumer to reach
+   past the semantic tier. Primitives are an implementation detail, not API.
+
+The chart ramp (`--chart-1..5`) is a curated, non-uniform scale and is kept as
+literals in `semantic.css` rather than decomposed into primitives.
+
+## Tier 2 — semantic (`semantic.css`)
+
+The shadcn-style role tokens (`--primary`, `--background`, `--border`, …) in
+`:root` / `.dark`, each referencing a primitive. Light vs dark is defined here:
+the same names take different primitive shades under `.dark`. The locked brand
+tokens (amber primary, teal charts, radius scale, Inter font) live here.
+
+The `@theme inline` mapping (`--color-primary: var(--primary)`, the `--radius-*`
+scale, `--font-heading`) also lives here, alongside a small plain `@theme` block
+for `--font-sans` — see the `inline` rule below for why the two fonts sit in
+different blocks.
+
+### Typography knobs
+
+Typography is themeable through tokens that already exist (no new component-tier
+tokens were added):
+
+| Knob | Overrides | Default |
+| --- | --- | --- |
+| `--font-sans` | the font for body text **and** headings | `"Inter Variable", sans-serif` |
+| `--font-heading` | headings only (set it _in addition_ to `--font-sans` to diverge; otherwise it aliases `--font-sans`) | `var(--font-sans)` |
+| `--text-xs` … `--text-4xl` | individual font sizes (Tailwind's scale) | `0.75rem` … `2.25rem` |
+| `--font-weight-normal/medium/semibold` | font weights | `400` / `500` / `600` |
+
+Because components write the plain Tailwind utilities (`text-sm`, `font-medium`,
+`font-heading`), overriding these `:root`-level tokens in a `.theme-*` class
+restyles every component at once.
+
+## Tier 3 — component tokens (`components.css`) — PUBLIC API
+
+The new tier. Each token defaults to a semantic token; override one to restyle a
+single component in isolation.
+
+**Naming:** `--{component}-{knob}[-{state}]`, where `{component}` is the
+`data-slot` name. Knob vocabulary: `-bg`, `-fg`, `-border`, `-radius`, `-ring`,
+`-bg-hover`.
+
+The implemented set is deliberately minimal — only the genuinely-missing knobs:
+
+| Component | Tokens added                                          | Why only these |
+| --------- | ----------------------------------------------------- | -------------- |
+| Button    | `--button-bg`, `--button-fg`, `--button-bg-hover`, `--button-radius` | bg/fg/hover shared `--primary` with badge, so they couldn't diverge. |
+| Badge     | `--badge-bg`, `--badge-fg`, `--badge-bg-hover`, `--badge-radius`     | same — separated from button. |
+| Input     | `--input-radius`                                      | bg/border already theme via `bg-transparent` / the `--input` semantic token. |
+| Card      | `--card-radius`                                       | bg/fg already theme via the `--card` / `--card-foreground` semantic tokens. |
+| Field     | _(none)_                                              | layout component; its only colors are validation/checked states that should track global semantics. |
+
+Color tokens are mapped into Tailwind's `--color-*` namespace (`@theme inline {
+--color-button: var(--button-bg) }`) so `bg-button` / `text-button-fg` exist.
+Radius tokens need no mapping — components consume them via the
+`rounded-(--button-radius)` arbitrary-property syntax.
+
+### How variants relate
+
+Component tokens describe the **default/primary appearance only**. A button's
+`secondary`/`outline`/`ghost`/`destructive` variants keep referencing their
+semantic tokens (`--secondary`, `--muted`, `--destructive`), which are themeable
+at the global tier. So: override `--button-bg` to restyle primary buttons;
+override `--secondary` to restyle secondary buttons (which also affects other
+secondary surfaces). Variant-level isolation is intentionally out of scope.
 
 ## The `@theme` vs `@theme inline` rule (critical)
 
-This is the non-obvious Tailwind v4 detail that makes theming work:
+The real rule that makes runtime theming work:
 
-- **Static tokens** (primitives) → `@theme`. Emits utilities **and** a `:root`
-  variable you can reference.
-- **Runtime-swappable tokens** (semantic + component tokens, re-pointed by a
-  `.dark` or `.theme-*` class) → **`@theme inline`**.
+> A utility is runtime-themeable **iff it compiles to `var(--something)` where
+> `--something` is a custom property that lives in `:root`** (so a `.dark` /
+> `.theme-*` class can override it through the cascade). If the utility compiles
+> to a baked literal, no override can reach it.
 
-Why `inline` is mandatory for anything a theme class overrides: without it,
-`bg-button` compiles to `background: var(--color-button)` — a _fixed_ reference
-that a `.theme-acme` override of `--button-bg` never reaches. With `inline`,
-`bg-button` compiles to `background: var(--button-bg)`, so the class override
-flows through the cascade. (Same reason the existing `:root`/`.dark` block uses
-`@theme inline`.)
+Tailwind v4 gives two ways to land on that referenced form — and one trap:
 
-## Worked example — `components.css`
+| Token value | Block | Compiles to | Themeable |
+| --- | --- | --- | --- |
+| a `var()` reference, e.g. `--color-primary: var(--primary)` | `@theme inline` | `background: var(--primary)` | ✅ — the inline value (itself a var) is forwarded; override `--primary` |
+| a **literal**, e.g. `--font-sans: "Inter Variable", sans-serif` | **plain `@theme`** | `font-family: var(--font-sans)` | ✅ — non-inline emits `--font-sans` to `:root` and references it |
+| a **literal** | `@theme inline` ← **trap** | `font-family: Inter Variable, sans-serif` | ❌ — the literal is baked in; no override reaches it |
+| a `var()` reference | plain `@theme` ← **trap** | _(token dropped — non-inline registers only concrete values)_ | ❌ |
 
-```css
-:root {
-  /* button (primary appearance) */
-  --button-bg: var(--primary);
-  --button-fg: var(--primary-foreground);
-  --button-bg-hover: color-mix(
-    in oklch,
-    var(--button-bg),
-    var(--foreground) 20%
-  );
-  --button-radius: var(--radius-lg);
-  --button-ring: var(--ring);
+So the choice is driven by the **value**, not by habit:
 
-  /* input */
-  --input-bg: transparent;
-  --input-fg: var(--foreground);
-  --input-border: var(--input);
-  --input-radius: var(--radius-lg);
-  --input-ring: var(--ring);
-}
-
-@theme inline {
-  --color-button: var(--button-bg);
-  --color-button-fg: var(--button-fg);
-  --color-button-hover: var(--button-bg-hover);
-  --color-button-ring: var(--button-ring);
-
-  --color-input-surface: var(--input-bg);
-  --color-input-fg: var(--input-fg);
-  --color-input-border: var(--input-border);
-  --color-input-ring: var(--input-ring);
-}
-```
-
-Component diffs this enables (illustrative):
-
-```diff
-- // button.tsx default variant
-- default: "bg-primary text-primary-foreground hover:bg-primary/80",
-+ default: "bg-button text-button-fg hover:bg-button-hover",
-
-- // input.tsx
-- "... rounded-lg border border-input bg-transparent ..."
-+ "... rounded-[--input-radius] border border-input-border bg-input-surface ..."
-```
-
-Radius knobs that aren't colors use the arbitrary-property syntax
-(`rounded-[--button-radius]`) rather than a `@theme` color mapping.
+- **Primitives** → plain `:root` (not `@theme` at all). Internal values, no utilities.
+- **Color tokens** (`--color-primary: var(--primary)`, `--color-button: var(--button-bg)`)
+  → **`@theme inline`**, because their value is a `var()` reference.
+- **`--font-sans`** → **plain `@theme`**, because its value is a literal. (This also
+  makes Tailwind's `--default-font-family`, which drives body text, reference it.)
+- **`--font-heading: var(--font-sans)`** → **`@theme inline`**, because its value is a
+  `var()` reference (it aliases `--font-sans`).
+- **Font sizes / weights / line-heights** (`--text-*`, `--font-weight-*`, `--leading-*`)
+  come from Tailwind's own non-inline defaults, already in the referenced form — so
+  they are overridable with no extra wiring.
 
 ## Consumer workflow (the LMS app)
 
-A consuming app already imports the stylesheet once:
+The app already imports the stylesheet once:
 
 ```ts
 import "@workspace/ui/globals.css"
 ```
 
-To add a theme, the consumer writes their **own** CSS file — they never touch
-the package:
+To theme, the consumer copies `themes/_template.css`, renames the class, and
+imports it **after** the design system — never touching the package:
 
 ```css
 /* lms-app/src/themes/district-42.css */
@@ -201,29 +194,26 @@ the package:
 
   /* narrow: only primary buttons */
   --button-radius: 9999px; /* pill buttons; inputs stay rounded */
-  --button-bg-hover: color-mix(in oklch, var(--button-bg), black 12%);
 
-  /* narrow: only input borders */
-  --input-border: oklch(0.5 0.02 250);
+  /* narrow: only input corners */
+  --input-radius: 0;
 }
 ```
 
 Apply by toggling the class on any scope:
 
 ```html
-<div class="theme-district-42">...themed subtree...</div>
+<div class="theme-district-42">…themed subtree…</div>
 <!-- or on <html> for the whole app -->
 ```
 
-Because these are CSS variables resolved in the _consumer's_ DOM, themes:
-
-- **compose** with `.dark` (`<html class="dark theme-district-42">`),
-- **nest** (a `.theme-district-42` subtree inside a default page),
-- and require **no rebuild** of `@workspace/ui`.
+Because these are CSS variables resolved in the _consumer's_ DOM, themes
+**compose** with `.dark` (`<html class="dark theme-district-42">`), **nest**, and
+need **no rebuild** of `@workspace/ui`.
 
 For changes beyond tokens (layout, one-off shadows, fonts on just buttons),
-consumers use `className` per-instance, or target `[data-slot="button"]` in
-their own CSS — that surface is intentionally not tokenized.
+consumers use `className` per-instance or target `[data-slot="button"]` in their
+own CSS — that surface is intentionally not tokenized.
 
 ## Stability contract
 
@@ -231,15 +221,16 @@ Every component token is a **public API**. Once a consumer depends on
 `--button-bg`, renaming or removing it is a breaking change. Therefore:
 
 - Treat the knob list as versioned API; add freely, remove only on major bumps.
-- Keep names derived mechanically from `data-slot` + the knob table so they stay
-  predictable and self-documenting.
+- Keep names derived mechanically from `data-slot` + the knob vocabulary.
 
-## Open questions before implementation
+## Extending: making another component themeable
 
-1. Which components are first-class themeable? (Proposal: start with `button`,
-   `input`, `card`, `badge`, `field`.)
-2. Do we extract a `primitives.css` brand-scale tier now, or keep literal oklch
-   values in `semantic.css` and add component tokens only? (Latter is the
-   smaller first step.)
-3. Should there be a published "theme template" file in the repo that consumers
-   copy as a starting point?
+1. Identify the genuinely-missing knobs (skip anything already covered by a
+   component-scoped semantic token like `--card`).
+2. Add `--{slot}-{knob}` defaults to `components.css`, defaulting to the relevant
+   semantic token.
+3. For color knobs, add a `--color-{slot}-{knob}: var(--{slot}-{knob})` line to
+   the `@theme inline` block.
+4. Swap the component's hardcoded utility for the token utility
+   (`bg-primary` → `bg-{slot}`, `rounded-xl` → `rounded-(--{slot}-radius)`).
+5. Document the new knobs in the table above and the template file.

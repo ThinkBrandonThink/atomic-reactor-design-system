@@ -1,0 +1,39 @@
+/* ============================================================================
+ * NORTHWIND THEME
+ * ----------------------------------------------------------------------------
+ * This file changes the look of the app for Northwind — your brand color,
+ * your rounded corners, your buttons — without anyone touching the code.
+ *
+ * How to use it:
+ *   1. The values below are already filled in for Northwind.
+ *   2. Upload this file in your admin settings.
+ *   3. That's it — the new look is applied everywhere.
+ *
+ * A few simple rules:
+ *   - Every line is optional. Anything you remove keeps the standard look.
+ *   - Keep the names on the left exactly as written. Only change the value on
+ *     the right, and always end the line with a semicolon ;
+ *   - Colors are written as hex codes (e.g. #1e40af), the same codes you get
+ *     from any color picker.
+ * ========================================================================== */
+
+.theme-northwind {
+  /* ---- YOUR BRAND ---------------------------------------------------------
+   * The brand color flows into buttons, links, and highlights.                */
+
+  /* Northwind deep blue (buttons, links, highlights) */
+  --primary: #1e40af;
+
+  /* White text/icons on top of the deep blue brand — high contrast, readable */
+  --primary-foreground: #ffffff;
+
+
+  /* ---- FINE-TUNING --------------------------------------------------------
+   * Per-component shape overrides Northwind requested.                        */
+
+  /* Buttons — fully-rounded "pill" shape */
+  --button-radius: 9999px;
+
+  /* Cards — square (sharp) corners */
+  --card-radius: 0;
+}

@@ -1,0 +1,6 @@
+{
+  "eval_id": 0,
+  "eval_name": "card-padding-themeable",
+  "prompt": "The card's inner padding should be adjustable per theme without affecting buttons or anything else. Make that possible.",
+  "assertions": []
+}

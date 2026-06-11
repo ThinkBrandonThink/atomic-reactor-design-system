@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -66,4 +67,51 @@ export const Invalid: Story = {
 
 export const FileInput: Story = {
   args: { type: "file", placeholder: undefined },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface & text",
+    description: "The field border, fill, and text colors.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input", affects: "Border & background (disabled / dark mode)" },
+      { cssVar: "--foreground", utility: "text-foreground", affects: "Input & file-button text" },
+      { cssVar: "--muted-foreground", utility: "placeholder:text-muted-foreground", affects: "Placeholder text" },
+    ],
+  },
+  {
+    title: "State",
+    description: "Focus and validation feedback.",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" },
+      { cssVar: "--destructive", utility: "border-destructive", affects: "aria-invalid border & ring" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--input-radius",
+        utility: "rounded-(--input-radius)",
+        affects: "Input corner radius (defaults to --radius-lg)",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Input's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Input. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

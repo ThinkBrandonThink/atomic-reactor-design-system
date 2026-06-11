@@ -1,0 +1,11 @@
+{
+  "summary": { "pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6 },
+  "expectations": [
+ {"text":"Flags callout.tsx has no story","passed":true,"evidence":"Report MISSING STORY: callout.tsx had no *.stories.tsx sibling."},
+ {"text":"Flags badge.stories missing the premium variant","passed":true,"evidence":"Report MISSING in argTypes.options and Variants render."},
+ {"text":"Fix adds premium to badge argTypes + Variants render","passed":true,"evidence":"badge.stories.tsx:28 \"premium\" option; :68 <Badge variant=\"premium\">."},
+ {"text":"Produces a conventional Callout story (info/warning/destructive)","passed":true,"evidence":"callout.stories.tsx:13 title Components/Callout; :19 options info/warning/destructive; :22 default info; Variants renders all three."},
+ {"text":"Does not invent drift for the already-correct 9 variants","passed":true,"evidence":"Report notes the other variants were in sync; only premium added."},
+ {"text":"Reports before editing","passed":true,"evidence":"Report precedes files-edited/created list."}
+]
+}

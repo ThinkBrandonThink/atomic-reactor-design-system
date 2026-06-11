@@ -2,7 +2,13 @@
 
 ## Commands
 
-**Adding or adapting a UI component** → use the **`add-shadcn-component` skill** (`.claude/skills/add-shadcn-component/`). It owns the full workflow: the `shadcn add` command, the Radix→Base UI rewrite, and every required convention. Key point it encodes: `shadcn add` emits a **Radix-based, default-styled** file, but this repo is **Base UI**, so a component isn't "added" until it's been rewritten to `@base-ui/react` and matches the existing components exactly. Components live in `packages/ui/src/components/`.
+**Adding/adapting a UI component** → **`add-shadcn-component` skill**. `shadcn add` emits Radix + default styles, but this repo is **Base UI** (`@base-ui/react`) — a component isn't done until it's rewritten to Base UI and matches the existing files. Components: `packages/ui/src/components/`.
+
+**Design tokens or theming** (color, radius, spacing, font, shadow, z-index — adding/moving/wiring, or per-brand `.theme-*` files) → **`design-tokens` skill**. Owns the three-tier token system. Token files: `packages/ui/src/styles/`.
+
+**A color's actual value or WCAG AA contrast** → **`color-tokens` skill**. Division of labor: `design-tokens` = structure/placement/wiring/theming; `color-tokens` = color values + contrast.
+
+**Keeping Storybook in sync with the code** (a component, variant, or token changed and the `*.stories.tsx` that document it may be stale; "are the stories current?", "did I miss a story?") → **`storybook-sync` skill**. Run it as the follow-up after `add-shadcn-component` or `design-tokens` change code. Stories: `packages/ui/src/components/*.stories.tsx`.
 
 ## Architecture
 
@@ -23,35 +29,34 @@ The `cn()` helper (`packages/ui/src/lib/utils.ts`) combines `clsx` + `tailwind-m
 
 #### Required component conventions
 
-Every component **must** replicate a fixed set of conventions — the `data-slot` attribute, the focus/invalid/press patterns, radius via the `--radius` scale, `color-mix` hover tints, and icon sizing — exactly as the existing components do. They are how the system stays visually consistent. The full checklist and the Radix→Base UI translation details live in the **`add-shadcn-component` skill** (`.claude/skills/add-shadcn-component/`); when adding or editing a component, follow it and mirror the closest existing file in `packages/ui/src/components/`.
+Every component replicates a fixed convention set — `data-slot`, the focus/invalid/press patterns, radius via the `--radius` scale, `color-mix` hover tints, icon sizing — so the system stays consistent. The **`add-shadcn-component` skill** has the full checklist and the Radix→Base UI mapping; when adding/editing, follow it and mirror the closest existing file in `packages/ui/src/components/`.
 
 ### Styling
 
-- **Tailwind CSS v4** — configured directly in `packages/ui/src/styles/globals.css` using `@theme inline` blocks (no `tailwind.config.js`).
-- Design tokens (colors, radius, fonts) are CSS custom properties defined in `:root` / `.dark` in `globals.css`. Colors use **oklch**.
+- **Tailwind CSS v4** — configured in CSS via `@theme inline` blocks (no `tailwind.config.js`).
+- Design tokens are CSS custom properties (colors in **oklch**) organized into **three tiers**, each in its own file under `packages/ui/src/styles/`:
+  - `primitives.css` — the raw palette / raw values (tier 1, internal).
+  - `semantic.css` — role tokens (`--primary`, `--background`, …), the light/dark split, the `@theme inline` color/radius/font mappings, and the **brand defaults** (see below).
+  - `components.css` — per-component knobs (`--button-radius`, `--card-spacing`, …), the public theming API.
+  - `themes/` — consumer `.theme-*` override files (and `_template.css`).
+  Each tier may only reference the tier(s) above it. `globals.css` imports these in order and no longer holds the tokens itself. The **`design-tokens` skill** owns this structure and enforces it with a checker.
 - The global stylesheet is exported as `@workspace/ui/globals.css` and imported once in `apps/web/src/main.tsx`.
 - Theme toggling (light/dark/system) is handled by `apps/web/src/components/theme-provider.tsx` which adds/removes `.dark` on `<html>`. Press `d` to toggle theme in the dev app.
 
-#### `globals.css` structure (exact — do not reorder or remove)
+#### `globals.css` (entry point — order is load-bearing)
 
-The top of the file is load-bearing. Preserve it as-is:
+It holds no tokens; it imports and wires. Preserve, in order: the four base `@import`s (`tailwindcss` → `tw-animate-css` → `shadcn/tailwind.css` → `@fontsource-variable/inter`) then the three tiers (`primitives` → `semantic` → `components`); `@custom-variant dark (&:is(.dark *))` (makes `dark:` work with the `.dark` class); the `@source` globs (`../../../apps/**`, `../../../components/**`, `../**` — Tailwind's class scan, dropping one silently drops styles); and `@layer base` (the `*`/`body` resets + `cursor: pointer` on enabled buttons).
 
-1. **Import order:** `tailwindcss` → `tw-animate-css` → `shadcn/tailwind.css` → `@fontsource-variable/inter`.
-2. **`@custom-variant dark (&:is(.dark *));`** — this is what makes `dark:` work with the class-based `.dark` toggle. Required.
-3. **`@source` globs** — `../../../apps/**`, `../../../components/**`, `../**` (all `.{ts,tsx}`). These tell Tailwind v4 where to scan for classes; removing one silently drops styles.
-4. **`@theme inline` block** — maps the `--color-*`, `--radius-*`, and `--font-*` Tailwind theme keys onto the raw `:root` custom properties. New tokens must be wired here too, or Tailwind utilities won't see them.
-5. **`@layer base`** — global resets: `* { border-border outline-ring/50 }`, `body { bg-background text-foreground }`, and `cursor: pointer` on enabled buttons. Keep.
+Token definitions and the `@theme inline` mappings live in the tier files, not here — the **`design-tokens` skill** covers wiring (colors need a `--color-*` mapping to get utilities; radius/spacing are consumed via `rounded-(--token)` syntax).
 
-#### Brand tokens (LOCKED — never revert to shadcn defaults)
+#### Brand tokens (the Atomic Reactor brand — confirm before changing)
 
-These are the **Atomic Reactor** brand, not stock shadcn neutrals. Do not overwrite them with generated defaults; flag any proposed change before making it:
+The brand, not stock shadcn neutrals. Values live in `semantic.css`/`primitives.css` (the source of truth); what matters here is the *intent*. Changeable, but confirm before changing a brand token — and if a tool (`shadcn add`, etc.) *silently* swaps them for neutrals, that's not an intended change, so keep the brand. The constraints:
 
-- **Primary = amber/gold:** `--primary: oklch(0.852 0.199 91.936)` (light) / `oklch(0.795 0.184 86.047)` (dark), with `--primary-foreground: oklch(0.421 0.095 57.708)`. Sidebar primary follows the same amber family.
-- **Charts = teal/cyan ramp:** `--chart-1`…`--chart-5` (e.g. `oklch(0.865 0.127 207.078)` → `oklch(0.45 0.085 224.283)`), identical in light and dark.
-- **Font:** `--font-sans: 'Inter Variable', sans-serif` (via `@fontsource-variable/inter`); `--font-heading` aliases `--font-sans`.
-- **Radius scale:** base `--radius: 0.625rem`, with a multiplicative scale — `sm ×0.6`, `md ×0.8`, `lg ×1`, `xl ×1.4`, `2xl ×1.8`, `3xl ×2.2`, `4xl ×2.6`. Components reference these, so changing `--radius` rescales the whole system intentionally.
-
-When `shadcn add` (or any tool) regenerates `globals.css` or proposes a neutral palette, **discard the token changes** and keep the values above.
+- **Primary = amber/gold** (`--primary`/`--primary-foreground`, same for sidebar primary) — brand color, not neutral; foreground stays AA-readable on it.
+- **Charts = teal/cyan ramp** (`--chart-1`…`--chart-5`) — each series must stay **visible on its background in both themes** (why the ramp differs per theme).
+- **Font = Inter Variable** (`--font-sans`); `--font-heading` aliases it.
+- **Radius = one base `--radius` + a multiplicative scale** (`--radius-sm`…`4xl`); changing the base rescales everything.
 
 ### Package exports (`packages/ui`)
 

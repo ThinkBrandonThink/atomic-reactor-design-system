@@ -1,0 +1,69 @@
+import type { Meta, StoryObj } from "@storybook/react-vite"
+
+import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+
+const meta = {
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A text input component for forms and user data entry with built-in styling and accessibility features.",
+      },
+    },
+  },
+  title: "Components/Input",
+  component: Input,
+  tags: ["autodocs"],
+  argTypes: {
+    type: {
+      control: "select",
+      options: ["text", "email", "password", "number", "search", "tel", "url"],
+    },
+    placeholder: { control: "text" },
+    disabled: { control: "boolean" },
+  },
+  args: {
+    type: "text",
+    placeholder: "Enter text...",
+  },
+} satisfies Meta<typeof Input>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}
+
+export const Types: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-3">
+      <Input {...args} type="text" placeholder="Text" />
+      <Input {...args} type="email" placeholder="Email" />
+      <Input {...args} type="password" placeholder="Password" />
+      <Input {...args} type="number" placeholder="Number" />
+      <Input {...args} type="search" placeholder="Search" />
+    </div>
+  ),
+}
+
+export const WithLabel: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-2">
+      <Label htmlFor="email">Email</Label>
+      <Input {...args} id="email" type="email" placeholder="you@example.com" />
+    </div>
+  ),
+}
+
+export const Disabled: Story = {
+  args: { disabled: true, placeholder: "Disabled" },
+}
+
+export const Invalid: Story = {
+  args: { placeholder: "Invalid value", "aria-invalid": true },
+}
+
+export const FileInput: Story = {
+  args: { type: "file", placeholder: undefined },
+}

@@ -1,0 +1,59 @@
+/* ============================================================================
+ * PRIMITIVES — the raw palette (tier 1)
+ * ----------------------------------------------------------------------------
+ * Named, deduplicated raw color values. INTERNAL: semantic tokens reference
+ * these; components and consumers should NOT use them directly.
+ *
+ * Deliberately plain custom properties in :root (NOT a Tailwind `@theme` block)
+ * so they (a) never collide with Tailwind's own `--color-*` scales (teal,
+ * neutral, etc.) and (b) generate no `bg-gold-500`-style utilities — reaching
+ * past the semantic tier is intentionally not part of the public API.
+ *
+ * Shade numbers approximate lightness (smaller = lighter), Tailwind-style.
+ * Values are byte-identical to the literals that previously lived inline in
+ * globals.css :root/.dark, so resolved output is unchanged.
+ * ========================================================================== */
+
+:root {
+  /* Neutral — pure gray (chroma 0) */
+  --neutral-0: oklch(1 0 0);
+  --neutral-50: oklch(0.985 0 0);
+  --neutral-100: oklch(0.97 0 0);
+  --neutral-200: oklch(0.922 0 0);
+  --neutral-400: oklch(0.708 0 0);
+  --neutral-450: oklch(0.65 0 0);
+  --neutral-500: oklch(0.62 0 0);
+  --neutral-550: oklch(0.556 0 0);
+  --neutral-600: oklch(0.53 0 0);
+  --neutral-800: oklch(0.269 0 0);
+  --neutral-850: oklch(0.205 0 0);
+  --neutral-900: oklch(0.145 0 0);
+
+  /* Neutral — cool-tinted (slight violet chroma, ~286°) */
+  --neutral-cool-100: oklch(0.967 0.001 286.375);
+  --neutral-cool-800: oklch(0.274 0.006 286.033);
+  --neutral-cool-900: oklch(0.21 0.006 285.885);
+
+  /* Gold / amber — brand hue */
+  --gold-300: oklch(0.852 0.199 91.936);
+  --gold-400: oklch(0.795 0.184 86.047);
+  --gold-500: oklch(0.681 0.162 75.834);
+  --gold-600: oklch(0.55 0.199 91.936);
+  --gold-800: oklch(0.421 0.095 57.708);
+  --gold-900: oklch(0.25 0.07 75);
+
+  /* Status hues — two shades each (lighter shade is used by the dark theme) */
+  --red-400: oklch(0.704 0.191 22.216);
+  --red-500: oklch(0.577 0.245 27.325);
+  --green-400: oklch(0.696 0.17 162.48);
+  --green-600: oklch(0.52 0.17 149.214);
+  --orange-300: oklch(0.769 0.188 70.08);
+  --orange-600: oklch(0.54 0.179 58.318);
+  --cyan-400: oklch(0.715 0.143 215.221);
+  --cyan-600: oklch(0.52 0.126 221.723);
+
+  /* Shadow tint — the raw color a drop shadow is built from. Pure black at a
+   * low alpha; the alpha/spread is composed at the semantic tier (light vs dark
+   * need different strengths). */
+  --shadow-color: oklch(0 0 0);
+}

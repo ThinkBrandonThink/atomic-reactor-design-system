@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "card-shadow-new-type",
+  "prompt": "Cards should have a subtle drop shadow that we can tune later, and it needs to look right in dark mode too.",
+  "assertions": []
+}

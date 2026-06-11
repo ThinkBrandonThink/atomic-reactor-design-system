@@ -1,0 +1,13 @@
+{
+  "eval_id": 1,
+  "eval_name": "new-component-and-variant",
+  "prompt": "I added a `premium` variant to the Badge and created a new `Callout` component. Make sure the Storybook stories cover them. Report what's missing first, then apply the fixes.",
+  "assertions": [
+    {"text": "Flags that callout.tsx has no sibling .stories.tsx file (missing story)"},
+    {"text": "Flags that badge.stories.tsx does not document the new `premium` variant (absent from both the argTypes options list and the Variants story)"},
+    {"text": "After fixing, badge.stories.tsx includes `premium` in the argTypes variant options AND renders it in the Variants story"},
+    {"text": "Produces a Callout story (or, if file creation was blocked, proposes its full content inline) that follows repo conventions: title Components/Callout, exercises the info/warning/destructive variants"},
+    {"text": "Does not invent drift for parts of badge.stories.tsx that are already correct (the other 9 variants stay intact)"},
+    {"text": "Presents findings as a report before applying edits"}
+  ]
+}
