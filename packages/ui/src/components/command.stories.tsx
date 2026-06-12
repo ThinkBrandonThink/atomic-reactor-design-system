@@ -22,6 +22,7 @@ import {
   SmileIcon,
   UserIcon,
 } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -143,4 +144,61 @@ export const InDialog: Story = {
 
     return <Demo />
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Tokens for the command surface, items, groups, and input.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Command surface background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Command surface text",
+        },
+      },
+      {
+        cssVar: "--muted",
+        utility: "bg-muted",
+        affects: "Selected item background",
+        foreground: {
+          cssVar: "--foreground",
+          utility: "text-foreground",
+          affects: "Selected item text · group text",
+        },
+      },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Group heading & shortcut text" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator line" },
+      { cssVar: "--input", utility: "border-input/30", affects: "Search input group border" },
+      { cssVar: "--input-fill", utility: "bg-input-fill/30", affects: "Search input group fill" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-xl", utility: "rounded-xl", affects: "Command surface corner radius", radius: true },
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Search input group & dialog item radius", radius: true },
+      { cssVar: "--radius-sm", utility: "rounded-sm", affects: "Item corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Command's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Command. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

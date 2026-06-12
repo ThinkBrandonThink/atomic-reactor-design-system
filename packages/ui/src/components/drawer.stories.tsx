@@ -12,6 +12,7 @@ import {
 } from "@workspace/ui/components/drawer"
 import { Button } from "@workspace/ui/components/button"
 import { MinusIcon, PlusIcon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -146,4 +147,57 @@ export const FromTop: Story = {
       </DrawerContent>
     </Drawer>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "Semantic tokens used by the drawer overlay, content surface, and drag handle.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Drawer content surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Drawer content text",
+        },
+      },
+      { cssVar: "--border", utility: "border-t / border-e / …", affects: "Edge border on the open side" },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Bottom-drawer drag handle" },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Description text",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-xl",
+        utility: "rounded-t-xl / rounded-e-xl / …",
+        affects: "Drawer content corner radius on the open side",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Drawer's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Drawer. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

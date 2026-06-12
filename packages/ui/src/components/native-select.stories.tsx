@@ -6,6 +6,7 @@ import {
   NativeSelectOption,
 } from "@workspace/ui/components/native-select"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -101,4 +102,69 @@ export const Invalid: Story = {
       <NativeSelectOption value="vite">Vite</NativeSelectOption>
     </NativeSelect>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the select control, its border, and invalid state.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input", affects: "Control border (and fill in dark mode)" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Placeholder text & chevron icon" },
+      {
+        cssVar: "--primary",
+        utility: "selection:bg-primary",
+        affects: "Text selection background",
+        foreground: {
+          cssVar: "--primary-foreground",
+          utility: "selection:text-primary-foreground",
+          affects: "Text selection text",
+        },
+      },
+      {
+        cssVar: "--destructive",
+        utility: "border-destructive",
+        affects: "aria-invalid border & ring",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Default size corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-md",
+        utility: "rounded-[min(--radius-md,…)]",
+        affects: "Small size corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * NativeSelect's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the NativeSelect. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

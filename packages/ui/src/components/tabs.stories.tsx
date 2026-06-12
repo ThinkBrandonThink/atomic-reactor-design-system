@@ -7,6 +7,7 @@ import {
   TabsContent,
 } from "@workspace/ui/components/tabs"
 import { CodeIcon, EyeIcon, SettingsIcon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   title: "Components/Tabs",
@@ -100,4 +101,61 @@ export const Vertical: Story = {
       <TabsContent value="settings">Variant and prop controls.</TabsContent>
     </Tabs>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the tab list, triggers, and active state.",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "Default-variant tab list background" },
+      {
+        cssVar: "--background",
+        utility: "bg-background",
+        affects: "Active trigger background (default variant)",
+      },
+      {
+        cssVar: "--foreground",
+        utility: "text-foreground",
+        affects: "Trigger text · hover & active text · line-variant indicator",
+      },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Tab list text · trigger text (dark)",
+      },
+      {
+        cssVar: "--input",
+        utility: "border-input",
+        affects: "Active trigger border & background (dark)",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border, ring & outline" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Tab list corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Trigger corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Tabs' appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Tabs. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

@@ -12,6 +12,7 @@ import {
   ItemTitle,
 } from "@workspace/ui/components/item"
 import { Button } from "@workspace/ui/components/button"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -103,4 +104,56 @@ export const Group: Story = {
       </Item>
     </ItemGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the outline / muted variants, hover, and content.",
+    tokens: [
+      { cssVar: "--border", utility: "border-border", affects: "Outline variant border" },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Muted variant background & link/anchor hover background" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "ItemDescription text" },
+      { cssVar: "--primary-link", utility: "text-primary-link", affects: "Hovered link inside ItemDescription" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Item corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-sm",
+        utility: "rounded-sm",
+        affects: "ItemMedia image corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Item's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Item. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

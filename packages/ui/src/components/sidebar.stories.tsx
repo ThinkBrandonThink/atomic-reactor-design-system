@@ -25,6 +25,7 @@ import {
   SearchIcon,
   SettingsIcon,
 } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   title: "Components/Sidebar",
@@ -133,4 +134,72 @@ export const Default: Story = {
 export const IconCollapsible: Story = {
   args: { collapsible: "icon" },
   render: Default.render,
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "The sidebar panel surface and its text.",
+    tokens: [
+      {
+        cssVar: "--sidebar",
+        utility: "bg-sidebar",
+        affects: "Sidebar panel background",
+        foreground: {
+          cssVar: "--sidebar-foreground",
+          utility: "text-sidebar-foreground",
+          affects: "Sidebar text & icons",
+        },
+      },
+      { cssVar: "--background", utility: "bg-background", affects: "Inset / input / outline menu-button background" },
+    ],
+  },
+  {
+    title: "Accent colors",
+    description: "Hover / active / focus states on menu items, actions, and sub-items.",
+    tokens: [
+      {
+        cssVar: "--sidebar-accent",
+        utility: "bg-sidebar-accent",
+        affects: "Menu item hover / active background",
+        foreground: {
+          cssVar: "--sidebar-accent-foreground",
+          utility: "text-sidebar-accent-foreground",
+          affects: "Menu item hover / active text",
+        },
+      },
+      { cssVar: "--sidebar-border", utility: "border-sidebar-border", affects: "Separator, sub-menu border, rail hover, floating ring" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--sidebar-ring", utility: "ring-sidebar-ring", affects: "Focus-visible ring on menu buttons & actions" },
+    ],
+  },
+  {
+    title: "Radius",
+    description: "Corner radii used across the sidebar surfaces.",
+    tokens: [
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Menu items, actions, badges, group labels", radius: true },
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Floating variant panel", radius: true },
+      { cssVar: "--radius-xl", utility: "rounded-xl", affects: "Inset variant content panel", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Sidebar's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Sidebar. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

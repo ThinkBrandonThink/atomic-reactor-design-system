@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import { Textarea } from "@workspace/ui/components/textarea"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -71,4 +72,50 @@ export const WithValue: Story = {
       />
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens that color the field, placeholder, and validation states.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input", affects: "Border · disabled & dark background tint" },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Placeholder text",
+      },
+      {
+        cssVar: "--destructive",
+        utility: "border-destructive",
+        affects: "aria-invalid border & ring",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Field corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Textarea's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Textarea. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@workspace/ui/components/dialog"
 import { Button } from "@workspace/ui/components/button"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -141,4 +142,58 @@ export const WithoutCloseButton: Story = {
       </DialogContent>
     </Dialog>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "Semantic tokens used by the dialog overlay, content surface, and footer.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Dialog content surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Dialog content text",
+        },
+      },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Content hairline ring" },
+      { cssVar: "--muted", utility: "bg-muted/50", affects: "Footer background tint" },
+      { cssVar: "--border", utility: "border-t", affects: "Footer top border" },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Description text",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-xl",
+        utility: "rounded-xl",
+        affects: "Dialog content corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Dialog's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Dialog. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

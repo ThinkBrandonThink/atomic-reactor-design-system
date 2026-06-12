@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@workspace/ui/components/tooltip"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -77,4 +78,45 @@ export const Sides: Story = {
       </div>
     </TooltipProvider>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens that fill and color the tooltip popup and arrow.",
+    tokens: [
+      {
+        cssVar: "--foreground",
+        utility: "bg-foreground",
+        affects: "Popup & arrow fill",
+        foreground: {
+          cssVar: "--background",
+          utility: "text-background",
+          affects: "Popup text",
+        },
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Popup corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Tooltip's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Tooltip. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

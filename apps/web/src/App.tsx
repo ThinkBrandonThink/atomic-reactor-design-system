@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import {
   BoldIcon,
   ItalicIcon,
@@ -26,8 +27,10 @@ import { Badge } from "@workspace/ui/components/badge"
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@workspace/ui/components/breadcrumb"
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@workspace/ui/components/button-group"
 import { Button } from "@workspace/ui/components/button"
+import { Calendar } from "@workspace/ui/components/calendar"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@workspace/ui/components/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@workspace/ui/components/carousel"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@workspace/ui/components/chart"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@workspace/ui/components/collapsible"
 import { Combobox, ComboboxInput, ComboboxContent, ComboboxList, ComboboxItem, ComboboxEmpty } from "@workspace/ui/components/combobox"
@@ -80,6 +83,20 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 const fruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape"]
 
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+]
+
+const chartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+} satisfies ChartConfig
+
 export function App() {
   const [checked, setChecked] = useState(false)
   const [switched, setSwitched] = useState(false)
@@ -87,6 +104,7 @@ export function App() {
   const [sliderValue, setSliderValue] = useState([40])
   const [comboValue, setComboValue] = useState("")
   const [otpValue, setOtpValue] = useState("")
+  const [calendarDate, setCalendarDate] = useState<Date | undefined>(new Date())
 
   return (
     <TooltipProvider>
@@ -888,6 +906,36 @@ export function App() {
             <Button variant="outline" onClick={() => toast.warning("Please review your input")}>Warning</Button>
             <Button variant="outline" onClick={() => toast.info("New version available")}>Info</Button>
             <Button variant="outline" onClick={() => toast.loading("Saving changes...")}>Loading</Button>
+          </Section>
+
+          {/* ── Calendar ── */}
+          <Section title="Calendar">
+            <Calendar
+              mode="single"
+              selected={calendarDate}
+              onSelect={setCalendarDate}
+              className="rounded-md border"
+            />
+          </Section>
+
+          {/* ── Chart ── */}
+          <Section title="Chart">
+            <ChartContainer config={chartConfig} className="h-[260px] w-[520px]">
+              <BarChart accessibilityLayer data={chartData}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value: string) => value.slice(0, 3)}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+              </BarChart>
+            </ChartContainer>
           </Section>
         </div>
       </div>

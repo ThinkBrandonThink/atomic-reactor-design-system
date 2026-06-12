@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -132,4 +133,33 @@ export const SelectedRow: Story = {
       </Table>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the header, rows, footer, and caption.",
+    tokens: [
+      { cssVar: "--border", utility: "border-b", affects: "Row, header & footer dividers" },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Footer fill · row hover & selected background" },
+      { cssVar: "--foreground", utility: "text-foreground", affects: "Header cell text" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Caption text" },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Table's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Table. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

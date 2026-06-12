@@ -7,6 +7,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@workspace/ui/components/hover-card"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -76,4 +77,51 @@ export const TextPreview: Story = {
       primitives.
     </p>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "Semantic tokens used by the hover-card popup surface.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Popup surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Popup text",
+        },
+      },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Popup hairline ring" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Popup corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * HoverCard's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the HoverCard. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

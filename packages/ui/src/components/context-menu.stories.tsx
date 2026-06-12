@@ -17,6 +17,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@workspace/ui/components/context-menu"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -127,4 +128,60 @@ export const WithCheckboxesAndRadio: Story = {
       </ContextMenu>
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Tokens for the menu surface, items, labels, and the destructive variant.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Menu content background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Menu content text",
+        },
+      },
+      {
+        cssVar: "--accent",
+        utility: "bg-accent",
+        affects: "Focused / open item & sub-trigger background",
+        foreground: {
+          cssVar: "--accent-foreground",
+          utility: "text-accent-foreground",
+          affects: "Focused item text",
+        },
+      },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Menu hairline ring" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Group label & shortcut text" },
+      { cssVar: "--destructive", utility: "text-destructive", affects: "Destructive item text & hover tint" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator line" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Menu content corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Item corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * ContextMenu's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the ContextMenu. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

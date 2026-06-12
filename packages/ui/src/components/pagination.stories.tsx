@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@workspace/ui/components/pagination"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   title: "Components/Pagination",
@@ -101,4 +102,50 @@ export const Controlled: Story = {
       </Pagination>
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description:
+      "Pagination renders its links as Buttons — active pages use the outline variant, the rest use ghost. These are the semantic tokens those variants apply.",
+    tokens: [
+      { cssVar: "--background", utility: "bg-background", affects: "Active page (outline) background" },
+      { cssVar: "--border", utility: "border-border", affects: "Active page (outline) border" },
+      { cssVar: "--input", utility: "border-input", affects: "Active page border & background (dark mode)" },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Link hover background" },
+      { cssVar: "--foreground", utility: "text-foreground", affects: "Link hover text" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--button-radius",
+        utility: "rounded-(--button-radius)",
+        affects: "Page link corner radius (inherited from Button, defaults to --radius-lg)",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Pagination's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Pagination. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

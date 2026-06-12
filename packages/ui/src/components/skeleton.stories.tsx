@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Skeleton } from "@workspace/ui/components/skeleton"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -43,4 +44,36 @@ export const ProfilePlaceholder: Story = {
       </div>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "The pulsing placeholder fill.",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "Skeleton placeholder fill" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Skeleton corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Skeleton's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Skeleton. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

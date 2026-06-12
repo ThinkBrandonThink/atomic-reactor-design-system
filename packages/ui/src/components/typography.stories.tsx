@@ -4,7 +4,7 @@ import * as React from "react"
 /**
  * Foundations / Typography
  *
- * The type system, in two layers. SEMANTIC ROLES (`--text-heading-lg/-md/-sm`,
+ * The type system, in two layers. SEMANTIC ROLES (`--text-heading-lg/-md/-sm/-xs`,
  * `--text-body`/`-sm`, `--text-label`/`-sm`, `--text-caption`) are composite tokens defined
  * in `semantic.css` (`@theme inline`): each bundles a size, line-height, and
  * weight into one `text-<role>` utility — the recommended way to set type. They
@@ -118,6 +118,7 @@ const ROLES = [
   { name: "text-heading-lg", className: "text-heading-lg", value: "1.875rem / 1.2 / 600" },
   { name: "text-heading-md", className: "text-heading-md", value: "1.5rem / 1.2 / 600" },
   { name: "text-heading-sm", className: "text-heading-sm", value: "1.25rem / 1.2 / 600" },
+  { name: "text-heading-xs", className: "text-heading-xs", value: "1rem / 1.2 / 600" },
   { name: "text-body", className: "text-body", value: "1rem / 1.5 / 400" },
   { name: "text-body-sm", className: "text-body-sm", value: "0.875rem / 1.5 / 400" },
   { name: "text-label", className: "text-label", value: "0.875rem / 1.5 / 500" },
@@ -314,7 +315,7 @@ function TypographySpecimen() {
 
       <Section
         title="Text roles"
-        description="Semantic composite tokens — each bundles size, line-height, and weight into one text-<role> utility. The recommended way to set type; the raw axes below are what they compose from. Pair heading roles with font-heading."
+        description="Semantic composite tokens — each bundles size, line-height, and weight into one text-<role> utility. The recommended way to set type; the raw axes below are what they compose from. Pair heading roles with font-heading. Components use the compact end of the scale (heading-xs titles, body-sm descriptions, label/-sm, caption); the larger heading-sm/-md/-lg and body (1rem) are a display/reading scale for consumer app page content, not used by any component."
       >
         <ScaleTable valueHeader="Size / leading / weight">
           {ROLES.map((role) => (
@@ -378,7 +379,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm, text-body/-sm, text-label/-sm, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
+          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm/-xs, text-body/-sm, text-label/-sm, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
       },
     },
   },

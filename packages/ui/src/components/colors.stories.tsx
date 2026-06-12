@@ -81,6 +81,7 @@ const GROUPS: TokenGroup[] = [
     tokens: [
       { name: "border", cssVar: "--border" },
       { name: "input", cssVar: "--input" },
+      { name: "input-fill", cssVar: "--input-fill" },
       { name: "ring", cssVar: "--ring" },
     ],
   },

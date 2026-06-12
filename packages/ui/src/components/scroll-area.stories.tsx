@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ScrollArea } from "@workspace/ui/components/scroll-area"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -65,4 +66,34 @@ export const HorizontalContent: Story = {
       </div>
     </ScrollArea>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the scrollbar thumb.",
+    tokens: [
+      { cssVar: "--border", utility: "bg-border", affects: "Scrollbar thumb fill" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible ring on the viewport" }],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * ScrollArea's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the ScrollArea. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

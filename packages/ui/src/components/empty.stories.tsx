@@ -10,6 +10,7 @@ import {
   EmptyTitle,
 } from "@workspace/ui/components/empty"
 import { Button } from "@workspace/ui/components/button"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -61,4 +62,66 @@ export const WithAction: Story = {
       </EmptyContent>
     </Empty>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the empty-state icon media and text.",
+    tokens: [
+      {
+        cssVar: "--muted",
+        utility: "bg-muted",
+        affects: "Icon media background (icon variant)",
+        foreground: {
+          cssVar: "--foreground",
+          utility: "text-foreground",
+          affects: "Icon media glyph color",
+        },
+      },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Description text",
+      },
+      {
+        cssVar: "--primary-link",
+        utility: "text-primary-link",
+        affects: "Inline link hover color in the description",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-xl",
+        utility: "rounded-xl",
+        affects: "Empty container corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Icon media corner radius (icon variant)",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Empty's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Empty. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

@@ -7,6 +7,7 @@ import {
   AvatarGroupCount,
   AvatarBadge,
 } from "@workspace/ui/components/avatar"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -99,4 +100,51 @@ export const Group: Story = {
       <AvatarGroupCount>+5</AvatarGroupCount>
     </AvatarGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the fallback, group count, badge, and avatar ring.",
+    tokens: [
+      {
+        cssVar: "--muted",
+        utility: "bg-muted",
+        affects: "Fallback & group-count background",
+        foreground: {
+          cssVar: "--muted-foreground",
+          utility: "text-muted-foreground",
+          affects: "Fallback & group-count text",
+        },
+      },
+      {
+        cssVar: "--primary",
+        utility: "bg-primary",
+        affects: "Avatar badge background",
+        foreground: {
+          cssVar: "--primary-foreground",
+          utility: "text-primary-foreground",
+          affects: "Avatar badge icon/text",
+        },
+      },
+      { cssVar: "--border", utility: "border-border", affects: "Avatar inner edge ring" },
+      { cssVar: "--background", utility: "ring-background", affects: "Badge & group ring (separates overlapping avatars)" },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Avatar's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Avatar. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

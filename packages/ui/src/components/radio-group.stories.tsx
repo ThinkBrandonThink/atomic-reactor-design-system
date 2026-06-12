@@ -5,6 +5,7 @@ import {
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -97,4 +98,45 @@ export const PlanSelection: Story = {
       </Label>
     </RadioGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the radio control across its states.",
+    tokens: [
+      {
+        cssVar: "--primary",
+        utility: "bg-primary",
+        affects: "Checked fill & border",
+        foreground: {
+          cssVar: "--primary-foreground",
+          utility: "bg-primary-foreground",
+          affects: "Checked indicator dot",
+        },
+      },
+      { cssVar: "--input", utility: "border-input", affects: "Unchecked border & background (dark mode)" },
+      { cssVar: "--destructive", utility: "border-destructive", affects: "aria-invalid border & ring" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" }],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * RadioGroup's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the RadioGroup. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

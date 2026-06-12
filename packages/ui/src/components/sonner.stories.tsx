@@ -3,6 +3,7 @@ import { toast } from "sonner"
 
 import { Toaster } from "@workspace/ui/components/sonner"
 import { Button } from "@workspace/ui/components/button"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -115,4 +116,51 @@ export const PromiseToast: Story = {
       </Button>
     </>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Toast surface and border, wired into Sonner's --normal-* variables.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "--normal-bg",
+        affects: "Toast background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "--normal-text",
+          affects: "Toast text",
+        },
+      },
+      { cssVar: "--border", utility: "--normal-border", affects: "Toast border" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius",
+        utility: "--border-radius",
+        affects: "Toast corner radius — base radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Toaster's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Toaster. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

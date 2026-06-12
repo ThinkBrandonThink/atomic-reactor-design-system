@@ -16,6 +16,7 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@workspace/ui/components/menubar"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -127,4 +128,87 @@ export const WithSelections: Story = {
       </Menubar>
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "Semantic tokens for the menu bar, the dropdown content surface, and triggers.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Dropdown / sub-menu content surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Dropdown content text",
+        },
+      },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Trigger hover & open background" },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Content surface hairline ring" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator line" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Shortcut text" },
+    ],
+  },
+  {
+    title: "Item colors",
+    description: "Tokens for focused (highlighted) and destructive menu items.",
+    tokens: [
+      {
+        cssVar: "--accent",
+        utility: "bg-accent",
+        affects: "Focused / highlighted item background",
+        foreground: {
+          cssVar: "--accent-foreground",
+          utility: "text-accent-foreground",
+          affects: "Focused item text",
+        },
+      },
+      {
+        cssVar: "--destructive",
+        utility: "text-destructive",
+        affects: "Destructive item text & focus background tint",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Menu bar & dropdown content corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-md",
+        utility: "rounded-md",
+        affects: "Item corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-sm",
+        utility: "rounded-sm",
+        affects: "Trigger corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Menubar's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Menubar. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

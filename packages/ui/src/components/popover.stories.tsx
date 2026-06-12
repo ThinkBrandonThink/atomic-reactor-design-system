@@ -10,6 +10,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@workspace/ui/components/popover"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -88,4 +89,60 @@ export const WithForm: Story = {
       </PopoverContent>
     </Popover>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the popover surface and its text.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Popover surface background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Popover body text",
+        },
+      },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Description text",
+      },
+      {
+        cssVar: "--foreground",
+        utility: "ring-foreground/10",
+        affects: "Surface edge ring (1px, 10% opacity)",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Popover surface corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Popover's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Popover. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

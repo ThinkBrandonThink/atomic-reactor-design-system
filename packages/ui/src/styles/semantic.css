@@ -39,6 +39,9 @@
   --text-heading-sm: var(--type-size-lg);
   --text-heading-sm--line-height: var(--type-leading-tight);
   --text-heading-sm--font-weight: var(--type-weight-semibold);
+  --text-heading-xs: var(--type-size-base);
+  --text-heading-xs--line-height: var(--type-leading-tight);
+  --text-heading-xs--font-weight: var(--type-weight-semibold);
   --text-body: var(--type-size-base);
   --text-body--line-height: var(--type-leading-normal);
   --text-body--font-weight: var(--type-weight-regular);
@@ -70,6 +73,7 @@
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-input-fill: var(--input-fill);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-success: var(--success);
@@ -177,6 +181,7 @@
   --warning: var(--orange-600);
   --border: var(--neutral-200);
   --input: var(--neutral-450);
+  --input-fill: var(--neutral-200);
   --ring: var(--neutral-500);
   --chart-1: oklch(0.62 0.127 207.078);
   --chart-2: oklch(0.565 0.143 215.221);
@@ -221,6 +226,7 @@
   --warning: var(--orange-300);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
+  --input-fill: oklch(1 0 0 / 15%);
   --ring: var(--neutral-550);
   --chart-1: oklch(0.865 0.127 207.078);
   --chart-2: oklch(0.715 0.143 215.221);

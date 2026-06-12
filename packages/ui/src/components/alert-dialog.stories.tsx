@@ -14,6 +14,7 @@ import {
 } from "@workspace/ui/components/alert-dialog"
 import { Button } from "@workspace/ui/components/button"
 import { TriangleAlertIcon, Trash2Icon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -112,4 +113,50 @@ export const Small: Story = {
       </AlertDialogContent>
     </AlertDialog>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the popup surface, footer, media, and description.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Dialog popup background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Dialog popup text",
+        },
+      },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Footer background & media tile background" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Description text" },
+      { cssVar: "--border", utility: "border-t", affects: "Footer top border" },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Popup hairline ring & description link hover" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-xl", utility: "rounded-xl", affects: "Dialog popup corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Media tile corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * AlertDialog's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the AlertDialog. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

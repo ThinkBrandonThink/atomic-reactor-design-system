@@ -4,6 +4,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@workspace/ui/components/resizable"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -105,4 +106,48 @@ export const NestedGroups: Story = {
       </ResizablePanel>
     </ResizablePanelGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the resize handle and its grip.",
+    tokens: [
+      { cssVar: "--border", utility: "bg-border", affects: "Handle divider & grip fill" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible ring on the handle" },
+      { cssVar: "--background", utility: "ring-offset-background", affects: "Focus ring offset color" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Grip corner radius (withHandle)",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Resizable's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Resizable. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

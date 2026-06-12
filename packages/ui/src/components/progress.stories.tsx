@@ -4,6 +4,7 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@workspace/ui/components/progress"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -55,4 +56,32 @@ export const WithLabel: Story = {
       </Progress>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the track, indicator, and value label.",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "Track (unfilled) background" },
+      { cssVar: "--primary", utility: "bg-primary", affects: "Indicator (filled) bar" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Value label text" },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Progress's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Progress. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

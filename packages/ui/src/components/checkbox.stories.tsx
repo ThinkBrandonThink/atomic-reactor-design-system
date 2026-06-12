@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -70,4 +71,45 @@ export const WithLabel: Story = {
       Subscribe to the newsletter
     </Label>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the checkbox's unchecked, checked, and invalid states.",
+    tokens: [
+      {
+        cssVar: "--primary",
+        utility: "bg-primary",
+        affects: "Checked background & border",
+        foreground: {
+          cssVar: "--primary-foreground",
+          utility: "text-primary-foreground",
+          affects: "Checkmark color when checked",
+        },
+      },
+      { cssVar: "--input", utility: "border-input", affects: "Unchecked border (and dark-mode fill tint)" },
+      { cssVar: "--destructive", utility: "border-destructive", affects: "aria-invalid border & ring" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" }],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Checkbox's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Checkbox. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

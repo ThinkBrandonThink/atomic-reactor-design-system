@@ -19,6 +19,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -146,4 +147,62 @@ export const WithTitle: Story = {
       </Field>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by field text, validation, the selected-card tint, and the separator.",
+    tokens: [
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Field & separator description text",
+      },
+      {
+        cssVar: "--destructive",
+        utility: "text-destructive",
+        affects: "Invalid field text & error message",
+      },
+      {
+        cssVar: "--primary",
+        utility: "has-data-checked:bg-primary/5",
+        affects: "Selected choice-card label border & background tint",
+      },
+      { cssVar: "--border", utility: "has-[…]:border", affects: "Choice-card label & separator border" },
+      { cssVar: "--background", utility: "bg-background", affects: "Separator label background" },
+      {
+        cssVar: "--primary-link",
+        utility: "text-primary-link",
+        affects: "Inline link hover color in descriptions",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Choice-card label corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Field's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Field. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

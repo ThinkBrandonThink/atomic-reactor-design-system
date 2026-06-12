@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bold, Italic, Underline } from "lucide-react"
 import { Toggle } from "@workspace/ui/components/toggle"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -83,4 +84,48 @@ export const Variants: Story = {
       </Toggle>
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the hover, pressed, and outline states.",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "Hover & pressed (on) background" },
+      { cssVar: "--foreground", utility: "text-foreground", affects: "Hover text" },
+      { cssVar: "--input", utility: "border-input", affects: "Outline variant border" },
+      {
+        cssVar: "--destructive",
+        utility: "border-destructive",
+        affects: "aria-invalid border & ring",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "default / lg corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-[min(--radius-md,…)]", affects: "sm size corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Toggle's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Toggle. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

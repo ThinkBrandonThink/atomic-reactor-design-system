@@ -9,6 +9,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@workspace/ui/components/input-group"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -87,4 +88,52 @@ export const WithTextarea: Story = {
       </InputGroupAddon>
     </InputGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the group border, fill, validation, and addon text.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input / bg-input", affects: "Group border & fill (dark mode)" },
+      { cssVar: "--destructive", utility: "border-destructive", affects: "aria-invalid border & ring" },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Addon & text label color",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focus-within border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Group corner radius", radius: true },
+      {
+        cssVar: "--radius",
+        utility: "rounded-[calc(var(--radius)-3px)]",
+        affects: "Base radius — addon button & kbd corners derive from it",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * InputGroup's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the InputGroup. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

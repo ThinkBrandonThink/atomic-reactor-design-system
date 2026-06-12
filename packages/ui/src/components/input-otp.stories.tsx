@@ -7,6 +7,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@workspace/ui/components/input-otp"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -103,4 +104,53 @@ export const Controlled: Story = {
       </div>
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the slots and active/invalid states.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input", affects: "Slot border (and slot fill in dark mode)" },
+      { cssVar: "--foreground", utility: "bg-foreground", affects: "Blinking fake caret in the active slot" },
+      {
+        cssVar: "--destructive",
+        utility: "border-destructive",
+        affects: "aria-invalid slot border & ring",
+      },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Active slot border & ring" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Group & end-slot corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * InputOTP's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the InputOTP. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

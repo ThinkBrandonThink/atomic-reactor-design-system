@@ -30,6 +30,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -186,4 +187,68 @@ export const WithRadioGroup: Story = {
       </DropdownMenu>
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Surface colors",
+    description: "Semantic tokens used by the menu popup surface and items.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Menu popup surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Menu popup text",
+        },
+      },
+      {
+        cssVar: "--accent",
+        utility: "focus:bg-accent",
+        affects: "Highlighted / focused item background",
+        foreground: {
+          cssVar: "--accent-foreground",
+          utility: "focus:text-accent-foreground",
+          affects: "Highlighted / focused item text",
+        },
+      },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Popup hairline ring" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator line" },
+      {
+        cssVar: "--muted-foreground",
+        utility: "text-muted-foreground",
+        affects: "Group label & shortcut text",
+      },
+      {
+        cssVar: "--destructive",
+        utility: "text-destructive",
+        affects: "Destructive item text & focus background tint",
+      },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Popup corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-md", affects: "Item corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * DropdownMenu's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the DropdownMenu. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import type { DateRange } from "react-day-picker"
 
 import { Calendar } from "@workspace/ui/components/calendar"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -97,4 +98,64 @@ export const WithDropdownNavigation: Story = {
       />
     )
   },
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the grid surface, selected days, range fill, and muted text.",
+    tokens: [
+      { cssVar: "--background", utility: "bg-background", affects: "Calendar surface background" },
+      {
+        cssVar: "--primary",
+        utility: "bg-primary",
+        affects: "Selected day & range endpoint fill",
+        foreground: {
+          cssVar: "--primary-foreground",
+          utility: "text-primary-foreground",
+          affects: "Selected day & range endpoint text",
+        },
+      },
+      {
+        cssVar: "--muted",
+        utility: "bg-muted",
+        affects: "Range middle, today, and nav-button hover fill",
+        foreground: {
+          cssVar: "--foreground",
+          utility: "text-foreground",
+          affects: "Range middle & today text",
+        },
+      },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Weekday/week-number labels, outside & disabled days" },
+      { cssVar: "--popover", utility: "bg-popover", affects: "Native dropdown (month/year) background" },
+    ],
+  },
+  {
+    title: "Focus",
+    description: "Focus-visible outline on a day button.",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Focused day border & ring" }],
+  },
+  {
+    title: "Radius",
+    description: "--cell-radius drives day/cell corners and defaults to --radius-md.",
+    tokens: [
+      { cssVar: "--radius-md", utility: "rounded-(--cell-radius)", affects: "Day cell, range endpoint, and dropdown corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Calendar's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Calendar. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

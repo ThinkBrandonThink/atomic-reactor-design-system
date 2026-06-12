@@ -6,6 +6,8 @@ import {
   ButtonGroupText,
 } from "@workspace/ui/components/button-group"
 import { Button } from "@workspace/ui/components/button"
+import { Input } from "@workspace/ui/components/input"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -67,12 +69,29 @@ export const WithText: Story = {
   ),
 }
 
-export const WithSeparator: Story = {
+export const WithInput: Story = {
   render: () => (
     <ButtonGroup>
-      <Button variant="outline">Save</Button>
+      <ButtonGroupText>$</ButtonGroupText>
+      <Input placeholder="Amount" className="w-28" />
+    </ButtonGroup>
+  ),
+}
+
+export const WithSeparator: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Use the separator only with `ghost` (or `link`) buttons, like the split button below — they have no fill and no border of their own, so the separator draws the only division. Avoid it elsewhere: `outline` buttons already render a border (it doubles the line), and solid fills (`default`/`secondary`/`destructive`) already separate visually so the separator just competes with the fill.",
+      },
+    },
+  },
+  render: () => (
+    <ButtonGroup>
+      <Button variant="ghost">Save</Button>
       <ButtonGroupSeparator />
-      <Button variant="outline" size="icon">
+      <Button variant="ghost" size="icon">
         <ChevronDown />
       </Button>
     </ButtonGroup>
@@ -92,4 +111,38 @@ export const Nested: Story = {
       </ButtonGroup>
     </ButtonGroup>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the text addon and separator (segment buttons carry their own Button tokens).",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "ButtonGroupText addon background" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator color (default)" },
+      { cssVar: "--input", utility: "border-input", affects: "Segment borders & separator when the group wraps an input" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Outer corner radius of the grouped segments", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * ButtonGroup's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the ButtonGroup. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

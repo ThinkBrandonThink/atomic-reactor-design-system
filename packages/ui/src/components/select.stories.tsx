@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -119,4 +120,72 @@ export const Disabled: Story = {
       </SelectContent>
     </Select>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Trigger colors",
+    description: "Semantic tokens used by the trigger button across its states.",
+    tokens: [
+      { cssVar: "--input", utility: "border-input", affects: "Trigger border & background tint (dark mode)" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Placeholder text & chevron icon" },
+      { cssVar: "--destructive", utility: "ring-destructive", affects: "aria-invalid border & ring" },
+    ],
+  },
+  {
+    title: "Surface colors",
+    description: "Semantic tokens used by the dropdown popup, items, and separator.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Dropdown surface & scroll buttons",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Dropdown text",
+        },
+      },
+      {
+        cssVar: "--accent",
+        utility: "bg-accent",
+        affects: "Highlighted (focused) item background",
+        foreground: {
+          cssVar: "--accent-foreground",
+          utility: "text-accent-foreground",
+          affects: "Highlighted item text",
+        },
+      },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Group label text" },
+      { cssVar: "--border", utility: "bg-border", affects: "Separator line" },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Surface edge ring (1px, 10% opacity)" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Trigger focus-visible border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Trigger (default) & surface corner radius", radius: true },
+      { cssVar: "--radius-md", utility: "rounded-[min(--radius-md,…)]", affects: "Trigger corner radius at the sm size", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Select's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Select. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

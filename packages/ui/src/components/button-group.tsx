@@ -6,7 +6,7 @@ import { cn } from "@workspace/ui/lib/utils"
 import { Separator } from "@workspace/ui/components/separator"
 
 const buttonGroupVariants = cva(
-  "flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-e-lg [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+  "group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-e-lg [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 has-[input]:[&_[data-slot=button]:not(:focus-visible)]:border-input has-[input]:[&_[data-slot=button-group-text]]:border-input",
   {
     variants: {
       orientation: {
@@ -61,6 +61,14 @@ function ButtonGroupText({
   })
 }
 
+/**
+ * A divider for button groups. Use it only with `ghost` or `link` buttons —
+ * variants with no fill and no border of their own, so this draws the only
+ * division between segments. Avoid it with the other variants: `outline` already
+ * renders its own border (a separator doubles the line and adds border width),
+ * and solid fills (`default`/`secondary`/`destructive`) already separate visually
+ * — the separator just competes with the fill and the collapsed borders.
+ */
 function ButtonGroupSeparator({
   className,
   orientation = "vertical",
@@ -71,7 +79,7 @@ function ButtonGroupSeparator({
       data-slot="button-group-separator"
       orientation={orientation}
       className={cn(
-        "relative self-stretch bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto",
+        "relative self-stretch bg-border group-has-[input]/button-group:bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto",
         className
       )}
       {...props}

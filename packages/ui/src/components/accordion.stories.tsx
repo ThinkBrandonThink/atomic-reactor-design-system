@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@workspace/ui/components/accordion"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   title: "Components/Accordion",
@@ -74,4 +75,43 @@ export const Default: Story = {
 export const OpenMultiple: Story = {
   args: { multiple: true },
   render: Default.render,
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the trigger, item divider, and panel content.",
+    tokens: [
+      { cssVar: "--border", utility: "border-b", affects: "Item divider between accordion items" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Trigger chevron icon color" },
+      { cssVar: "--foreground", utility: "hover:text-foreground", affects: "Panel link hover color" },
+    ],
+  },
+  {
+    title: "Focus",
+    description: "Focus-visible outline on the trigger.",
+    tokens: [{ cssVar: "--ring", utility: "ring-ring", affects: "Trigger focus-visible border & ring" }],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Trigger corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Accordion's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Accordion. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

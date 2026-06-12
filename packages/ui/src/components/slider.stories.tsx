@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import { Slider } from "@workspace/ui/components/slider"
 import { Label } from "@workspace/ui/components/label"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -80,4 +81,38 @@ export const Disabled: Story = {
       <Slider {...args} disabled defaultValue={30} />
     </div>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Track, filled range, and thumb colors.",
+    tokens: [
+      { cssVar: "--muted", utility: "bg-muted", affects: "Track background (unfilled)" },
+      { cssVar: "--primary", utility: "bg-primary", affects: "Filled range (indicator)" },
+      { cssVar: "--ring", utility: "border-ring", affects: "Thumb border" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Thumb hover / focus-visible / active ring" },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Slider's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Slider. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

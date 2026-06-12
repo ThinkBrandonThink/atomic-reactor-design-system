@@ -7,6 +7,7 @@ import {
 } from "@workspace/ui/components/alert"
 import { Button } from "@workspace/ui/components/button"
 import { AlertTriangleIcon, CheckCircle2Icon, InfoIcon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -75,4 +76,49 @@ export const WithAction: Story = {
       </AlertAction>
     </Alert>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the default and destructive variants.",
+    tokens: [
+      {
+        cssVar: "--card",
+        utility: "bg-card",
+        affects: "Alert surface background (both variants)",
+        foreground: {
+          cssVar: "--card-foreground",
+          utility: "text-card-foreground",
+          affects: "Default variant title & body text",
+        },
+      },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Description text" },
+      { cssVar: "--destructive", utility: "text-destructive", affects: "Destructive variant text & icon" },
+      { cssVar: "--foreground", utility: "hover:text-foreground", affects: "Inline link hover color" },
+      { cssVar: "--border", utility: "border", affects: "Alert border" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      { cssVar: "--radius-lg", utility: "rounded-lg", affects: "Alert corner radius", radius: true },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Alert's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Alert. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

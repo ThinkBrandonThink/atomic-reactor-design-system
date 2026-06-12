@@ -9,6 +9,7 @@ import {
   NavigationMenuLink,
 } from "@workspace/ui/components/navigation-menu"
 import { BookOpenIcon, LayersIcon, RocketIcon } from "lucide-react"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   title: "Components/NavigationMenu",
@@ -85,4 +86,71 @@ export const Default: Story = {
       </NavigationMenuList>
     </NavigationMenu>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Semantic tokens used by the triggers, links, popup surface, and indicator.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Dropdown popup surface",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Popup content text",
+        },
+      },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Trigger / link hover, focus & active background" },
+      { cssVar: "--foreground", utility: "ring-foreground/10", affects: "Popup surface hairline ring" },
+      { cssVar: "--border", utility: "bg-border", affects: "Indicator arrow fill" },
+    ],
+  },
+  {
+    title: "Focus",
+    tokens: [
+      { cssVar: "--ring", utility: "ring-ring", affects: "Focus-visible ring on triggers & links" },
+    ],
+  },
+  {
+    title: "Radius",
+    tokens: [
+      {
+        cssVar: "--radius-lg",
+        utility: "rounded-lg",
+        affects: "Trigger, link & popup corner radius",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-md",
+        utility: "rounded-md",
+        affects: "Link corner radius inside content",
+        radius: true,
+      },
+      {
+        cssVar: "--radius-sm",
+        utility: "rounded-ss-sm",
+        affects: "Indicator arrow corner radius",
+        radius: true,
+      },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * NavigationMenu's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the NavigationMenu. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }

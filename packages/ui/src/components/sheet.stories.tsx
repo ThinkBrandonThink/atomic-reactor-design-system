@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet"
 import { Button } from "@workspace/ui/components/button"
+import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
@@ -143,4 +144,40 @@ export const Bottom: Story = {
       </SheetContent>
     </Sheet>
   ),
+}
+
+const tokenGroups: RefGroup[] = [
+  {
+    title: "Colors",
+    description: "Panel surface and the edge border between the sheet and the page.",
+    tokens: [
+      {
+        cssVar: "--popover",
+        utility: "bg-popover",
+        affects: "Sheet panel background",
+        foreground: {
+          cssVar: "--popover-foreground",
+          utility: "text-popover-foreground",
+          affects: "Sheet panel text",
+        },
+      },
+      { cssVar: "--border", utility: "border-s / border-e", affects: "Panel edge border (per side)" },
+    ],
+  },
+]
+
+/**
+ * Collapsible reference of every CSS custom property that influences the
+ * Sheet's appearance. Swatches and values update live with the active theme.
+ */
+export const CssVariables: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The design tokens that affect the Sheet. Swatches and values track the active light/dark theme.",
+      },
+    },
+  },
+  render: () => <TokenReference groups={tokenGroups} />,
 }
