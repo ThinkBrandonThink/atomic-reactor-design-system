@@ -45,8 +45,8 @@ export const Default: Story = {
         </AccordionTrigger>
         <AccordionContent>
           <p>
-            A Base UI + Tailwind v4 component library with a locked amber/gold
-            brand palette and a teal chart ramp.
+            A Base UI + Tailwind v4 component library with a yellow brand
+            color and a multi-hue, accessible chart palette.
           </p>
         </AccordionContent>
       </AccordionItem>

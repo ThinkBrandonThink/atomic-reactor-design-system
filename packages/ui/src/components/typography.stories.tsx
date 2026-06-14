@@ -10,11 +10,13 @@ import * as React from "react"
  * weight into one `text-<role>` utility — the recommended way to set type. They
  * compose from the RAW AXES below: Tailwind v4's own `--text-*` sizes,
  * `--font-weight-*`, `--leading-*`, and `--tracking-*` scales (overridable the
- * same way — see the comment in `semantic.css`). Family is its own pair of
+ * same way — see the comment in `semantic.css`). Family is its own set of
  * tokens: `--font-sans` (Inter Variable, the brand face — a plain `@theme` token
- * so a `.theme-*` override can swap it at runtime) and `--font-heading` (an
- * `@theme inline` alias of `--font-sans`); the role tokens don't set family, so
- * pair a heading role with `font-heading`. Family samples read their resolved
+ * so a `.theme-*` override can swap it at runtime), `--font-heading` (an
+ * `@theme inline` alias of `--font-sans`), and `--font-mono` (the monospace face
+ * — like `--font-sans`, a plain `@theme` token, defaulting to the system mono
+ * stack); the role tokens don't set family, so pair a heading role with
+ * `font-heading`. Family samples read their resolved
  * value live from the DOM; the size/weight/leading/tracking values are canonical,
  * shown from data (see the note on `useComputed`).
  */
@@ -54,6 +56,12 @@ const FAMILIES = [
     cssVar: "--font-heading",
     className: "font-heading",
     role: "Headings and titles (e.g. CardTitle). Aliases --font-sans by default.",
+  },
+  {
+    name: "font-mono",
+    cssVar: "--font-mono",
+    className: "font-mono",
+    role: "Code, monospaced numbers, and fixed-width text. Defaults to the system mono stack; consumer-themeable.",
   },
 ] as const
 
@@ -304,7 +312,7 @@ function TypographySpecimen() {
     <div className="bg-background text-foreground flex w-full max-w-5xl flex-col p-4">
       <Section
         title="Font families"
-        description="Two family tokens. --font-sans is the brand face (Inter Variable); --font-heading aliases it and is used for titles."
+        description="Three family tokens. --font-sans is the brand face (Inter Variable); --font-heading aliases it for titles; --font-mono is the monospace face for code and fixed-width text."
       >
         <div className="grid grid-cols-1 gap-3">
           {FAMILIES.map((family) => (
@@ -379,7 +387,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm/-xs, text-body/-sm, text-label/-sm, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
+          "The type system of the Atomic Reactor design system: semantic text roles (text-heading-lg/-md/-sm/-xs, text-body/-sm, text-label/-sm, text-caption), the raw size scale they compose from, weights, line-heights, and letter-spacing. Roles and families are token-driven (--text-* role composites in semantic.css; --font-sans / --font-heading / --font-mono); the raw axes map to Tailwind v4's built-in scales. Family samples read their resolved value live from the DOM; scale values are canonical.",
       },
     },
   },

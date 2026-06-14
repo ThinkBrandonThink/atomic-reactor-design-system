@@ -33,7 +33,7 @@ const meta = {
     },
     size: {
       control: { type: "radio" },
-      options: ["default", "sm", "xs"],
+      options: ["default", "sm"],
     },
   },
 } satisfies Meta<typeof Item>

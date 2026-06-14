@@ -60,7 +60,7 @@ export const TextPreview: Story = {
           render={
             <a
               href="#"
-              className="font-medium text-primary underline underline-offset-4"
+              className="font-medium text-primary-link underline underline-offset-4"
             >
               Base UI
             </a>

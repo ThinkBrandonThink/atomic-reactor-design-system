@@ -53,8 +53,8 @@ Token definitions and the `@theme inline` mappings live in the tier files, not h
 
 The brand, not stock shadcn neutrals. Values live in `semantic.css`/`primitives.css` (the source of truth); what matters here is the *intent*. Changeable, but confirm before changing a brand token — and if a tool (`shadcn add`, etc.) *silently* swaps them for neutrals, that's not an intended change, so keep the brand. The constraints:
 
-- **Primary = amber/gold** (`--primary`/`--primary-foreground`, same for sidebar primary) — brand color, not neutral; foreground stays AA-readable on it.
-- **Charts = teal/cyan ramp** (`--chart-1`…`--chart-5`) — each series must stay **visible on its background in both themes** (why the ramp differs per theme).
+- **Primary = yellow** (`--primary`/`--primary-foreground`, same for sidebar primary) — brand color, not neutral; foreground stays AA-readable on it.
+- **Charts = multi-hue categorical palette** (`--chart-1`…`--chart-5`) — **not a brand color** (the brand is yellow only). Five distinct hues; each series must stay **visible on its background in both themes** (3:1 non-text contrast, why the values differ per theme) and be told apart by **hue plus a non-color cue** (label/marker/pattern — WCAG 1.4.1, since the luminance-based contrast ratio can't measure hue). Free to retune for accessibility — no brand lock.
 - **Font = Inter Variable** (`--font-sans`); `--font-heading` aliases it.
 - **Radius = one base `--radius` + a multiplicative scale** (`--radius-sm`…`4xl`); changing the base rescales everything.
 

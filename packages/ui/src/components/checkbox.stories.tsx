@@ -19,6 +19,7 @@ const meta = {
   argTypes: {
     checked: { control: "boolean" },
     defaultChecked: { control: "boolean" },
+    indeterminate: { control: "boolean" },
     disabled: { control: "boolean" },
   },
 } satisfies Meta<typeof Checkbox>
@@ -33,6 +34,10 @@ export const Checked: Story = {
   args: { defaultChecked: true },
 }
 
+export const Indeterminate: Story = {
+  args: { indeterminate: true },
+}
+
 export const States: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
@@ -43,6 +48,10 @@ export const States: Story = {
       <div className="flex items-center gap-2">
         <Checkbox id="checked" defaultChecked />
         <Label htmlFor="checked">Checked</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <Checkbox id="indeterminate" indeterminate />
+        <Label htmlFor="indeterminate">Indeterminate</Label>
       </div>
       <div className="flex items-center gap-2">
         <Checkbox id="disabled" disabled />

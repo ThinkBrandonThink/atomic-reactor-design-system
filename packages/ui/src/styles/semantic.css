@@ -1,19 +1,13 @@
 /* ============================================================================
- * SEMANTIC TOKENS — brand intent (tier 2)
+ * SEMANTIC TOKENS — role tokens (tier 2). See the `design-tokens` skill for the
+ * tier model and wiring rules.
  * ----------------------------------------------------------------------------
- * Role-based tokens (--primary, --background, --border, …) that reference the
- * raw palette in primitives.css. This is where light vs dark is defined: the
- * same token names take different primitive shades under `.dark`.
- *
- * THE BRAND DEFAULTS live here (amber primary, teal chart ramp, radius scale,
- * Inter font) — see CLAUDE.md. They're changeable, but confirm intent before
- * changing one; keeping them in their own file also shields them from tools that
- * silently regenerate globals.css.
- *
- * Two values are kept as literals rather than primitives:
- *   - the chart ramp (--chart-1..5): a curated, non-uniform scale, treated as a
- *     primitive-level ramp in place.
- *   - dark --border/--input/--sidebar-border: alpha-over-white, not flat hues.
+ * Roles (--primary, --background, …) reference primitives.css; light vs dark is
+ * defined here (same names, different shades under `.dark`). Brand defaults
+ * (yellow primary, radius scale, Inter) live here on purpose — confirm before
+ * changing one, and so tools that regenerate globals.css can't silently drop them.
+ * Two literals (not primitives): --chart-1..5 (curated per-theme palette) and
+ * dark --sidebar-border (alpha-over-white).
  * ========================================================================== */
 
 @theme inline {
@@ -24,12 +18,9 @@
      example: "Poppins", sans-serif */
   --font-heading: var(--font-sans);
 
-  /* Semantic typography — composite text roles. Each --text-<role> (plus its
-   * --line-height / --font-weight modifiers) generates ONE `text-<role>`
-   * utility carrying size + line-height + weight together (Tailwind v4's
-   * --text-* composite syntax). Inline because the values are var() refs into
-   * the --type-* primitive ramp (same reason --font-heading is inline). Family
-   * comes from font-sans/font-heading, applied alongside. */
+  /* Semantic typography — each --text-<role> (+ --line-height/--font-weight
+   * modifiers) generates one composite `text-<role>` utility (Tailwind v4),
+   * sourced from the --type-* primitive ramp. See the `design-tokens` skill. */
   --text-heading-lg: var(--type-size-2xl);
   --text-heading-lg--line-height: var(--type-leading-tight);
   --text-heading-lg--font-weight: var(--type-weight-semibold);
@@ -76,9 +67,21 @@
   --color-input-fill: var(--input-fill);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+  --color-destructive-subtle-border: var(--destructive-subtle-border);
   --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+  --color-success-subtle-border: var(--success-subtle-border);
   --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-subtle-foreground: var(--info-subtle-foreground);
+  --color-info-subtle-border: var(--info-subtle-border);
   --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+  --color-warning-subtle-border: var(--warning-subtle-border);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -86,6 +89,9 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-link: var(--primary-link);
+  --color-primary-on-muted: var(--primary-on-muted);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-primary-subtle-foreground: var(--primary-subtle-foreground);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
@@ -93,6 +99,9 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
+  --color-foreground-disabled: var(--foreground-disabled);
   --color-background: var(--background);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -103,16 +112,10 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* --font-sans is a NON-inline @theme token on purpose. Its value is a literal
- * (not a var() reference), so `inline` would bake "Inter Variable" straight
- * into every `font-sans` utility and a `.theme-*` override would never reach
- * it. A plain @theme instead emits --font-sans to :root and makes the utilities
- * (and Tailwind's --default-font-family, which drives body text) reference it —
- * so a consumer theme can override --font-sans at runtime. --font-heading stays
- * in @theme inline above because its value IS a var() (it aliases --font-sans),
- * which the inline form forwards correctly. Font SIZES, weights, and
- * line-heights come from Tailwind's own --text-* /--font-weight-* /--leading-*
- * tokens, which are already overridable the same way. */
+/* --font-sans is NON-inline @theme on purpose: its value is a literal, so `inline`
+ * would bake "Inter Variable" into every utility and block a `.theme-*` override.
+ * Plain @theme emits it to :root so utilities (and --default-font-family) reference
+ * it, overridable at runtime. --font-heading stays inline above (it's a var() alias). */
 @theme {
   /* @theme-template
      group: text
@@ -120,12 +123,21 @@
      label: The font used everywhere (body text AND headings)
      example: "Poppins", sans-serif */
   --font-sans: "Inter Variable", sans-serif;
+
+  /* Monospace family — same non-inline @theme treatment as --font-sans (so a theme
+   * can repoint it). Default is the system mono stack; no webfont loaded. */
+  /* @theme-template
+     group: text
+     order: 3
+     label: The font for code, monospaced numbers, and anything fixed-width
+     example: "JetBrains Mono", monospace */
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
-/* Consumer-overridable text sizes. These ride Tailwind's built-in --text-*
- * theme keys (they have no declaration of their own here), so they're surfaced
- * to the theme template via standalone @theme-template markers that name
- * themselves explicitly. */
+/* Consumer-overridable text sizes — ride Tailwind's built-in --text-* keys (no
+ * declaration here), surfaced to the template via the named markers below. */
 /* @theme-template name: --text-xs   group: text  block: text-sizes  example: 0.75rem   label: tiny labels */
 /* @theme-template name: --text-sm   group: text  block: text-sizes  example: 0.875rem  label: small text, most buttons and inputs */
 /* @theme-template name: --text-base group: text  block: text-sizes  example: 1rem      label: normal body text */
@@ -146,48 +158,86 @@
      order: 4
      label: Default text color
      example: #1a1a1a */
-  --foreground: var(--neutral-900);
+  --foreground: var(--neutral-950);
+  /* Foreground EMPHASIS — de-emphasized text tiers below --foreground, all
+   * AA-verified (color-tokens checker). Opaque tuned values, NOT currentColor
+   * alpha: near-black-on-white loses contrast too fast under alpha to stay AA.
+   *   secondary — alias of --muted-foreground (kept so the trio is whole)
+   *   tertiary  — body-safe AA 4.5:1; light tier 2/3 are close, dark shows 3
+   *   disabled  — currentColor alpha; WCAG-exempt (disabled UI), so alpha is OK */
+  --foreground-secondary: var(--muted-foreground);
+  --foreground-tertiary: var(--neutral-500);
+  --foreground-disabled: color-mix(in oklab, currentColor 38%, transparent);
   --card: var(--neutral-0);
-  --card-foreground: var(--neutral-900);
+  --card-foreground: var(--neutral-950);
   --popover: var(--neutral-0);
-  --popover-foreground: var(--neutral-900);
+  --popover-foreground: var(--neutral-950);
   /* @theme-template
      group: brand
      order: 1
      label: Your main brand color (buttons, links, highlights)
      example: #2563eb */
-  --primary: var(--gold-300);
+  --primary: var(--brand-400);
   /* @theme-template
      group: brand
      order: 2
      label: Text/icon color that sits ON TOP of your brand color — pick something readable against it (e.g. white on a dark brand color)
      example: #ffffff */
-  --primary-foreground: var(--gold-800);
-  --primary-link: var(--gold-600);
-  --secondary: var(--neutral-cool-100);
-  --secondary-foreground: var(--neutral-cool-900);
+  --primary-foreground: var(--brand-950);
+  --primary-link: var(--brand-700);
+  /* Brand color darkened to clear 3:1 non-text contrast (WCAG 1.4.11) as a FILL on
+   * muted surfaces — bright --primary is only 1.44:1 on --muted in light. Used by the
+   * progress indicator (reusable for sliders/meters). Dark already passes; see .dark. */
+  --primary-on-muted: var(--brand-500);
+  /* Lighter-primary SURFACE — a faint wash (18% --primary over --background) for
+   * text-heavy brand sections, distinct from the --primary fill. Tracks a re-brand
+   * and flips light/dark on its own (no .dark override). Foreground is just
+   * --foreground (the wash stays near the page bg, so text clears AA for any brand
+   * hue, both themes — verified ≥14:1). */
+  --primary-subtle: color-mix(in oklab, var(--primary) 18%, var(--background));
+  --primary-subtle-foreground: var(--foreground);
+  --secondary: var(--neutral-100);
+  --secondary-foreground: var(--neutral-900);
   --muted: var(--neutral-100);
-  --muted-foreground: var(--neutral-600);
+  --muted-foreground: var(--neutral-550);
   --accent: var(--neutral-100);
-  --accent-foreground: var(--neutral-850);
+  --accent-foreground: var(--neutral-900);
   /* @theme-template
      group: brand
      order: 5
      label: The color used for errors and delete/destructive actions
      example: #dc2626 */
-  --destructive: var(--red-500);
-  --success: var(--green-600);
-  --info: var(--cyan-600);
-  --warning: var(--orange-600);
+  --destructive: var(--red-700);
+  --success: var(--green-800);
+  --info: var(--blue-700);
+  --warning: var(--amber-800);
+  --destructive-subtle: var(--red-50);
+  --destructive-subtle-foreground: var(--destructive);
+  --destructive-subtle-border: var(--red-200);
+  --success-subtle: var(--green-50);
+  --success-subtle-foreground: var(--success);
+  --success-subtle-border: var(--green-200);
+  --info-subtle: var(--blue-50);
+  --info-subtle-foreground: var(--info);
+  --info-subtle-border: var(--blue-200);
+  --warning-subtle: var(--amber-50);
+  --warning-subtle-foreground: var(--warning);
+  --warning-subtle-border: var(--amber-200);
   --border: var(--neutral-200);
-  --input: var(--neutral-450);
+  --input: var(--neutral-500);
   --input-fill: var(--neutral-200);
-  --ring: var(--neutral-500);
-  --chart-1: oklch(0.62 0.127 207.078);
-  --chart-2: oklch(0.565 0.143 215.221);
-  --chart-3: oklch(0.51 0.126 221.723);
-  --chart-4: oklch(0.455 0.105 223.128);
-  --chart-5: oklch(0.4 0.085 224.283);
+  /* Focus ring — brand-hued, tuned per theme for AA non-text contrast (3:1) vs the
+   * background (mirrors --primary-link). Bright --primary is only 1.57:1 on white. */
+  --ring: var(--brand-700);
+  /* Categorical chart palette — five DISTINCT hues, NOT a brand color. Per-theme
+   * literals, each tuned to 3:1 non-text contrast on its background. Series are told
+   * apart by HUE (no WCAG ratio for that), so the chart must also carry a non-color
+   * cue — label/marker/pattern (WCAG 1.4.1). Free to retune; no brand lock. */
+  --chart-1: oklch(0.55 0.13 210);
+  --chart-2: oklch(0.52 0.2 300);
+  --chart-3: oklch(0.6 0.15 80);
+  --chart-4: oklch(0.55 0.21 18);
+  --chart-5: oklch(0.54 0.15 150);
   /* @theme-template
      group: brand
      order: 6
@@ -195,26 +245,36 @@
      example: 0.625rem */
   --radius: 0.625rem;
   --sidebar: var(--neutral-50);
-  --sidebar-foreground: var(--neutral-900);
-  --sidebar-primary: var(--gold-300);
-  --sidebar-primary-foreground: var(--gold-800);
-  --sidebar-accent: var(--neutral-100);
-  --sidebar-accent-foreground: var(--neutral-850);
+  --sidebar-foreground: var(--neutral-950);
+  --sidebar-primary: var(--brand-400);
+  --sidebar-primary-foreground: var(--brand-950);
+  /* neutral black alpha so the accent darkens whatever the sidebar bg is,
+   * instead of a near-identical solid neutral that's hard to see */
+  --sidebar-accent: oklch(0 0 0 / 6%);
+  --sidebar-accent-foreground: var(--neutral-900);
   --sidebar-border: var(--neutral-200);
   --sidebar-ring: var(--neutral-500);
 }
 
 .dark {
-  --background: var(--neutral-900);
+  --background: var(--neutral-950);
   --foreground: var(--neutral-50);
-  --card: var(--neutral-850);
+  /* tertiary needs its own dark value — the half-step neutral-450 stays dimmer than
+   * secondary (neutral-400) yet clears AA on the dark surfaces, where the full steps
+   * either collide with secondary (-400) or fail AA (-500). secondary (alias) and
+   * disabled (currentColor) need no dark override. */
+  --foreground-tertiary: var(--neutral-450);
+  --card: var(--neutral-900);
   --card-foreground: var(--neutral-50);
-  --popover: var(--neutral-850);
+  --popover: var(--neutral-900);
   --popover-foreground: var(--neutral-50);
-  --primary: var(--gold-400);
-  --primary-foreground: var(--gold-800);
-  --primary-link: var(--gold-400);
-  --secondary: var(--neutral-cool-800);
+  --primary: var(--brand-400);
+  --primary-foreground: var(--brand-950);
+  --primary-link: var(--brand-500);
+  /* See :root note. In dark the bright --primary already clears 3:1 on the dark
+   * --muted track (9.64:1), so this matches --primary's value. */
+  --primary-on-muted: var(--brand-400);
+  --secondary: var(--neutral-800);
   --secondary-foreground: var(--neutral-50);
   --muted: var(--neutral-800);
   --muted-foreground: var(--neutral-400);
@@ -222,23 +282,38 @@
   --accent-foreground: var(--neutral-50);
   --destructive: var(--red-400);
   --success: var(--green-400);
-  --info: var(--cyan-400);
-  --warning: var(--orange-300);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --input-fill: oklch(1 0 0 / 15%);
-  --ring: var(--neutral-550);
-  --chart-1: oklch(0.865 0.127 207.078);
-  --chart-2: oklch(0.715 0.143 215.221);
-  --chart-3: oklch(0.609 0.126 221.723);
-  --chart-4: oklch(0.52 0.105 223.128);
-  --chart-5: oklch(0.5 0.085 224.283);
-  --sidebar: var(--neutral-850);
+  --info: var(--blue-400);
+  --warning: var(--amber-400);
+  /* Status subtle surfaces — dark side: -950 surface / -200 text / -800 border */
+  --destructive-subtle: var(--red-950);
+  --destructive-subtle-foreground: var(--destructive);
+  --destructive-subtle-border: var(--red-800);
+  --success-subtle: var(--green-950);
+  --success-subtle-foreground: var(--success);
+  --success-subtle-border: var(--green-800);
+  --info-subtle: var(--blue-950);
+  --info-subtle-foreground: var(--info);
+  --info-subtle-border: var(--blue-800);
+  --warning-subtle: var(--amber-950);
+  --warning-subtle-foreground: var(--warning);
+  --warning-subtle-border: var(--amber-800);
+  --border: var(--neutral-800);
+  --input: var(--neutral-500);
+  --input-fill: var(--neutral-800);
+  --ring: var(--brand-500);
+  --chart-1: oklch(0.8 0.13 210);
+  --chart-2: oklch(0.85 0.16 80);
+  --chart-3: oklch(0.7 0.18 300);
+  --chart-4: oklch(0.72 0.19 18);
+  --chart-5: oklch(0.8 0.16 150);
+  --sidebar: var(--neutral-900);
   --sidebar-foreground: var(--neutral-50);
-  --sidebar-primary: var(--gold-400);
-  --sidebar-primary-foreground: var(--gold-800);
-  --sidebar-accent: var(--neutral-800);
+  --sidebar-primary: var(--brand-500);
+  --sidebar-primary-foreground: var(--brand-950);
+  /* dark sidebar is near-black, so lighten with a white alpha (matching the
+   * dark --sidebar-border convention) rather than darken into invisibility */
+  --sidebar-accent: oklch(1 0 0 / 8%);
   --sidebar-accent-foreground: var(--neutral-50);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: var(--neutral-550);
+  --sidebar-ring: var(--neutral-500);
 }

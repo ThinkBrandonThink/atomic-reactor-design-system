@@ -16,7 +16,12 @@ import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
   parameters: {
-    docs: { description: { component: "A drawer component for React." } },
+    docs: {
+      description: {
+        component:
+          "A draggable panel built on vaul, with touch gesture support and a drag-to-dismiss handle on the bottom variant. Drawer is the mobile-oriented counterpart to Sheet — a Dialog-based edge panel. Reach for Drawer for bottom-sheet patterns on touch devices, and pair the two so a Sheet on desktop becomes a Drawer on mobile (the Sheet story's Responsive example shows the pattern via the useIsMobile hook).",
+      },
+    },
   },
   title: "Components/Drawer",
   component: Drawer,

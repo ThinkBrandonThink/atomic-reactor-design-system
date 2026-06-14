@@ -10,7 +10,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@workspace/ui/components/drawer"
 import { Button } from "@workspace/ui/components/button"
+import { useIsMobile } from "@workspace/ui/hooks/use-mobile"
 import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
 const meta = {
@@ -18,7 +29,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Extends the Dialog component to display content that complements the main content of the screen.",
+          "A panel that slides in from an edge of the screen, built on the Dialog primitive. Sheet is the desktop-oriented counterpart to Drawer — which is touch- and drag-driven via vaul. Reach for Sheet for side panels (navigation, filters, detail or edit forms), and pair it with Drawer so the same surface becomes a bottom sheet on mobile (see the Responsive story).",
       },
     },
   },
@@ -144,6 +155,84 @@ export const Bottom: Story = {
       </SheetContent>
     </Sheet>
   ),
+}
+
+/**
+ * The canonical Sheet + Drawer pairing. The same content is rendered in a Sheet
+ * on desktop and a Drawer (vaul, drag-to-dismiss) on viewports below 768px,
+ * switched at runtime by the `useIsMobile` hook.
+ */
+function ResponsivePanel() {
+  const isMobile = useIsMobile()
+
+  const body = (
+    <div className="grid gap-2 px-4">
+      <label htmlFor="responsive-label" className="text-sm font-medium">
+        Display label
+      </label>
+      <input
+        id="responsive-label"
+        defaultValue="Core-A"
+        className="h-9 rounded-md border bg-input/30 px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      />
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="outline">Edit settings</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Edit settings</DrawerTitle>
+            <DrawerDescription>
+              Make changes to the reactor settings here.
+            </DrawerDescription>
+          </DrawerHeader>
+          {body}
+          <DrawerFooter>
+            <Button>Save changes</Button>
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    )
+  }
+
+  return (
+    <Sheet>
+      <SheetTrigger render={<Button variant="outline">Edit settings</Button>} />
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Edit settings</SheetTitle>
+          <SheetDescription>
+            Make changes to the reactor settings here.
+          </SheetDescription>
+        </SheetHeader>
+        {body}
+        <SheetFooter>
+          <Button>Save changes</Button>
+          <SheetClose render={<Button variant="outline">Cancel</Button>} />
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+export const Responsive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Sheet on desktop, Drawer on mobile, switched by the `useIsMobile` hook (768px breakpoint). The same content fills whichever shell is active. Resize the preview — or use Storybook's viewport toolbar — to cross the breakpoint and watch the side sheet become a draggable bottom drawer.",
+      },
+    },
+  },
+  render: () => <ResponsivePanel />,
 }
 
 const tokenGroups: RefGroup[] = [

@@ -122,7 +122,7 @@ Replicate these exactly as the existing components do — do not omit or substit
 neutral palette. **Discard those automated changes** — the brand is intentional:
 
 - **Primary = amber/gold** (`--primary`/`--primary-foreground`), not a neutral.
-- **Charts = teal/cyan ramp** (`--chart-1`…`--chart-5`).
+- **Charts = multi-hue categorical palette** (`--chart-1`…`--chart-5`) — not a brand color.
 - **Font = Inter Variable**; **radius** is one base `--radius` with a
   multiplicative scale. (Exact values live in `semantic.css` — see CLAUDE.md.)
 

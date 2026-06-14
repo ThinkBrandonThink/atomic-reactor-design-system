@@ -64,7 +64,7 @@ const tokenGroups: RefGroup[] = [
     description: "Semantic tokens used by the track, indicator, and value label.",
     tokens: [
       { cssVar: "--muted", utility: "bg-muted", affects: "Track (unfilled) background" },
-      { cssVar: "--primary", utility: "bg-primary", affects: "Indicator (filled) bar" },
+      { cssVar: "--primary-on-muted", utility: "bg-primary-on-muted", affects: "Indicator (filled) bar" },
       { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Value label text" },
     ],
   },

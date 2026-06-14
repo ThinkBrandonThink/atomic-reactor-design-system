@@ -1,61 +1,101 @@
 /* ============================================================================
- * PRIMITIVES — the raw palette (tier 1)
+ * PRIMITIVES — the raw palette (tier 1). INTERNAL: semantic tokens reference
+ * these; components/consumers must not. See the `design-tokens` skill.
  * ----------------------------------------------------------------------------
- * Named, deduplicated raw color values. INTERNAL: semantic tokens reference
- * these; components and consumers should NOT use them directly.
- *
- * Deliberately plain custom properties in :root (NOT a Tailwind `@theme` block)
- * so they (a) never collide with Tailwind's own `--color-*` scales (teal,
- * neutral, etc.) and (b) generate no `bg-gold-500`-style utilities — reaching
- * past the semantic tier is intentionally not part of the public API.
- *
- * Shade numbers approximate lightness (smaller = lighter), Tailwind-style.
- * Values are byte-identical to the literals that previously lived inline in
- * globals.css :root/.dark, so resolved output is unchanged.
+ * Plain :root custom properties (NOT a Tailwind @theme block) so they never
+ * collide with Tailwind's own --color-* scales and generate no utilities —
+ * reaching past the semantic tier isn't public API. Shade numbers approximate
+ * lightness (smaller = lighter), Tailwind-style.
  * ========================================================================== */
 
 :root {
-  /* Neutral — pure gray (chroma 0) */
+  /* Neutral — pure gray (chroma 0). Full Tailwind v4 neutral ramp (50–950),
+   * matched exactly — same convention as the brand/status ramps, so any shade is
+   * available. Plus three non-Tailwind steps: --neutral-0 (pure white, below TW's
+   * -50) and two half-steps — --neutral-450 (-400/-500) for dark
+   * --foreground-tertiary (full steps collide with --foreground-secondary or fail
+   * AA), and --neutral-550 (-500/-600) for --muted-foreground (TW-500 fails AA on
+   * --muted, TW-600 over-darkens it; this keeps its original tuned value). */
   --neutral-0: oklch(1 0 0);
   --neutral-50: oklch(0.985 0 0);
   --neutral-100: oklch(0.97 0 0);
   --neutral-200: oklch(0.922 0 0);
+  --neutral-300: oklch(0.87 0 0);
   --neutral-400: oklch(0.708 0 0);
-  --neutral-450: oklch(0.65 0 0);
-  --neutral-500: oklch(0.62 0 0);
-  --neutral-550: oklch(0.556 0 0);
-  --neutral-600: oklch(0.53 0 0);
+  --neutral-450: oklch(0.632 0 0);
+  --neutral-500: oklch(0.556 0 0);
+  --neutral-550: oklch(0.53 0 0);
+  --neutral-600: oklch(0.439 0 0);
+  --neutral-700: oklch(0.371 0 0);
   --neutral-800: oklch(0.269 0 0);
-  --neutral-850: oklch(0.205 0 0);
-  --neutral-900: oklch(0.145 0 0);
+  --neutral-900: oklch(0.205 0 0);
+  --neutral-950: oklch(0.145 0 0);
 
-  /* Neutral — cool-tinted (slight violet chroma, ~286°) */
-  --neutral-cool-100: oklch(0.967 0.001 286.375);
-  --neutral-cool-800: oklch(0.274 0.006 286.033);
-  --neutral-cool-900: oklch(0.21 0.006 285.885);
+  /* Brand — the brand color ramp, full 50–950 (Tailwind v4 "yellow" stock, exact;
+   * same convention as the status ramps below). --primary and friends point here. */
+  --brand-50: oklch(0.987 0.026 102.212);
+  --brand-100: oklch(0.973 0.071 103.193);
+  --brand-200: oklch(0.945 0.129 101.54);
+  --brand-300: oklch(0.905 0.182 98.111);
+  --brand-400: oklch(0.852 0.199 91.936);
+  --brand-500: oklch(0.795 0.184 86.047);
+  --brand-600: oklch(0.681 0.162 75.834);
+  --brand-700: oklch(0.554 0.135 66.442);
+  --brand-800: oklch(0.476 0.114 61.907);
+  --brand-900: oklch(0.421 0.095 57.708);
+  --brand-950: oklch(0.286 0.066 53.813);
 
-  /* Gold / amber — brand hue */
-  --gold-300: oklch(0.852 0.199 91.936);
-  --gold-400: oklch(0.795 0.184 86.047);
-  --gold-500: oklch(0.681 0.162 75.834);
-  --gold-600: oklch(0.55 0.199 91.936);
-  --gold-800: oklch(0.34 0.095 57.708);
-  --gold-900: oklch(0.25 0.07 75);
-
-  /* Status hues — two shades each (lighter shade is used by the dark theme) */
+  /* Status hues — full Tailwind v4 stock ramps (50–950), matched exactly. Semantic
+   * role tokens + subtle surfaces point here: destructive→red, success→green,
+   * warning→amber, info→blue. */
+  --red-50: oklch(0.971 0.013 17.38);
+  --red-100: oklch(0.936 0.032 17.717);
+  --red-200: oklch(0.885 0.062 18.334);
+  --red-300: oklch(0.808 0.114 19.571);
   --red-400: oklch(0.704 0.191 22.216);
-  --red-500: oklch(0.577 0.245 27.325);
-  --green-400: oklch(0.696 0.17 162.48);
-  --green-600: oklch(0.52 0.17 149.214);
-  --orange-300: oklch(0.769 0.188 70.08);
-  --orange-600: oklch(0.54 0.179 58.318);
-  --cyan-400: oklch(0.715 0.143 215.221);
-  --cyan-600: oklch(0.52 0.126 221.723);
+  --red-500: oklch(0.637 0.237 25.331);
+  --red-600: oklch(0.577 0.245 27.325);
+  --red-700: oklch(0.505 0.213 27.518);
+  --red-800: oklch(0.444 0.177 26.899);
+  --red-900: oklch(0.396 0.141 25.723);
+  --red-950: oklch(0.258 0.092 26.042);
+  --green-50: oklch(0.982 0.018 155.826);
+  --green-100: oklch(0.962 0.044 156.743);
+  --green-200: oklch(0.925 0.084 155.995);
+  --green-300: oklch(0.871 0.15 154.449);
+  --green-400: oklch(0.792 0.209 151.711);
+  --green-500: oklch(0.723 0.219 149.579);
+  --green-600: oklch(0.627 0.194 149.214);
+  --green-700: oklch(0.527 0.154 150.069);
+  --green-800: oklch(0.448 0.119 151.328);
+  --green-900: oklch(0.393 0.095 152.535);
+  --green-950: oklch(0.266 0.065 152.934);
+  --amber-50: oklch(0.98 0.016 73.684);
+  --amber-100: oklch(0.954 0.038 75.164);
+  --amber-200: oklch(0.901 0.076 70.697);
+  --amber-300: oklch(0.837 0.128 66.29);
+  --amber-400: oklch(0.75 0.183 55.934);
+  --amber-500: oklch(0.705 0.213 47.604);
+  --amber-600: oklch(0.646 0.222 41.116);
+  --amber-700: oklch(0.553 0.195 38.402);
+  --amber-800: oklch(0.47 0.157 37.304);
+  --amber-900: oklch(0.408 0.123 38.172);
+  --amber-950: oklch(0.266 0.079 36.259);
+  --blue-50: oklch(0.97 0.014 254.604);
+  --blue-100: oklch(0.932 0.032 255.585);
+  --blue-200: oklch(0.882 0.059 254.128);
+  --blue-300: oklch(0.809 0.105 251.813);
+  --blue-400: oklch(0.707 0.165 254.624);
+  --blue-500: oklch(0.623 0.214 259.815);
+  --blue-600: oklch(0.546 0.245 262.881);
+  --blue-700: oklch(0.488 0.243 264.376);
+  --blue-800: oklch(0.424 0.199 265.638);
+  --blue-900: oklch(0.379 0.146 265.522);
+  --blue-950: oklch(0.282 0.091 267.935);
 
-  /* Type scale — raw font sizes (rem). One step per semantic role; the
-   * semantic typography composites in semantic.css point at these. Prefixed
-   * --type-* (not Tailwind's --text-, --leading-, --font-weight- theme keys)
-   * so they stay plain :root primitives and generate no utilities of their own. */
+  /* Type scale — raw font sizes (rem). Prefixed --type-* (not Tailwind's --text-/
+   * --leading-/--font-weight- keys) so they stay plain primitives; the semantic
+   * typography composites in semantic.css point at these. */
   --type-size-xs: 0.75rem; /* 12px */
   --type-size-sm: 0.875rem; /* 14px */
   --type-size-base: 1rem; /* 16px */

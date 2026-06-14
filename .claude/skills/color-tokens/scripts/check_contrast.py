@@ -28,6 +28,10 @@ import sys, re, math, argparse
 def _srgb_to_linear(c):
     return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
 
+def _linear_to_srgb(c):
+    c = max(0.0, min(1.0, c))
+    return c * 12.92 if c <= 0.0031308 else 1.055 * c ** (1 / 2.4) - 0.055
+
 def _hex_to_rgb(s):
     s = s.lstrip("#")
     if len(s) == 3:
@@ -118,8 +122,19 @@ def luminance(linear_rgb):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 def composite(fg_lin, alpha, bg_lin):
-    """Composite a translucent foreground over an opaque background (linear)."""
-    return tuple(f * alpha + b * (1 - alpha) for f, b in zip(fg_lin, bg_lin))
+    """Composite a translucent foreground over an opaque background.
+
+    Source-over alpha compositing is done in GAMMA-ENCODED sRGB space, because
+    that is what browsers do for normal (non-linearized) content — and therefore
+    what a screen color-picker samples and what WCAG ratios are computed against.
+    Mixing in linear-light space (the physically "correct" way) produces a
+    visibly different, lighter result and can mis-state contrast by 2x+ for a
+    light tint over a dark backdrop. Inputs/outputs stay linear so luminance()
+    is unaffected."""
+    fg_s = [_linear_to_srgb(c) for c in fg_lin]
+    bg_s = [_linear_to_srgb(c) for c in bg_lin]
+    mixed_s = (f * alpha + b * (1 - alpha) for f, b in zip(fg_s, bg_s))
+    return tuple(_srgb_to_linear(c) for c in mixed_s)
 
 def contrast(fg_str, bg_str):
     """Contrast ratio of fg over bg. bg is assumed opaque; fg alpha composited."""

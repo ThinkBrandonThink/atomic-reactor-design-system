@@ -27,7 +27,7 @@ specifically — there is a fourth, open-ended level:
 ## The three token tiers
 
 ```
-Primitives        --gold-300, --neutral-900           raw palette, static     → primitives.css
+Primitives        --brand-400, --neutral-900          raw palette, static     → primitives.css
       ↓ referenced by
 Semantic / global --primary, --background, --border    brand intent            → semantic.css
       ↓ referenced by
@@ -75,9 +75,9 @@ other rule):
 
 ## Tier 1 — primitives (`primitives.css`)
 
-Named, deduplicated raw values: `--neutral-*`, `--neutral-cool-*`, `--gold-*`,
-and status hues (`--red-*`, `--green-*`, `--orange-*`, `--cyan-*`). Shade numbers
-approximate lightness, Tailwind-style.
+Named, deduplicated raw values: `--neutral-*`, `--brand-*`, and status hues
+(`--red-*`, `--green-*`, `--amber-*`, `--blue-*`). Shade numbers approximate
+lightness, Tailwind-style.
 
 **Deliberately plain `:root` custom properties — NOT a Tailwind `@theme` block.**
 Two reasons:

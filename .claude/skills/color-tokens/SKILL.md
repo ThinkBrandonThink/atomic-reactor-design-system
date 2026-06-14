@@ -28,10 +28,11 @@ Two things make color work here non-trivial, and they're why this skill exists:
 1. **Schools require WCAG 2.x AA.** A color change isn't done until its contrast
    is verified, in *both* themes. oklch lightness is not a contrast ratio —
    you cannot eyeball it. Use the bundled checker.
-2. **The brand palette carries the identity.** The amber/gold primary and
-   teal/cyan chart ramp are the Atomic Reactor brand (see CLAUDE.md). Don't *quietly*
-   change one to "fix" a contrast problem — prefer adjusting the other side of the
-   pair; if a brand token itself should change, confirm it's intended first.
+2. **The brand palette carries the identity.** The amber/gold primary is the
+   Atomic Reactor brand (see CLAUDE.md) — the chart palette is NOT a brand color.
+   Don't *quietly* change the brand to "fix" a contrast problem — prefer adjusting
+   the other side of the pair; if a brand token itself should change, confirm it's
+   intended first.
 
 ## The checker (use it for every color decision)
 
@@ -95,21 +96,39 @@ The audit flags every pair mechanically; apply judgment to what it reports:
   themes — fix by darkening the token (they're not brand tokens) or pairing fills with
   a dark foreground; reserve the light values for large text only.
 - **Chart colors are audited against the background** (1.4.11, 3:1) because a
-  series has to be distinguishable from the canvas. The ramp is **tuned per
-  theme** so each series stays visible on its background (light uses the darker
-  teals, dark uses the lighter ones) — that visibility is the constraint to
-  preserve. If a series still falls below 3:1 against its background, the **teal
-  chart ramp is a brand default**, so don't silently re-tune it: flag the gap and
-  confirm the fix (adjust that theme's value, or use pattern/label encoding
-  rather than color alone). Note the audit checks series-vs-background, not series-vs-series
-  adjacency — neighbouring slices/lines also need to differ, which is a design
-  check, not a token ratio.
+  series has to be distinguishable from the canvas. The palette is **multi-hue
+  and tuned per theme** so each series stays visible on its background (light uses
+  darker values, dark uses lighter) — that visibility is the constraint to
+  preserve. The chart palette is **not a brand color**, so if a series falls below
+  3:1 you can retune it freely — keep the hue distinct and re-check both themes.
+  Note the audit checks series-vs-background, not series-vs-series: WCAG has **no**
+  ratio for telling two series apart (its luminance formula can't measure hue), so
+  distinguish them by hue **plus a non-color cue** (label/marker/pattern — 1.4.1,
+  Level A), which is a design check, not a token ratio.
 - **1.4.1 (color alone)** can't be measured by ratio. When tokens encode state —
   `destructive`, `success`, `warning`, `info` — flag that the UI must also carry
   a non-color signal (icon, text, underline). You can't satisfy this by picking
   a better color.
 
 ## When you're CREATING or EDITING a token value
+
+**Primitives first — don't invent a value unless you have to.** Semantic-layer
+tokens (`--success`, `--destructive`, `--muted-foreground`, …) should reference a
+step from the raw ramp in `primitives.css` (e.g. `--success: var(--green-800)`),
+never a bare literal. When a semantic token needs adjusting — a contrast fix, a
+darker/lighter shade — first reach for the neighbouring primitive steps in the
+same hue (`-700` → `-800`, `-400` → `-300`, …) and check them with the checker.
+Use the existing step that clears the threshold, even if it overshoots the
+minimal target slightly; ramp coherence beats a perfectly-minimal custom value.
+
+**Only author a custom oklch value when no primitive step fits — and get
+approval first.** If the step below over-darkens and the step above fails AA (or
+similar), stop and present the user with: the token, why no existing primitive
+works (the ratios of the bracketing steps), the custom value you'd add, and its
+measured ratio. Wait for approval before writing a literal into the semantic
+layer. Never silently introduce an off-ramp value.
+
+Once you've confirmed a custom value is needed and approved:
 
 1. **Author in oklch.** If the user hands you hex/rgb/hsl, convert it with
    `to-oklch` and use that. Keep the same `L C H` precision as neighboring tokens.
@@ -136,7 +155,7 @@ a near-white text — verify that specific combination.
 When a pair fails, stop and report: the pair, the **measured ratio**, the
 **target**, and a concrete fix. Then let the user choose. Don't auto-apply.
 **Prefer resolving a failure by adjusting the *other* side of the pair** rather
-than the brand token (amber primary, teal charts); if the brand token itself is
+than the brand token (amber primary); if the brand token itself is
 the right thing to change, confirm that's intended before doing it.
 
 How to propose a fix in oklch: contrast is driven almost entirely by **L**

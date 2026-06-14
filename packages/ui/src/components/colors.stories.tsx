@@ -21,6 +21,13 @@ type Token = {
   cssVar: string
   /** Optional paired foreground token, rendered as overlaid text. */
   foreground?: string
+  /** Render mode: `text` shows a colored text sample with its contrast vs
+   * `--background`; `border` shows a box outlined in the token (utility
+   * `border-<name>`). Default renders a background swatch. */
+  kind?: "text" | "border"
+  /** Suppress the AA verdict — for tokens exempt from contrast minimums
+   * (e.g. disabled-state text). */
+  contrastExempt?: boolean
 }
 
 type TokenGroup = {
@@ -41,17 +48,39 @@ const GROUPS: TokenGroup[] = [
     tokens: [
       { name: "card", cssVar: "--card", foreground: "--card-foreground" },
       { name: "popover", cssVar: "--popover", foreground: "--popover-foreground" },
+      {
+        name: "primary-subtle",
+        cssVar: "--primary-subtle",
+        foreground: "--primary-subtle-foreground",
+      },
     ],
   },
   {
     title: "Brand & Neutrals",
-    description: "Interactive and emphasis colors. Primary is the Atomic Reactor amber.",
+    description: "Interactive and emphasis colors. Primary is the Atomic Reactor yellow.",
     tokens: [
       { name: "primary", cssVar: "--primary", foreground: "--primary-foreground" },
       { name: "primary-link", cssVar: "--primary-link" },
+      { name: "primary-on-muted", cssVar: "--primary-on-muted" },
       { name: "secondary", cssVar: "--secondary", foreground: "--secondary-foreground" },
       { name: "muted", cssVar: "--muted", foreground: "--muted-foreground" },
       { name: "accent", cssVar: "--accent", foreground: "--accent-foreground" },
+    ],
+  },
+  {
+    title: "Text",
+    description:
+      "Foreground emphasis ramp — de-emphasized text tiers below the default --foreground, for building a readable hierarchy. secondary aliases --muted-foreground; disabled is currentColor-relative and WCAG-exempt.",
+    tokens: [
+      { name: "foreground", cssVar: "--foreground", kind: "text" },
+      { name: "foreground-secondary", cssVar: "--foreground-secondary", kind: "text" },
+      { name: "foreground-tertiary", cssVar: "--foreground-tertiary", kind: "text" },
+      {
+        name: "foreground-disabled",
+        cssVar: "--foreground-disabled",
+        kind: "text",
+        contrastExempt: true,
+      },
     ],
   },
   {
@@ -62,6 +91,25 @@ const GROUPS: TokenGroup[] = [
       { name: "success", cssVar: "--success" },
       { name: "info", cssVar: "--info" },
       { name: "warning", cssVar: "--warning" },
+    ],
+  },
+  {
+    title: "Status surfaces",
+    description:
+      "Soft tinted panels for alerts/callouts — one per status, derived from the status color over the background with a readable same-hue foreground. (Badges use their own alpha tints.)",
+    tokens: [
+      {
+        name: "destructive-subtle",
+        cssVar: "--destructive-subtle",
+        foreground: "--destructive-subtle-foreground",
+      },
+      { name: "success-subtle", cssVar: "--success-subtle", foreground: "--success-subtle-foreground" },
+      { name: "info-subtle", cssVar: "--info-subtle", foreground: "--info-subtle-foreground" },
+      { name: "warning-subtle", cssVar: "--warning-subtle", foreground: "--warning-subtle-foreground" },
+      { name: "destructive-subtle-border", cssVar: "--destructive-subtle-border", kind: "border" },
+      { name: "success-subtle-border", cssVar: "--success-subtle-border", kind: "border" },
+      { name: "info-subtle-border", cssVar: "--info-subtle-border", kind: "border" },
+      { name: "warning-subtle-border", cssVar: "--warning-subtle-border", kind: "border" },
     ],
   },
   {
@@ -87,7 +135,7 @@ const GROUPS: TokenGroup[] = [
   },
   {
     title: "Charts",
-    description: "Teal/cyan data-visualization ramp.",
+    description: "Multi-hue data-visualization palette (not a brand color); each series stays visible on its background in both themes.",
     tokens: [
       { name: "chart-1", cssVar: "--chart-1" },
       { name: "chart-2", cssVar: "--chart-2" },
@@ -278,6 +326,77 @@ function PairSwatch({ token }: { token: Token & { foreground: string } }) {
   )
 }
 
+/**
+ * A text-role token — renders sample text in the token color on the page
+ * background, with the AA contrast of that text against `--background`. Used for
+ * the foreground emphasis ramp, where `text-<name>` (not `bg-`) is the real
+ * utility. currentColor-relative tokens (e.g. disabled) resolve against the
+ * inherited foreground, matching how they render in use.
+ */
+function TextSwatch({ token }: { token: Token }) {
+  const tick = useThemeTick()
+  const textRef = React.useRef<HTMLSpanElement>(null)
+  const bgRef = React.useRef<HTMLDivElement>(null)
+  const [value, setValue] = React.useState("")
+  const [ratio, setRatio] = React.useState<number | null>(null)
+
+  React.useEffect(() => {
+    if (!textRef.current || !bgRef.current) return
+    const textColor = getComputedStyle(textRef.current).color
+    const bg = readColor(bgRef.current)
+    setValue(textColor)
+    const fg = toRgb(textColor)
+    setRatio(fg && bg.rgb ? contrastRatio(fg, bg.rgb) : null)
+  }, [tick])
+
+  return (
+    <div ref={bgRef} className="bg-background flex flex-col gap-1.5 rounded-lg border p-2.5">
+      <span ref={textRef} className="text-sm font-medium" style={{ color: `var(${token.cssVar})` }}>
+        {varName(token.cssVar)}
+      </span>
+      <code className="text-muted-foreground truncate text-xs">{`text-${token.name}`}</code>
+      <code className="text-muted-foreground/80 truncate text-xs tabular-nums">{value}</code>
+      {token.contrastExempt ? (
+        <span className="text-muted-foreground text-[10px]">WCAG-exempt (disabled UI)</span>
+      ) : (
+        <ContrastBadge ratio={ratio} />
+      )}
+    </div>
+  )
+}
+
+/**
+ * A border-role token — a box outlined in the token color on the page
+ * background, labeled with its `border-<name>` utility.
+ */
+function BorderSwatch({ token }: { token: Token }) {
+  const tick = useThemeTick()
+  const ref = React.useRef<HTMLDivElement>(null)
+  const [value, setValue] = React.useState("")
+
+  React.useEffect(() => {
+    if (!ref.current) return
+    setValue(getComputedStyle(ref.current).borderTopColor)
+  }, [tick])
+
+  return (
+    <div className="flex items-center rounded-lg border p-2.5">
+      <div className="flex items-center gap-3">
+        <div
+          ref={ref}
+          className="bg-background size-12 shrink-0 rounded-md border-3"
+          style={{ borderColor: `var(${token.cssVar})` }}
+        />
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-foreground truncate text-sm font-medium">{varName(token.cssVar)}</span>
+          <code className="text-muted-foreground truncate text-xs">{`border-${token.name}`}</code>
+          <code className="text-muted-foreground/80 truncate text-xs tabular-nums">{value}</code>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ColorPalette() {
   return (
     <div className="bg-background text-foreground flex w-full max-w-5xl flex-col p-4">
@@ -293,6 +412,10 @@ function ColorPalette() {
             {group.tokens.map((token) =>
               token.foreground ? (
                 <PairSwatch key={token.cssVar} token={{ ...token, foreground: token.foreground }} />
+              ) : token.kind === "text" ? (
+                <TextSwatch key={token.cssVar} token={token} />
+              ) : token.kind === "border" ? (
+                <BorderSwatch key={token.cssVar} token={token} />
               ) : (
                 <Swatch key={token.cssVar} token={token} />
               )

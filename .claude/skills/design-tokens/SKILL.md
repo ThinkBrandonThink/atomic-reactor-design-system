@@ -167,8 +167,9 @@ typos that would no-op.
 
 ## The brand defaults — confirm before changing
 
-The amber/gold primary, the teal/cyan chart ramp, Inter, and the radius scale
-are the Atomic Reactor identity (see CLAUDE.md). They live in `semantic.css`,
+The amber/gold primary, Inter, and the radius scale are the Atomic Reactor
+identity (see CLAUDE.md). (The chart palette is a functional multi-hue set, NOT a
+brand color — retune it freely for accessibility.) They live in `semantic.css`,
 partly to keep tools that regenerate `globals.css` from silently overwriting
 them. They're changeable — but prefer not to repoint a brand token to satisfy a
 contrast or styling request: reach first for adjusting the *other* side of the
