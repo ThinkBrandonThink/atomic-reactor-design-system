@@ -21,6 +21,10 @@ const meta = {
       control: "select",
       options: ["text", "email", "password", "number", "search", "tel", "url"],
     },
+    size: {
+      control: "select",
+      options: ["sm", "default", "lg"],
+    },
     placeholder: { control: "text" },
     disabled: { control: "boolean" },
   },
@@ -44,6 +48,16 @@ export const Types: Story = {
       <Input {...args} type="password" placeholder="Password" />
       <Input {...args} type="number" placeholder="Number" />
       <Input {...args} type="search" placeholder="Search" />
+    </div>
+  ),
+}
+
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-3">
+      <Input {...args} size="sm" placeholder="Small" />
+      <Input {...args} size="default" placeholder="Default" />
+      <Input {...args} size="lg" placeholder="Large" />
     </div>
   ),
 }

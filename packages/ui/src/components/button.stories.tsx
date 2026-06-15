@@ -92,8 +92,9 @@ export const Sizes: Story = {
 
 /**
  * Icons are passed as children, not via a prop — drop any `lucide-react` icon
- * in and the Button auto-sizes it (`size-4`, scaling down on `xs`/`sm`) and
- * colors it via `currentColor`. Add `data-icon="inline-start"` or
+ * in and the Button auto-sizes it (`size-4`, scaling down to `size-3.5` on `xs`
+ * and up to `size-5` on `lg`) and colors it via `currentColor`. Add
+ * `data-icon="inline-start"` or
  * `data-icon="inline-end"` to the icon to trigger the optical padding tweak so
  * the icon edge doesn't sit too far from the button edge.
  */
@@ -219,14 +220,14 @@ const tokenGroups: RefGroup[] = [
       {
         cssVar: "--button-radius",
         utility: "rounded-(--button-radius)",
-        affects: "default / lg / icon corner radius (defaults to --radius-lg)",
+        affects: "sm / default / lg / icon / icon-sm / icon-lg corner radius (defaults to --radius-lg)",
         radius: true,
       },
       { cssVar: "--radius", affects: "Base radius — rescales the entire system", radius: true },
       {
         cssVar: "--radius-md",
         utility: "rounded-[min(--radius-md,…)]",
-        affects: "xs / sm / icon-xs / icon-sm corner radius",
+        affects: "xs / icon-xs corner radius",
         radius: true,
       },
     ],
