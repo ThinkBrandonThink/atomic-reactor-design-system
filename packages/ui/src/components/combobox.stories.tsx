@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import {
   Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
   ComboboxCollection,
   ComboboxContent,
   ComboboxEmpty,
@@ -10,6 +13,8 @@ import {
   ComboboxItem,
   ComboboxLabel,
   ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
 } from "@workspace/ui/components/combobox"
 import { TokenReference, type RefGroup } from "../../.storybook/token-reference"
 
@@ -84,6 +89,48 @@ export const WithGroups: Story = {
       </ComboboxContent>
     </Combobox>
   ),
+}
+
+function MultiSelectExample() {
+  const anchor = useComboboxAnchor()
+  return (
+    <Combobox multiple items={frameworks} defaultValue={["Next.js", "Remix"]}>
+      <ComboboxChips ref={anchor} className="w-[260px]">
+        <ComboboxValue>
+          {(values: string[]) =>
+            values.map((value) => (
+              <ComboboxChip key={value} aria-label={value}>
+                {value}
+              </ComboboxChip>
+            ))
+          }
+        </ComboboxValue>
+        <ComboboxChipsInput placeholder="Select frameworks..." />
+      </ComboboxChips>
+      <ComboboxContent anchor={anchor}>
+        <ComboboxEmpty>No framework found.</ComboboxEmpty>
+        <ComboboxList>
+          {(framework: string) => (
+            <ComboboxItem key={framework} value={framework}>
+              {framework}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  )
+}
+
+export const MultiSelect: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Pass `multiple` to select more than one item. Selections render as removable chips inside a `ComboboxChips` container, which also anchors the popup.",
+      },
+    },
+  },
+  render: () => <MultiSelectExample />,
 }
 
 const tokenGroups: RefGroup[] = [
