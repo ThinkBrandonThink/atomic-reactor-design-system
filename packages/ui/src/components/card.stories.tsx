@@ -72,6 +72,29 @@ export const Full: Story = {
   ),
 }
 
+export const WithImage: Story = {
+  render: (args) => (
+    <Card {...args} className="w-80">
+      <img
+        src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&dpr=2&q=80"
+        alt="Circuit board close-up"
+        className="aspect-video object-cover"
+      />
+      <CardHeader>
+        <CardTitle>Control module</CardTitle>
+        <CardDescription>Hardware revision 2.4</CardDescription>
+      </CardHeader>
+      <CardContent>
+        The latest control module ships with redundant sensor arrays and a
+        faster sampling loop.
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">View specs</Button>
+      </CardFooter>
+    </Card>
+  ),
+}
+
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-wrap items-start gap-4">
