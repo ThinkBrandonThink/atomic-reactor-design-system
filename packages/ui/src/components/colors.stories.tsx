@@ -96,7 +96,7 @@ const GROUPS: TokenGroup[] = [
   {
     title: "Status surfaces",
     description:
-      "Soft tinted panels for alerts/callouts — one per status, derived from the status color over the background with a readable same-hue foreground. (Badges use their own alpha tints.)",
+      "Soft tinted panels for alerts/callouts — one per status, derived from the status color over the background with a readable same-hue foreground. The -subtle-strong step is one shade deeper (used by badges); it shares the same -subtle-foreground.",
     tokens: [
       {
         name: "destructive-subtle",
@@ -106,6 +106,14 @@ const GROUPS: TokenGroup[] = [
       { name: "success-subtle", cssVar: "--success-subtle", foreground: "--success-subtle-foreground" },
       { name: "info-subtle", cssVar: "--info-subtle", foreground: "--info-subtle-foreground" },
       { name: "warning-subtle", cssVar: "--warning-subtle", foreground: "--warning-subtle-foreground" },
+      {
+        name: "destructive-subtle-strong",
+        cssVar: "--destructive-subtle-strong",
+        foreground: "--destructive-subtle-foreground",
+      },
+      { name: "success-subtle-strong", cssVar: "--success-subtle-strong", foreground: "--success-subtle-foreground" },
+      { name: "info-subtle-strong", cssVar: "--info-subtle-strong", foreground: "--info-subtle-foreground" },
+      { name: "warning-subtle-strong", cssVar: "--warning-subtle-strong", foreground: "--warning-subtle-foreground" },
       { name: "destructive-subtle-border", cssVar: "--destructive-subtle-border", kind: "border" },
       { name: "success-subtle-border", cssVar: "--success-subtle-border", kind: "border" },
       { name: "info-subtle-border", cssVar: "--info-subtle-border", kind: "border" },

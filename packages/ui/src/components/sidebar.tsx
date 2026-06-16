@@ -468,13 +468,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn(
-        // Active-item rail: a primary-colored bar in the group's leading gutter,
-        // outside the button so it never collides with label truncation. Driven
-        // by the active menu-button via `has` (only the active button emits data-active).
-        "group/menu-item relative has-[>[data-active]]:before:absolute has-[>[data-active]]:before:inset-y-1 has-[>[data-active]]:before:-start-2 has-[>[data-active]]:before:w-0.5 has-[>[data-active]]:before:bg-sidebar-primary has-[>[data-active]]:before:content-['']",
-        className
-      )}
+      className={cn("group/menu-item relative", className)}
       {...props}
     />
   )

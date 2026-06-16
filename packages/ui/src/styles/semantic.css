@@ -70,18 +70,22 @@
   --color-destructive-subtle: var(--destructive-subtle);
   --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
   --color-destructive-subtle-border: var(--destructive-subtle-border);
+  --color-destructive-subtle-strong: var(--destructive-subtle-strong);
   --color-success: var(--success);
   --color-success-subtle: var(--success-subtle);
   --color-success-subtle-foreground: var(--success-subtle-foreground);
   --color-success-subtle-border: var(--success-subtle-border);
+  --color-success-subtle-strong: var(--success-subtle-strong);
   --color-info: var(--info);
   --color-info-subtle: var(--info-subtle);
   --color-info-subtle-foreground: var(--info-subtle-foreground);
   --color-info-subtle-border: var(--info-subtle-border);
+  --color-info-subtle-strong: var(--info-subtle-strong);
   --color-warning: var(--warning);
   --color-warning-subtle: var(--warning-subtle);
   --color-warning-subtle-foreground: var(--warning-subtle-foreground);
   --color-warning-subtle-border: var(--warning-subtle-border);
+  --color-warning-subtle-strong: var(--warning-subtle-strong);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -223,6 +227,12 @@
   --warning-subtle: var(--amber-50);
   --warning-subtle-foreground: var(--warning);
   --warning-subtle-border: var(--amber-200);
+  /* Stronger subtle surface — one ramp step deeper than -subtle (-100). The
+   * -subtle-foreground role still clears AA on it (5.3-6.5:1). Used by the badge. */
+  --destructive-subtle-strong: var(--red-100);
+  --success-subtle-strong: var(--green-100);
+  --info-subtle-strong: var(--blue-100);
+  --warning-subtle-strong: var(--amber-100);
   --border: var(--neutral-200);
   --input: var(--neutral-500);
   --input-fill: var(--neutral-200);
@@ -297,6 +307,12 @@
   --warning-subtle: var(--amber-950);
   --warning-subtle-foreground: var(--warning);
   --warning-subtle-border: var(--amber-800);
+  /* -subtle-strong stays at -950 in dark: -subtle is already the darkest step,
+   * and lightening to -900 drops the -subtle-foreground text below AA. */
+  --destructive-subtle-strong: var(--red-950);
+  --success-subtle-strong: var(--green-950);
+  --info-subtle-strong: var(--blue-950);
+  --warning-subtle-strong: var(--amber-950);
   --border: var(--neutral-800);
   --input: var(--neutral-500);
   --input-fill: var(--neutral-800);

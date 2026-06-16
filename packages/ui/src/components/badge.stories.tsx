@@ -25,7 +25,6 @@ const meta = {
         "info",
         "warning",
         "outline",
-        "ghost",
         "link",
       ],
     },
@@ -61,9 +60,6 @@ export const Variants: Story = {
       </Badge>
       <Badge {...args} variant="outline">
         Outline
-      </Badge>
-      <Badge {...args} variant="ghost">
-        Ghost
       </Badge>
       <Badge {...args} variant="link">
         Link
@@ -116,7 +112,7 @@ const tokenGroups: RefGroup[] = [
   },
   {
     title: "Variant colors",
-    description: "Semantic tokens used by the secondary / status / outline / ghost / link variants.",
+    description: "Semantic tokens used by the secondary / status / outline / link variants.",
     tokens: [
       {
         cssVar: "--secondary",
@@ -128,14 +124,50 @@ const tokenGroups: RefGroup[] = [
           affects: "Secondary variant text",
         },
       },
-      { cssVar: "--destructive", utility: "text-destructive", affects: "Destructive variant text & background tint" },
-      { cssVar: "--warning", utility: "text-warning", affects: "Warning variant text & background tint" },
-      { cssVar: "--success", utility: "text-success", affects: "Success variant text & background tint" },
-      { cssVar: "--info", utility: "text-info", affects: "Info variant text & background tint" },
+      {
+        cssVar: "--destructive-subtle-strong",
+        utility: "bg-destructive-subtle-strong",
+        affects: "Destructive variant background",
+        foreground: {
+          cssVar: "--destructive-subtle-foreground",
+          utility: "text-destructive-subtle-foreground",
+          affects: "Destructive variant text",
+        },
+      },
+      {
+        cssVar: "--warning-subtle-strong",
+        utility: "bg-warning-subtle-strong",
+        affects: "Warning variant background",
+        foreground: {
+          cssVar: "--warning-subtle-foreground",
+          utility: "text-warning-subtle-foreground",
+          affects: "Warning variant text",
+        },
+      },
+      {
+        cssVar: "--success-subtle-strong",
+        utility: "bg-success-subtle-strong",
+        affects: "Success variant background",
+        foreground: {
+          cssVar: "--success-subtle-foreground",
+          utility: "text-success-subtle-foreground",
+          affects: "Success variant text",
+        },
+      },
+      {
+        cssVar: "--info-subtle-strong",
+        utility: "bg-info-subtle-strong",
+        affects: "Info variant background",
+        foreground: {
+          cssVar: "--info-subtle-foreground",
+          utility: "text-info-subtle-foreground",
+          affects: "Info variant text",
+        },
+      },
       { cssVar: "--border", utility: "border-border", affects: "Outline variant border" },
       { cssVar: "--foreground", utility: "text-foreground", affects: "Outline variant text" },
-      { cssVar: "--muted", utility: "bg-muted", affects: "Outline & Ghost hover background" },
-      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Outline & Ghost hover text" },
+      { cssVar: "--muted", utility: "bg-muted", affects: "Outline hover background" },
+      { cssVar: "--muted-foreground", utility: "text-muted-foreground", affects: "Outline hover text" },
       { cssVar: "--primary-link", utility: "text-primary-link", affects: "Link variant text" },
     ],
   },
