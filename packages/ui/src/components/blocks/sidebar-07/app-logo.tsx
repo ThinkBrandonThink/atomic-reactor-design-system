@@ -23,7 +23,7 @@ export function AppLogo({
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <div className="flex h-12 items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm transition-[padding] duration-200 ease-linear group-data-[collapsible=icon]:p-0">
+        <div className="flex h-12 w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm transition-[width,padding] duration-200 ease-linear group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:p-0">
           {logo ?? (
             <div className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
               <Atom className="size-4" />
